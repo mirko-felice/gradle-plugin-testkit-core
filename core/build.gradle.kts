@@ -2,6 +2,7 @@
 
 import com.lordcodes.turtle.shellRun
 import org.gradle.jvm.tasks.Jar
+import java.util.*
 import java.util.regex.Pattern
 
 buildscript {
@@ -17,6 +18,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.sonarqube)
 }
 
 repositories {
@@ -133,4 +135,26 @@ signing {
     val signingPassword: String? by project
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign(publishing.publications[publicationName])
+}
+
+sonarqube.properties {
+    val httpUrl = "https$githubUrl"
+    val token = System.getenv()["SONAR_TOKEN"] ?: file("sonar.properties").inputStream().use {
+        val sonarProperties = Properties()
+        sonarProperties.load(it)
+        sonarProperties.getProperty("token")
+    }
+    property("sonar.login", token)
+    property("sonar.organization", organization)
+    property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.projectName", rootProject.name)
+    property("sonar.projectKey", "${organization}_${rootProject.name}")
+    property("sonar.projectDescription", projectDescription)
+    property("sonar.projectVersion", project.version.toString())
+    property("sonar.scm.provider", "git")
+    property("sonar.verbose", "true")
+    property("sonar.links.homepage", httpUrl)
+    property("sonar.links.ci", "$httpUrl/actions")
+    property("sonar.links.scm", httpUrl)
+    property("sonar.links.issue", "$httpUrl/issues")
 }
