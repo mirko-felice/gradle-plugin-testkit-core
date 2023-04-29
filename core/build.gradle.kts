@@ -1,5 +1,6 @@
 @file:Suppress("UNSTABLE_API_USAGE")
 
+import com.lordcodes.turtle.shellRun
 import org.gradle.jvm.tasks.Jar
 import java.util.regex.Pattern
 
@@ -29,6 +30,15 @@ dependencies {
     implementation(libs.kotest)
     implementation(libs.bundles.jackson)
     dokkaHtmlPlugin(libs.dokka.versioning)
+}
+
+project.version = shellRun {
+    git.gitCommand(listOf("describe", "--tags", "--always"))
+}.let {
+    if (it.contains("-"))
+        it.substringBefore("-") + "-SNAPSHOT"
+    else
+        it
 }
 
 val javaVersion: String by project
