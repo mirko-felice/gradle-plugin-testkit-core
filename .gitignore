@@ -1,0 +1,18 @@
+# Compiled class file
+build/
+
+# IntelliJ Idea
+.idea/*
+!.idea/copyright/
+!.idea/scopes/
+
+# Gradle
+.gradle/
+
+# Node
+node_modules/*
+!node_modules/npm/
+node_modules/npm/*
+!node_modules/npm/node_modules/
+node_modules/npm/node_modules/*
+!node_modules/npm/node_modules/diff/
