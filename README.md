@@ -1,5 +1,26 @@
 # Gradle Plugin Testkit Core
 
+### GitHub Release:
+
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/gradle-plugin-testkit-core?label=github)](https://github.com/mirko-felice/gradle-plugin-testkit-core/releases/latest)
+
+### Maven Central Release:
+
+[![Latest Maven Release](https://img.shields.io/maven-central/v/io.github.mirko-felice.testkit/core?label=maven)](https://central.sonatype.com/artifact/io.github.mirko-felice.testkit/core)
+
+#### with relative javadoc:
+
+[![Latest Javadoc](https://javadoc.io/badge2/io.github.mirko-felice.testkit/core/javadoc.svg?label=javadoc)](https://javadoc.io/doc/io.github.mirko-felice.testkit/core)
+
+### Code Quality:
+
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit-core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=mirko-felice_gradle-plugin-testkit-core)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit-core&metric=bugs)](https://sonarcloud.io/summary/new_code?id=mirko-felice_gradle-plugin-testkit-core)
+
+#### Build Checks:
+
+[![CI + CD](https://github.com/mirko-felice/gradle-plugin-testkit-core/actions/workflows/ci-and-cd.yml/badge.svg)](https://github.com/mirko-felice/gradle-plugin-testkit-core/actions/workflows/ci-and-cd.yml)
+
 ## License
 
 ![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmirko-felice%2Fgradle-plugin-testkit-core.svg?type=shield)
