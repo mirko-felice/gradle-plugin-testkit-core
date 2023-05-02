@@ -79,7 +79,7 @@ abstract class TestkitRunner(
             }
         }
         println("\nTerminate executing tests")
-        testFolder.delete()
+        if (!testFolder.delete()) println("Temporary folder with path ${testFolder.path} has not been deleted.")
     }
 
     private fun executeTest(
