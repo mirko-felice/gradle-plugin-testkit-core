@@ -77,7 +77,7 @@ data class ExistingFile(
     val content: String? = null,
     val trim: Boolean = false,
     val permissions: List<Permission> = emptyList(),
-    ) {
+) {
     /**
      *
      */
