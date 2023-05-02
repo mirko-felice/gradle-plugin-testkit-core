@@ -2,6 +2,8 @@
 
 import com.lordcodes.turtle.shellRun
 import org.gradle.jvm.tasks.Jar
+import org.jetbrains.dokka.DokkaConfiguration
+import java.net.URL
 import java.util.*
 import java.util.regex.Pattern
 
@@ -29,7 +31,6 @@ dependencies {
     implementation(gradleApi())
     implementation(gradleKotlinDsl())
     implementation(gradleTestKit())
-    implementation(libs.kotest)
     implementation(libs.bundles.jackson)
     dokkaHtmlPlugin(libs.dokka.versioning)
 }
@@ -37,10 +38,7 @@ dependencies {
 project.version = shellRun {
     git.gitCommand(listOf("describe", "--tags", "--always"))
 }.let {
-    if (it.contains("-"))
-        it.substringBefore("-") + "-SNAPSHOT"
-    else
-        it
+    if (it.contains("-")) it.substringBefore("-") + "-SNAPSHOT" else it
 }
 
 val javaVersion: String by project
@@ -66,14 +64,16 @@ tasks {
         onlyIf { Pattern.matches("(([0-9])+(\\.?([0-9]))*)+(-SNAPSHOT)?", project.version.toString()) }
     }
 
-    withType<Test>().configureEach {
-        useJUnitPlatform()
-        testLogging {
-            showStandardStreams = true
-            showCauses = true
-            showStackTraces = true
-            events(*org.gradle.api.tasks.testing.logging.TestLogEvent.values())
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    dokkaJavadoc {
+        dokkaSourceSets {
+            configureEach {
+                reportUndocumented.set(true)
+                documentedVisibilities.set(setOf(DokkaConfiguration.Visibility.PROTECTED))
+                jdkVersion.set(javaVersion.toInt())
+                externalDocumentationLink {
+                    url.set(URL("https://docs.gradle.org/current/javadoc/"))
+                }
+            }
         }
     }
 }

@@ -31,12 +31,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Setup Gradle and Test
+      - name: Setup Gradle and Build
         uses: gradle/gradle-build-action@v2.4.2
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          arguments: test
+          arguments: build
       - name: Analyze Sonar
         if: matrix.os == 'ubuntu-latest'
         env:

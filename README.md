@@ -2,11 +2,11 @@
 
 ### GitHub Release:
 
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/gradle-plugin-testkit-core?label=github)](https://github.com/mirko-felice/gradle-plugin-testkit-core/releases/latest)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/gradle-plugin-testkit-core?label=github&logo=github)](https://github.com/mirko-felice/gradle-plugin-testkit-core/releases/latest)
 
 ### Maven Central Release:
 
-[![Latest Maven Release](https://img.shields.io/maven-central/v/io.github.mirko-felice.testkit/core?label=maven)](https://central.sonatype.com/artifact/io.github.mirko-felice.testkit/core)
+[![Latest Maven Release](https://img.shields.io/maven-central/v/io.github.mirko-felice.testkit/core?label=maven&logo=apachemaven)](https://central.sonatype.com/artifact/io.github.mirko-felice.testkit/core)
 
 #### with relative javadoc:
 
