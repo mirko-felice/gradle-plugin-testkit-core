@@ -28,7 +28,6 @@ repositories {
 }
 
 dependencies {
-    implementation(gradleApi())
     implementation(gradleKotlinDsl())
     implementation(gradleTestKit())
     implementation(libs.bundles.jackson)
