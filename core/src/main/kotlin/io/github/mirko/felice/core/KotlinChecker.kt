@@ -30,11 +30,15 @@ internal class KotlinChecker(result: BuildResult) : TestkitChecker(result) {
     }
 
     override fun checkSuccessOutcomeOf(taskName: String) {
-        checkOutcome(TaskOutcome.SUCCESS, outcomeOf(taskName), taskName)
+        checkOutcome(TaskOutcome.SUCCESS, taskName)
+    }
+
+    override fun checkUpToDateOutcomeOf(taskName: String) {
+        checkOutcome(TaskOutcome.UP_TO_DATE, taskName)
     }
 
     override fun checkFailureOutcomeOf(taskName: String) {
-        checkOutcome(TaskOutcome.FAILED, outcomeOf(taskName), taskName)
+        checkOutcome(TaskOutcome.FAILED, taskName)
     }
 
     override fun checkFileExistence(existingFile: ExistingFile, file: File) {
@@ -83,7 +87,14 @@ internal class KotlinChecker(result: BuildResult) : TestkitChecker(result) {
         }
     }
 
-    private fun checkOutcome(expectedOutcome: TaskOutcome, actualOutcome: TaskOutcome, taskName: String) {
+    override fun checkTaskNonExistence(nonExistingTask: String) {
+        assert(result.task(nonExistingTask) == null) {
+            "Task with name '$nonExistingTask' should not exist."
+        }
+    }
+
+    private fun checkOutcome(expectedOutcome: TaskOutcome, taskName: String) {
+        val actualOutcome = outcomeOf(taskName)
         assert(actualOutcome == expectedOutcome) {
             "Outcome of task '$taskName' should be $expectedOutcome, instead it is $actualOutcome."
         }

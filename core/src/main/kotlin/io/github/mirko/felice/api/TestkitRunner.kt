@@ -44,25 +44,33 @@ class TestkitRunner(
         val yamlTests = mapper.readValue(yamlFile, YamlTests::class.java)
         val temporaryFolder = generateTempFolder(testFolder)
 
-        println("Executing tests of configuration file: ${yamlFile.name}\n")
-        yamlTests.tests.forEachIndexed { index, test ->
-            println("\tExecuting test n. ${index + 1} -> \'${test.description}\'")
-            val options =
-                if (test.configuration.options.isEmpty()) "" else " ${test.configuration.options.replaceWithSpaces()}"
-            println("\tRunning `gradlew ${test.configuration.tasks.replaceWithSpaces()}$options`")
-            val result = executeTest(
-                temporaryFolder.root,
-                test.configuration.tasks,
-                test.configuration.options,
-                test.expectation.failure.isNotEmpty(),
-            )
-            val checker: TestkitChecker = when (checkerType) {
-                KOTLIN -> KotlinChecker(result)
+        println("Executing tests of configuration file: ${testFolder.name}/${yamlFile.name}\n")
+        try {
+            yamlTests.tests.forEachIndexed { index, test ->
+                val options = if (test.configuration.options.isEmpty()) {
+                    ""
+                } else {
+                    " ${test.configuration.options.replaceWithSpaces()}"
+                }
+                println(
+                    "\tExecuting test n. ${index + 1}:\n\t\t'${test.description}' -> " +
+                        "Running `gradlew ${test.configuration.tasks.replaceWithSpaces()}$options`",
+                )
+                val result = executeTest(
+                    temporaryFolder.root,
+                    test.configuration.tasks,
+                    test.configuration.options,
+                    test.expectation.nonExistent.isNotEmpty() || test.expectation.failure.isNotEmpty(),
+                )
+                val checker: TestkitChecker = when (checkerType) {
+                    KOTLIN -> KotlinChecker(result)
+                }
+                executeChecks(checker, test, result, temporaryFolder.root)
             }
-            executeChecks(checker, test, result, temporaryFolder.root)
+        } finally {
+            println("\nTerminate executing tests")
+            temporaryFolder.delete()
         }
-        println("\nTerminate executing tests")
-        temporaryFolder.delete()
     }
 
     private fun executeTest(
@@ -84,6 +92,8 @@ class TestkitRunner(
         test.expectation.outputContains.forEach { checker.checkOutputContains(output, it) }
         test.expectation.outputDoesntContain.forEach { checker.checkOutputDoesNotContain(output, it) }
         test.expectation.success.forEach { checker.checkSuccessOutcomeOf(it) }
+        test.expectation.nonExistent.forEach { checker.checkTaskNonExistence(it) }
+        test.expectation.upToDate.forEach { checker.checkUpToDateOutcomeOf(it) }
         test.expectation.failure.forEach { checker.checkFailureOutcomeOf(it) }
         test.expectation.fileToExists.forEach {
             val fileToCheck = File("${root.absolutePath}/${it.name}")
