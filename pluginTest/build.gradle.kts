@@ -58,7 +58,3 @@ fun getClassesFromSrc(project: Project): String {
     val classesPartialPath = "build${sep}classes${sep}kotlin${sep}main"
     return project.sourceSets.main.get().allSource.srcDirs.first { it.endsWith("kotlin") }.path.replace(srcPartialPath, classesPartialPath)
 }
-
-sonarqube.properties {
-    property("sonar.coverage.jacoco.xmlReportPaths", "")
-}
