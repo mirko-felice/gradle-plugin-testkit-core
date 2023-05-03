@@ -25,16 +25,16 @@ import java.io.File
  * @param testFolder path of the folder to test. Default to "build/resources/test"
  */
 class TestkitRunner(
+    private val testFolder: String,
     private val checkerType: CheckerType,
     private val forwardOutput: Boolean = false,
-    private val testFolder: String = "build/resources/test",
 ) {
 
     /**
      * Runs all the tests.
      */
     fun runTests() {
-        val testFolder = File(testFolder)
+        val testFolder = File(baseFolder + testFolder)
         testFolder.walk()
             .filter { it.name.endsWith(".yaml") }
             .forEach { runTest(it, testFolder) }
@@ -86,7 +86,10 @@ class TestkitRunner(
         test.expectation.success.forEach { checker.checkSuccessOutcomeOf(it) }
         test.expectation.failure.forEach { checker.checkFailureOutcomeOf(it) }
         test.expectation.fileToExists.forEach {
-            checker.checkFileExistence(it, File("${root.absolutePath}/${it.name}"))
+            val fileToCheck = File("${root.absolutePath}/${it.name}")
+            checker.checkFileExistence(it, fileToCheck)
+            checker.checkFileContent(it, fileToCheck)
+            checker.checkFilePermissions(it, fileToCheck)
         }
     }
 
@@ -107,5 +110,6 @@ class TestkitRunner(
     companion object {
 
         private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
+        private const val baseFolder = "build/resources/test/"
     }
 }

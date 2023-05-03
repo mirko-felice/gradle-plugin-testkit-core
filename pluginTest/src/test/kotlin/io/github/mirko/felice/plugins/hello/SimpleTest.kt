@@ -12,6 +12,6 @@ import io.kotest.core.spec.style.StringSpec
 class SimpleTest : StringSpec({
 
     "Simple Test" {
-        TestkitRunner(CheckerType.KOTLIN, false).runTests()
+        TestkitRunner("test0", CheckerType.KOTLIN).runTests()
     }
 })
