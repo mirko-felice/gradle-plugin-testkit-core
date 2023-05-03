@@ -43,6 +43,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3.1.3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
   CD:
     if: github.ref_name == 'master'
     needs: CI
