@@ -9,19 +9,18 @@ jackson-version = "2.15.0"
 dokka-version = "1.8.10"
 
 [libraries]
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
 turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle-version" }
 kotest = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 konf-yaml = { module = "com.uchuhimo:konf-yaml", version.ref = "konf-version" }
 jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
-dokka-versioning = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka-version" }
 
 [bundles]
 jackson = [ "jackson-module", "jackson-yaml", "jackson-databind" ]
 
 [plugins]
 kotlin-qa = { id = "org.danilopianini.gradle-kotlin-qa", version.ref = "kotlin-qa-version" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-version" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }

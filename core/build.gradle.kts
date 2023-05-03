@@ -14,10 +14,10 @@ buildscript {
 }
 
 plugins {
+    id("kotlin-jvm")
     `java-library`
     `maven-publish`
     signing
-    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.dokka)
     alias(libs.plugins.sonarqube)
@@ -31,7 +31,6 @@ dependencies {
     implementation(gradleKotlinDsl())
     implementation(gradleTestKit())
     implementation(libs.bundles.jackson)
-    dokkaHtmlPlugin(libs.dokka.versioning)
 }
 
 project.version = shellRun {
@@ -54,8 +53,8 @@ tasks {
 
     withType<Jar> {
         if (archiveClassifier.get() == "javadoc") {
-            dependsOn(dokkaJavadoc)
-            from(dokkaJavadoc.get().outputDirectory)
+            dependsOn(dokkaHtml)
+            from(dokkaHtml.get().outputDirectory)
         }
     }
 
@@ -63,14 +62,26 @@ tasks {
         onlyIf { Pattern.matches("(([0-9])+(\\.?([0-9]))*)+(-SNAPSHOT)?", project.version.toString()) }
     }
 
-    dokkaJavadoc {
+    dokkaHtml {
         dokkaSourceSets {
             configureEach {
+                moduleName.set("Gradle Plugin Testkit Core")
                 reportUndocumented.set(true)
-                documentedVisibilities.set(setOf(DokkaConfiguration.Visibility.PROTECTED))
+                documentedVisibilities.set(
+                    setOf(
+                        DokkaConfiguration.Visibility.PUBLIC,
+                        DokkaConfiguration.Visibility.PROTECTED,
+                        DokkaConfiguration.Visibility.INTERNAL,
+                    ),
+                )
                 jdkVersion.set(javaVersion.toInt())
+                languageVersion.set(libs.kotlin.get().version)
                 externalDocumentationLink {
                     url.set(URL("https://docs.gradle.org/current/javadoc/"))
+                }
+                sourceLink {
+                    localDirectory.set(projectDir.resolve("src"))
+                    remoteUrl.set(URL("https$githubUrl/tree/master/src"))
                 }
             }
         }
