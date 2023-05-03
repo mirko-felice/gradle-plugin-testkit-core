@@ -16,11 +16,11 @@ konf-yaml = { module = "com.uchuhimo:konf-yaml", version.ref = "konf-version" }
 jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
+sonarqube = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqube-version" }
 
 [bundles]
 jackson = [ "jackson-module", "jackson-yaml", "jackson-databind" ]
 
 [plugins]
 kotlin-qa = { id = "org.danilopianini.gradle-kotlin-qa", version.ref = "kotlin-qa-version" }
-sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-version" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
