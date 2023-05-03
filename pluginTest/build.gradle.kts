@@ -59,7 +59,7 @@ fun getClassesFromSrc(project: Project): String {
     return project.sourceSets.main.get().allSource.srcDirs.first { it.endsWith("kotlin") }.path.replace(srcPartialPath, classesPartialPath)
 }
 
-sonar.properties {
+sonarqube.properties {
     val sources = property("sonar.sources").toString()
     val coreSrcPath = project(":core").sourceSets.main.get().allSource.srcDirs.first { it.endsWith("kotlin") }
     property("sonar.sources", "$sources, $coreSrcPath")
