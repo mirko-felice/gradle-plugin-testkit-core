@@ -1,0 +1,14 @@
+tests:
+  - description: "A greeting should get printed"
+    configuration:
+      tasks: [hello]
+    expectation:
+      outputContains: ["hello from mirko"]
+      success: [hello]
+      fileToExists: [
+        {
+          name: "test.txt",
+          content: "example",
+          permissions: [ "R" ]
+        }
+      ]
