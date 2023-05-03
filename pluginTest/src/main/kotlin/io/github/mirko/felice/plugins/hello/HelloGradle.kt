@@ -30,12 +30,19 @@ open class HelloTask : DefaultTask() {
     @Internal
     val message: Provider<String> = author.map { "hello from $it" }
 
+    @TaskAction
+    fun print() {
+        logger.quiet(message.get())
+    }
+}
+
+open class GenerateFileTask : DefaultTask() {
+
     @OutputFile
     val testFile: RegularFileProperty = project.objects.fileProperty().apply { set(File("test.txt")) }
 
     @TaskAction
     fun print() {
-        logger.quiet(message.get())
         val file = testFile.asFile.get()
         file.writeText("example")
         if (!file.setReadOnly()) logger.quiet("Cannot set file read only.")
@@ -58,5 +65,6 @@ open class HelloGradle : Plugin<Project> {
         target.tasks.register<HelloTask>("hello") {
             author.set(extension.author)
         }
+        target.tasks.register<GenerateFileTask>("generateFile")
     }
 }

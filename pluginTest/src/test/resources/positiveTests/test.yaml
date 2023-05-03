@@ -1,0 +1,27 @@
+tests:
+  - description: "Task 'hello' should succeed."
+    configuration:
+      tasks: [hello]
+    expectation:
+      success: [hello]
+  - description: "Task 'hello' should produce a correct output."
+    configuration:
+      tasks: [hello]
+    expectation:
+      outputContains: ["hello from mirko"]
+  - description: "Task 'generateFile' should produce a correct file."
+    configuration:
+      tasks: [generateFile]
+    expectation:
+      fileToExists: [
+        {
+          name: "test.txt",
+          content: "example",
+          permissions: [ "R" ]
+        }
+      ]
+  - description: "Task with name 'wrongTask' should not exist."
+    configuration:
+      tasks: [wrongTask]
+    expectation:
+      nonExistent: [wrongTask]

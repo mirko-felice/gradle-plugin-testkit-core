@@ -6,21 +6,20 @@
 package io.github.mirko.felice.core
 
 import org.gradle.testkit.runner.BuildResult
+import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 
 /**
  * Entity able to check the assertions of the tests.
  * @param result [BuildResult] used to check
  */
-internal abstract class TestkitChecker(private val result: BuildResult) {
+internal abstract class TestkitChecker(protected val result: BuildResult) {
 
     /**
      * Returns the [org.gradle.testkit.runner.TaskOutcome] of the task given as parameter.
      * @param name name of the task to extract the outcome by
      */
-    protected fun outcomeOf(name: String) = checkNotNull(result.task(":$name")?.outcome) {
-        "Task $name was not present among the executed tasks"
-    }
+    protected fun outcomeOf(name: String) = result.task(":$name")?.outcome ?: TaskOutcome.FAILED
 
     /**
      * Checks that the actual content of the output contains an expected part of it.
@@ -43,6 +42,12 @@ internal abstract class TestkitChecker(private val result: BuildResult) {
     abstract fun checkSuccessOutcomeOf(taskName: String)
 
     /**
+     * Checks that a task outcome is [org.gradle.testkit.runner.TaskOutcome.UP_TO_DATE].
+     * @param taskName name of the task to check
+     */
+    abstract fun checkUpToDateOutcomeOf(taskName: String)
+
+    /**
      * Checks that a task outcome is [org.gradle.testkit.runner.TaskOutcome.FAILED].
      * @param taskName name of the task to check
      */
@@ -62,4 +67,9 @@ internal abstract class TestkitChecker(private val result: BuildResult) {
      * Checks that a file has correct permissions.
      */
     abstract fun checkFileContent(existingFile: ExistingFile, file: File)
+
+    /**
+     * Checks that a task does not exist.
+     */
+    abstract fun checkTaskNonExistence(nonExistingTask: String)
 }
