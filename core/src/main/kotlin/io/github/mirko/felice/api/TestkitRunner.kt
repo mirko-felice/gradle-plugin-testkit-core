@@ -101,6 +101,9 @@ class TestkitRunner(
             .replace("]", "")
             .replace(",", " ")
 
+    /**
+     * Companion object.
+     */
     companion object {
 
         private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
