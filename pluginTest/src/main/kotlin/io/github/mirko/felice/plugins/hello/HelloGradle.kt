@@ -38,7 +38,7 @@ open class HelloTask : DefaultTask() {
         logger.quiet(message.get())
         val file = testFile.asFile.get()
         file.writeText("example")
-        file.setReadOnly()
+        if (!file.setReadOnly()) logger.quiet("Cannot set file read only.")
     }
 }
 
