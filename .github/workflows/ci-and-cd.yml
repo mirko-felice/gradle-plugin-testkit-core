@@ -37,16 +37,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           arguments: build
+      - name: Upload Coverage
+        if: matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v3.1.3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Analyze Sonar
         if: matrix.os == 'ubuntu-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonar
-      - name: Upload Coverage
-        uses: codecov/codecov-action@v3.1.3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+        run: ./gradlew clean sonar
   CD:
     if: github.ref_name == 'master'
     needs: CI

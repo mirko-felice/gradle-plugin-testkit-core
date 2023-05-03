@@ -16,6 +16,7 @@
 
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit-core&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=mirko-felice_gradle-plugin-testkit-core)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit-core&metric=bugs)](https://sonarcloud.io/summary/new_code?id=mirko-felice_gradle-plugin-testkit-core)
+[![codecov](https://codecov.io/gh/mirko-felice/gradle-plugin-testkit-core/branch/master/graph/badge.svg?token=TCU6QY2RD5)](https://codecov.io/gh/mirko-felice/gradle-plugin-testkit-core)
 
 #### Build Checks:
 
