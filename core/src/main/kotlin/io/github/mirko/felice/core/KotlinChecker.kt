@@ -11,11 +11,11 @@ import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 
 /**
- * Implementation of [TestkitChecker] that uses basic kotlin assertions.
+ * Implementation of [AbstractTestkitChecker] that uses basic kotlin assertions.
  * @param result [BuildResult] used to check
  * @constructor Creates the checker based on the result.
  */
-internal class KotlinChecker(result: BuildResult) : TestkitChecker(result) {
+internal class KotlinChecker(result: BuildResult) : AbstractTestkitChecker(result) {
 
     override fun checkOutputContains(output: String, partOfOutput: String) {
         assert(output.contains(partOfOutput)) {
@@ -87,9 +87,15 @@ internal class KotlinChecker(result: BuildResult) : TestkitChecker(result) {
         }
     }
 
-    override fun checkTaskNonExistence(nonExistingTask: String) {
-        assert(result.task(nonExistingTask) == null) {
-            "Task with name '$nonExistingTask' should not exist."
+    override fun checkTaskNonExistence(taskName: String) {
+        assert(result.task(":$taskName") == null) {
+            "Task with name '$taskName' should not exist."
+        }
+    }
+
+    override fun checkTaskExistence(taskName: String) {
+        assert(result.task(":$taskName") != null) {
+            "Task with name '$taskName' should exist."
         }
     }
 

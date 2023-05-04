@@ -42,10 +42,18 @@ open class GenerateFileTask : DefaultTask() {
     val testFile: RegularFileProperty = project.objects.fileProperty().apply { set(File("test.txt")) }
 
     @TaskAction
-    fun print() {
+    fun generateFile() {
         val file = testFile.asFile.get()
         file.writeText("example")
         if (!file.setReadOnly()) logger.quiet("Cannot set file read only.")
+    }
+}
+
+open class FailTask : DefaultTask() {
+
+    @TaskAction
+    fun fail() {
+        enabled = false
     }
 }
 
@@ -66,5 +74,6 @@ open class HelloGradle : Plugin<Project> {
             author.set(extension.author)
         }
         target.tasks.register<GenerateFileTask>("generateFile")
+        target.tasks.register<FailTask>("fail")
     }
 }

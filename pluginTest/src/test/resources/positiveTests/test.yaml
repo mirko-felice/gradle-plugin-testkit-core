@@ -7,8 +7,14 @@ tests:
   - description: "Task 'hello' should produce a correct output."
     configuration:
       tasks: [hello]
+      options: [--stacktrace]
     expectation:
       outputContains: ["hello from mirko"]
+  - description: "Task 'hello' should not produce a wrong output."
+    configuration:
+      tasks: [hello]
+    expectation:
+      outputDoesntContain: ["wrong output"]
   - description: "Task 'generateFile' should produce a correct file."
     configuration:
       tasks: [generateFile]
@@ -20,8 +26,18 @@ tests:
           permissions: [ "R" ]
         }
       ]
+  - description: "Task 'generateFile' should be up-to-date now."
+    configuration:
+      tasks: [generateFile]
+    expectation:
+      upToDate: [generateFile]
   - description: "Task with name 'wrongTask' should not exist."
     configuration:
       tasks: [wrongTask]
     expectation:
       nonExistent: [wrongTask]
+  - description: "Task 'fail' should fail"
+    configuration:
+      tasks: [fail]
+    expectation:
+      failure: [fail]
