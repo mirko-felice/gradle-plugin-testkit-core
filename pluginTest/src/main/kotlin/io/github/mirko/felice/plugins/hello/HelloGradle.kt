@@ -45,7 +45,7 @@ open class GenerateFileTask : DefaultTask() {
     fun generateFile() {
         val file = testFile.asFile.get()
         file.writeText("example")
-        if (!file.setReadOnly()) logger.quiet("Cannot set file read only.")
+        logger.quiet("${file.setReadOnly()}")
     }
 }
 

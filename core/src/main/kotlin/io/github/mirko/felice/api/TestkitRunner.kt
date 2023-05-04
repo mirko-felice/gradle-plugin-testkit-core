@@ -79,6 +79,10 @@ class TestkitRunner(
         options: List<String>,
         hasToFail: Boolean,
     ): BuildResult {
+        val testkitProperties = javaClass.classLoader.getResource("testkit-gradle.properties")?.readText()
+        if (testkitProperties != null) {
+            File(testFolder, "gradle.properties").writeText(testkitProperties)
+        }
         val gradleRunner = GradleRunner.create()
             .withProjectDir(testFolder)
             .withPluginClasspath()
