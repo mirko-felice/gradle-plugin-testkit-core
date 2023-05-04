@@ -1,16 +1,16 @@
 tests:
   - description: "Running 'generateFile' should produce the file with correct content."
     configuration:
-      tasks: [generateFile]
+      tasks:
+        - generateFile
     expectation:
-      existingFiles: [
-        {
-          name: "test.txt",
+      existingFiles:
+        - name: "test.txt"
           content: "value"
-        }
-      ]
   - description: "Task 'generateFile' should be up-to-date now."
     configuration:
-      tasks: [generateFile]
+      tasks:
+        - generateFile
     expectation:
-      upToDate: [generateFile]
+      upToDate:
+        - generateFile

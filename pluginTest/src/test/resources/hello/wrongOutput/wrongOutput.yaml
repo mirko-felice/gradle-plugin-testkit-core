@@ -1,6 +1,8 @@
 tests:
   - description: "Running 'hello' should not produce a wrong output."
     configuration:
-      tasks: [hello]
+      tasks:
+        - hello
     expectation:
-      outputContains: ["hello from mirko felice"]
+      outputContains:
+        - "hello from mirko felice"
