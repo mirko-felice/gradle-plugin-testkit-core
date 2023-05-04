@@ -5,10 +5,12 @@
 
 package io.github.mirko.felice.api
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.MapperFeature
+import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.github.mirko.felice.api.CheckerType.KOTLIN
+import io.github.mirko.felice.core.ExpectedResult
 import io.github.mirko.felice.core.KotlinChecker
 import io.github.mirko.felice.core.Test
 import io.github.mirko.felice.core.TestkitChecker
@@ -16,7 +18,6 @@ import io.github.mirko.felice.core.Tests
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 
 /**
@@ -25,7 +26,11 @@ import java.io.File
 object TestkitRunner {
 
     private const val baseFolder = "build/resources/test/"
-    private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
+    private val mapper = JsonMapper
+        .builder(YAMLFactory())
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+        .build()
+        .registerKotlinModule()
 
     /**
      * Runs all the tests.
@@ -63,7 +68,7 @@ object TestkitRunner {
                     temporaryFolder.root,
                     test.configuration.tasks,
                     test.configuration.options,
-                    test.expectation.result == TaskOutcome.FAILED.name,
+                    test.expectation.result == ExpectedResult.FAILED,
                     forwardOutput,
                 )
                 val checker: TestkitChecker = when (checkerType) {

@@ -4,6 +4,6 @@ tests:
       tasks:
         - hello
     expectation:
-      result: FAILED
+      result: failed
       success:
         - hello
