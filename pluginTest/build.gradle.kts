@@ -1,7 +1,10 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     id("kotlin-jvm")
     `java-gradle-plugin`
     jacoco
+    alias(libs.plugins.jacoco.testkit)
 }
 
 repositories {
@@ -23,9 +26,21 @@ gradlePlugin {
     }
 }
 
+inline fun <reified T : Task> Project.disableTrackStateOnWindows() {
+    tasks.withType<T>().configureEach {
+        doNotTrackState("Windows is a mess and JaCoCo does not work correctly")
+    }
+}
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    disableTrackStateOnWindows<Test>()
+    disableTrackStateOnWindows<JacocoReport>()
+}
+
 tasks {
 
     withType<Test> {
+        dependsOn(generateJacocoTestKitProperties)
         useJUnitPlatform()
         testLogging {
             showStandardStreams = true

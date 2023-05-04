@@ -7,6 +7,7 @@ kotest-version = "5.6.1"
 konf-version = "1.1.2"
 jackson-version = "2.15.0"
 dokka-version = "1.8.10"
+jacoco-testkit-version = "1.0.12"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
@@ -24,3 +25,4 @@ jackson = [ "jackson-module", "jackson-yaml", "jackson-databind" ]
 [plugins]
 kotlin-qa = { id = "org.danilopianini.gradle-kotlin-qa", version.ref = "kotlin-qa-version" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka-version" }
+jacoco-testkit = { id = "pl.droidsonroids.jacoco.testkit", version.ref = "jacoco-testkit-version" }
