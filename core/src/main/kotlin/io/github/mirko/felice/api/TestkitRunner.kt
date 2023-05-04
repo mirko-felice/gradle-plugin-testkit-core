@@ -19,28 +19,27 @@ import org.gradle.testkit.runner.GradleRunner
 import java.io.File
 
 /**
- * Entity able to run the tests contained in the yaml files.
- * @param testFolder path of the folder containing yaml file in resources
- * @param checkerType [CheckerType] to use
- * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
+ * Object able to run the tests contained in the yaml files.
  */
-class TestkitRunner(
-    private val testFolder: String,
-    private val checkerType: CheckerType,
-    private val forwardOutput: Boolean = false,
-) {
+object TestkitRunner {
+
+    private const val baseFolder = "build/resources/test/"
+    private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     /**
      * Runs all the tests.
+     * @param testFolderName name of the folder containing yaml file in `resources`
+     * @param checkerType [CheckerType] to use. Default to [CheckerType.KOTLIN]
+     * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
      */
-    fun runTests() {
-        val testFolder = File(baseFolder + testFolder)
+    fun runTests(testFolderName: String, checkerType: CheckerType = KOTLIN, forwardOutput: Boolean = false) {
+        val testFolder = File(baseFolder + testFolderName)
         testFolder.walk()
             .filter { it.name.endsWith(".yaml") }
-            .forEach { runTest(it, testFolder) }
+            .forEach { runTest(it, testFolder, checkerType, forwardOutput) }
     }
 
-    private fun runTest(yamlFile: File, testFolder: File) {
+    private fun runTest(yamlFile: File, testFolder: File, checkerType: CheckerType, forwardOutput: Boolean) {
         val yamlTests = mapper.readValue(yamlFile, YamlTests::class.java)
         val temporaryFolder = generateTempFolder(testFolder)
 
@@ -61,6 +60,7 @@ class TestkitRunner(
                     test.configuration.tasks,
                     test.configuration.options,
                     test.expectation.nonExistent.isNotEmpty() || test.expectation.failure.isNotEmpty(),
+                    forwardOutput,
                 )
                 val checker: TestkitChecker = when (checkerType) {
                     KOTLIN -> KotlinChecker(result)
@@ -78,6 +78,7 @@ class TestkitRunner(
         tasks: List<String>,
         options: List<String>,
         hasToFail: Boolean,
+        forwardOutput: Boolean,
     ): BuildResult {
         val testkitProperties = javaClass.classLoader.getResource("testkit-gradle.properties")?.readText()
         if (testkitProperties != null) {
@@ -122,13 +123,4 @@ class TestkitRunner(
             .replace("[", "")
             .replace("]", "")
             .replace(",", " ")
-
-    /**
-     * Companion object.
-     */
-    companion object {
-
-        private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
-        private const val baseFolder = "build/resources/test/"
-    }
 }
