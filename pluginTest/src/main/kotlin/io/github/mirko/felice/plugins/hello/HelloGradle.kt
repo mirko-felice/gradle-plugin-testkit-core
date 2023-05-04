@@ -8,18 +8,15 @@ package io.github.mirko.felice.plugins.hello
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.property
 import org.gradle.kotlin.dsl.register
-import java.io.File
 import java.io.Serializable
 
 open class HelloTask : DefaultTask() {
@@ -33,19 +30,6 @@ open class HelloTask : DefaultTask() {
     @TaskAction
     fun print() {
         logger.quiet(message.get())
-    }
-}
-
-open class GenerateFileTask : DefaultTask() {
-
-    @OutputFile
-    val testFile: RegularFileProperty = project.objects.fileProperty().apply { set(File("test.txt")) }
-
-    @TaskAction
-    fun generateFile() {
-        val file = testFile.asFile.get()
-        file.writeText("example")
-        logger.quiet("${file.setReadOnly()}")
     }
 }
 
@@ -73,7 +57,6 @@ open class HelloGradle : Plugin<Project> {
         target.tasks.register<HelloTask>("hello") {
             author.set(extension.author)
         }
-        target.tasks.register<GenerateFileTask>("generateFile")
         target.tasks.register<FailTask>("fail")
     }
 }

@@ -1,0 +1,7 @@
+tests:
+  - description: "Task 'hello' should not exist."
+    configuration:
+      tasks: [hello]
+    expectation:
+      result: FAILED
+      success: [hello]

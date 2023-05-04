@@ -9,15 +9,21 @@ import io.github.mirko.felice.api.TestkitRunner
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 
-class SimpleTest : StringSpec({
+class HelloTests : StringSpec({
 
     "Set of positive tests" {
-        TestkitRunner.runTests("positiveTests")
+        TestkitRunner.runTests("hello/positiveTests")
     }
 
     "Wrong output test with forward output" {
         shouldThrow<AssertionError> {
-            TestkitRunner.runTests("wrongOutput", forwardOutput = true)
+            TestkitRunner.runTests("hello/wrongOutput", forwardOutput = true)
+        }
+    }
+
+    "Non existing task" {
+        shouldThrow<AssertionError> {
+            TestkitRunner.runTests("hello/wrongExistingTask")
         }
     }
 })

@@ -23,6 +23,10 @@ gradlePlugin {
             id = "io.github.mirko-felice.plugins.hello"
             implementationClass = "io.github.mirko.felice.plugins.hello.HelloGradle"
         }
+        create("generateFile") {
+            id = "io.github.mirko-felice.plugins.file"
+            implementationClass = "io.github.mirko.felice.plugins.file.GenerateFilePlugin"
+        }
     }
 }
 

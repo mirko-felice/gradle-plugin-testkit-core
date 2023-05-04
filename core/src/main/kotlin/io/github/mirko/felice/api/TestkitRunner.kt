@@ -16,6 +16,7 @@ import io.github.mirko.felice.core.Tests
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 
 /**
@@ -43,7 +44,10 @@ object TestkitRunner {
         val tests = mapper.readValue(yamlFile, Tests::class.java)
         val temporaryFolder = generateTempFolder(testFolder)
 
-        println("Executing tests of configuration file: ${testFolder.name}/${yamlFile.name}\n")
+        println(
+            "Executing tests of configuration file: " +
+                "${testFolder.relativeTo(File(baseFolder)).invariantSeparatorsPath}/${yamlFile.name}\n",
+        )
         try {
             tests.tests.forEachIndexed { index, test ->
                 val options = if (test.configuration.options.isEmpty()) {
@@ -59,7 +63,7 @@ object TestkitRunner {
                     temporaryFolder.root,
                     test.configuration.tasks,
                     test.configuration.options,
-                    test.expectation.nonExistent.isNotEmpty() || test.expectation.failure.isNotEmpty(),
+                    test.expectation.result == TaskOutcome.FAILED.name,
                     forwardOutput,
                 )
                 val checker: TestkitChecker = when (checkerType) {
@@ -68,7 +72,7 @@ object TestkitRunner {
                 executeChecks(checker, test, result, temporaryFolder.root)
             }
         } finally {
-            println("\nTerminate executing tests")
+            println("\nTerminate executing tests\n")
             temporaryFolder.delete()
         }
     }
@@ -105,7 +109,7 @@ object TestkitRunner {
         test.expectation.upToDate.forEach { checker.checkUpToDateOutcomeOf(it) }
         test.expectation.failure.forEach { checker.checkFailureOutcomeOf(it) }
 
-        test.expectation.fileToExists.forEach {
+        test.expectation.existingFiles.forEach {
             val fileToCheck = File("${root.absolutePath}/${it.name}")
             checker.checkFileExistence(it, fileToCheck)
             checker.checkFileContent(it, fileToCheck)
