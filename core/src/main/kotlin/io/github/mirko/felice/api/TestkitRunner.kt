@@ -20,9 +20,9 @@ import java.io.File
 
 /**
  * Entity able to run the tests contained in the yaml files.
+ * @param testFolder path of the folder containing yaml file in resources
  * @param checkerType [CheckerType] to use
  * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
- * @param testFolder path of the folder to test. Default to "build/resources/test"
  */
 class TestkitRunner(
     private val testFolder: String,
@@ -91,10 +91,15 @@ class TestkitRunner(
         val output = result.output
         test.expectation.outputContains.forEach { checker.checkOutputContains(output, it) }
         test.expectation.outputDoesntContain.forEach { checker.checkOutputDoesNotContain(output, it) }
-        test.expectation.success.forEach { checker.checkSuccessOutcomeOf(it) }
+
         test.expectation.nonExistent.forEach { checker.checkTaskNonExistence(it) }
+        val allExistingTasks = test.expectation.success + test.expectation.upToDate + test.expectation.failure
+        allExistingTasks.forEach { checker.checkTaskExistence(it) }
+
+        test.expectation.success.forEach { checker.checkSuccessOutcomeOf(it) }
         test.expectation.upToDate.forEach { checker.checkUpToDateOutcomeOf(it) }
         test.expectation.failure.forEach { checker.checkFailureOutcomeOf(it) }
+
         test.expectation.fileToExists.forEach {
             val fileToCheck = File("${root.absolutePath}/${it.name}")
             checker.checkFileExistence(it, fileToCheck)

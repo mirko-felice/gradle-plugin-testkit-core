@@ -37,6 +37,7 @@ tasks {
     }
 
     jacocoTestReport {
+        dependsOn(test)
         val coreProjectDir = project(":core")
 
         val coreSrcPath = coreProjectDir.sourceSets.main.get().allSource.srcDirs
