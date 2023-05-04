@@ -16,9 +16,9 @@ class SimpleTest : StringSpec({
         TestkitRunner("positiveTests", CheckerType.KOTLIN).runTests()
     }
 
-    "Wrong output" {
+    "Wrong output test with forward output" {
         shouldThrow<AssertionError> {
-            TestkitRunner("wrongOutput", CheckerType.KOTLIN).runTests()
+            TestkitRunner("wrongOutput", CheckerType.KOTLIN, true).runTests()
         }
     }
 })
