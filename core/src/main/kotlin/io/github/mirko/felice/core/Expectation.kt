@@ -5,8 +5,6 @@
 
 package io.github.mirko.felice.core
 
-import org.gradle.testkit.runner.TaskOutcome
-
 /**
  * Represents the expectations of a [Test].
  * @property result expected result of the build
@@ -19,7 +17,7 @@ import org.gradle.testkit.runner.TaskOutcome
  * @property outputDoesntContain [List] of contents that should not be contained in the output
  */
 internal data class Expectation(
-    val result: String = TaskOutcome.SUCCESS.name,
+    val result: ExpectedResult = ExpectedResult.SUCCESS,
     val existingFiles: List<ExistingFile> = emptyList(),
     val nonExistent: List<String> = emptyList(),
     val success: List<String> = emptyList(),
