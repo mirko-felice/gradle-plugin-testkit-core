@@ -1,12 +1,10 @@
 tests:
   - description: "Running 'generateFile' should produce the file with correct permissions."
     configuration:
-      tasks: [generateFile]
+      tasks:
+        - generateFile
     expectation:
-      existingFiles: [
-        {
-          name: "test.txt",
-          content: "value",
+      existingFiles:
+        - name: "test.txt"
+          content: "value"
           permissions: ["R", "W", "X"]
-        }
-      ]
