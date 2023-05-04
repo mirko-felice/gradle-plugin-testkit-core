@@ -5,9 +5,12 @@
 
 package io.github.mirko.felice.core
 
+import org.gradle.testkit.runner.TaskOutcome
+
 /**
  * Represents the expectations of a [Test].
- * @property fileToExists [List] of [ExistingFile]
+ * @property result expected result of the build
+ * @property existingFiles [List] of [ExistingFile]
  * @property nonExistent [List] of tasks that should not exist
  * @property success [List] of tasks that should succeed
  * @property upToDate [List] of tasks that should be up-to-date
@@ -16,7 +19,8 @@ package io.github.mirko.felice.core
  * @property outputDoesntContain [List] of contents that should not be contained in the output
  */
 internal data class Expectation(
-    val fileToExists: List<ExistingFile> = emptyList(),
+    val result: String = TaskOutcome.SUCCESS.name,
+    val existingFiles: List<ExistingFile> = emptyList(),
     val nonExistent: List<String> = emptyList(),
     val success: List<String> = emptyList(),
     val upToDate: List<String> = emptyList(),

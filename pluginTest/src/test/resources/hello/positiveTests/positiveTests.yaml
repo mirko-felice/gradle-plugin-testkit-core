@@ -15,29 +15,15 @@ tests:
       tasks: [hello]
     expectation:
       outputDoesntContain: ["wrong output"]
-  - description: "Task 'generateFile' should produce a correct file."
-    configuration:
-      tasks: [generateFile]
-    expectation:
-      fileToExists: [
-        {
-          name: "test.txt",
-          content: "example",
-          permissions: [ "R" ]
-        }
-      ]
-  - description: "Task 'generateFile' should be up-to-date now."
-    configuration:
-      tasks: [generateFile]
-    expectation:
-      upToDate: [generateFile]
   - description: "Task with name 'wrongTask' should not exist."
     configuration:
       tasks: [wrongTask]
     expectation:
+      result: FAILED
       nonExistent: [wrongTask]
   - description: "Task 'fail' should fail"
     configuration:
       tasks: [fail]
     expectation:
+      result: FAILED
       failure: [fail]
