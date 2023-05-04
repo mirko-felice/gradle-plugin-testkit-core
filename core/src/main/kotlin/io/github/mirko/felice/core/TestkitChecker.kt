@@ -5,12 +5,18 @@
 
 package io.github.mirko.felice.core
 
+import org.gradle.testkit.runner.BuildResult
 import java.io.File
 
 /**
  * Entity able to check the assertions of the tests.
  */
 internal interface TestkitChecker {
+
+    /**
+     * Represents the [BuildResult] of the executed task.
+     */
+    val buildResult: BuildResult
 
     /**
      * Checks that the actual content of the output contains an expected part of it.

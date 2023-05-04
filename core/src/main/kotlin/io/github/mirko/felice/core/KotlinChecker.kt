@@ -11,11 +11,11 @@ import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 
 /**
- * Implementation of [AbstractTestkitChecker] that uses basic kotlin assertions.
- * @param result [BuildResult] used to check
+ * Implementation of [TestkitChecker] that uses basic kotlin assertions.
+ * @param buildResult [BuildResult] used to check
  * @constructor Creates the checker based on the result.
  */
-internal class KotlinChecker(result: BuildResult) : AbstractTestkitChecker(result) {
+internal class KotlinChecker(override val buildResult: BuildResult) : TestkitChecker {
 
     override fun checkOutputContains(output: String, partOfOutput: String) {
         assert(output.contains(partOfOutput)) {
@@ -88,21 +88,25 @@ internal class KotlinChecker(result: BuildResult) : AbstractTestkitChecker(resul
     }
 
     override fun checkTaskNonExistence(taskName: String) {
-        assert(result.task(":$taskName") == null) {
+        assert(buildResult.task(":$taskName") == null) {
             "Task with name '$taskName' should not exist."
         }
     }
 
     override fun checkTaskExistence(taskName: String) {
-        assert(result.task(":$taskName") != null) {
+        assert(buildResult.task(":$taskName") != null) {
             "Task with name '$taskName' should exist."
         }
     }
 
     private fun checkOutcome(expectedOutcome: TaskOutcome, taskName: String) {
-        val actualOutcome = outcomeOf(taskName)
+        val actualOutcome = buildResult.outcomeOf(taskName)
         assert(actualOutcome == expectedOutcome) {
             "Outcome of task '$taskName' should be $expectedOutcome, instead it is $actualOutcome."
         }
+    }
+
+    private fun BuildResult.outcomeOf(name: String) = checkNotNull(task(":$name")?.outcome) {
+        "Task $name was not present among the executed tasks"
     }
 }

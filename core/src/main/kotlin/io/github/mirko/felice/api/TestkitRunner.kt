@@ -12,7 +12,7 @@ import io.github.mirko.felice.api.CheckerType.KOTLIN
 import io.github.mirko.felice.core.KotlinChecker
 import io.github.mirko.felice.core.Test
 import io.github.mirko.felice.core.TestkitChecker
-import io.github.mirko.felice.core.YamlTests
+import io.github.mirko.felice.core.Tests
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -40,12 +40,12 @@ object TestkitRunner {
     }
 
     private fun runTest(yamlFile: File, testFolder: File, checkerType: CheckerType, forwardOutput: Boolean) {
-        val yamlTests = mapper.readValue(yamlFile, YamlTests::class.java)
+        val tests = mapper.readValue(yamlFile, Tests::class.java)
         val temporaryFolder = generateTempFolder(testFolder)
 
         println("Executing tests of configuration file: ${testFolder.name}/${yamlFile.name}\n")
         try {
-            yamlTests.tests.forEachIndexed { index, test ->
+            tests.tests.forEachIndexed { index, test ->
                 val options = if (test.configuration.options.isEmpty()) {
                     ""
                 } else {
