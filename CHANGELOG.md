@@ -1,3 +1,11 @@
+# [0.3.0](https://github.com/mirko-felice/gradle-plugin-testkit-core/compare/0.2.0...0.3.0) (2023-05-05)
+
+
+### Features
+
+* add nonExistent and upToDate to expectation ([b290956](https://github.com/mirko-felice/gradle-plugin-testkit-core/commit/b2909562d3990b267c88a50aa84c6742efac2253))
+* add skipped, fromCache and noSource outcomes ([2aa2b15](https://github.com/mirko-felice/gradle-plugin-testkit-core/commit/2aa2b15e80b180714d4cd05853d7e085093f5a20))
+
 # [0.2.0](https://github.com/mirko-felice/gradle-plugin-testkit-core/compare/0.1.0...0.2.0) (2023-05-03)
 
 
