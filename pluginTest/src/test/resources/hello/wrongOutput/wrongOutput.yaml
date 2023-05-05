@@ -4,5 +4,6 @@ tests:
       tasks:
         - hello
     expectation:
-      outputContains:
-        - "hello from mirko felice"
+      output:
+        contains:
+          - "hello from mirko felice"

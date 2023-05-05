@@ -10,4 +10,7 @@ package io.github.mirko.felice.core
  * @property tasks [List] of tasks to execute
  * @property options [List] of options to add in executing the tests
  */
-internal data class Configuration(val tasks: List<String>, val options: List<String> = emptyList())
+internal data class Configuration(
+    val tasks: List<String>,
+    val options: List<String> = emptyList(),
+)

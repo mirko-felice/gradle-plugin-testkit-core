@@ -6,6 +6,7 @@
 package io.github.mirko.felice.core
 
 import org.gradle.testkit.runner.BuildResult
+import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 
 /**
@@ -14,9 +15,26 @@ import java.io.File
 internal interface TestkitChecker {
 
     /**
-     * Represents the [BuildResult] of the executed task.
+     * Checks that a task does exist.
+     * @param taskName name of the task to check
+     * @param result [BuildResult] to check from
      */
-    val buildResult: BuildResult
+    fun checkTaskExistence(taskName: String, result: BuildResult)
+
+    /**
+     * Checks that a task does not exist.
+     * @param taskName name of the task to check
+     * @param result [BuildResult] to check from
+     */
+    fun checkTaskNonExistence(taskName: String, result: BuildResult)
+
+    /**
+     * Checks an expected [TaskOutcome] of a particular task.
+     * @param expectedOutcome [TaskOutcome] to check
+     * @param taskName name of the task to check
+     * @param result [BuildResult] to check from
+     */
+    fun checkOutcome(expectedOutcome: TaskOutcome, taskName: String, result: BuildResult)
 
     /**
      * Checks that the actual content of the output contains an expected part of it.
@@ -33,53 +51,63 @@ internal interface TestkitChecker {
     fun checkOutputDoesNotContain(output: String, notPartOfOutput: String)
 
     /**
-     * Checks that a task outcome is [org.gradle.testkit.runner.TaskOutcome.SUCCESS].
-     * @param taskName name of the task to check
-     */
-    fun checkSuccessOutcomeOf(taskName: String)
-
-    /**
-     * Checks that a task outcome is [org.gradle.testkit.runner.TaskOutcome.UP_TO_DATE].
-     * @param taskName name of the task to check
-     */
-    fun checkUpToDateOutcomeOf(taskName: String)
-
-    /**
-     * Checks that a task outcome is [org.gradle.testkit.runner.TaskOutcome.FAILED].
-     * @param taskName name of the task to check
-     */
-    fun checkFailureOutcomeOf(taskName: String)
-
-    /**
      * Checks that a file exists.
-     * @param existingFile [ExistingFile] to extract info from
      * @param file [File] to check
      */
-    fun checkFileExistence(existingFile: ExistingFile, file: File)
+    fun checkFileExistence(file: File)
 
     /**
      * Checks that a file has correct permissions.
-     * @param existingFile [ExistingFile] to extract info from
+     * @param permissions [List] of [Permission] to check
      * @param file [File] to check
      */
-    fun checkFilePermissions(existingFile: ExistingFile, file: File)
+    fun checkFilePermissions(permissions: List<Permission>, file: File)
 
     /**
-     * Checks that a file has correct permissions.
-     * @param existingFile [ExistingFile] to extract info from
+     * Checks that a file has correct content.
+     * @param content content to check
      * @param file [File] to check
      */
-    fun checkFileContent(existingFile: ExistingFile, file: File)
+    fun checkFileContent(content: String, file: File)
 
     /**
-     * Checks that a task does not exist.
-     * @param taskName task name to check
+     * Checks all the expected [Outcomes].
+     * @param expectedOutcomes expected [Outcomes] to check
+     * @param result [BuildResult] to check from
      */
-    fun checkTaskNonExistence(taskName: String)
+    fun checkOutcomes(expectedOutcomes: Outcomes, result: BuildResult) {
+        expectedOutcomes.allExistingTasks().forEach { checkTaskExistence(it, result) }
+        expectedOutcomes.success.forEach { checkOutcome(TaskOutcome.SUCCESS, it, result) }
+        expectedOutcomes.failed.forEach { checkOutcome(TaskOutcome.FAILED, it, result) }
+        expectedOutcomes.upToDate.forEach { checkOutcome(TaskOutcome.UP_TO_DATE, it, result) }
+        expectedOutcomes.fromCache.forEach { checkOutcome(TaskOutcome.FROM_CACHE, it, result) }
+        expectedOutcomes.skipped.forEach { checkOutcome(TaskOutcome.SKIPPED, it, result) }
+        expectedOutcomes.noSource.forEach { checkOutcome(TaskOutcome.NO_SOURCE, it, result) }
+
+        expectedOutcomes.nonExisting.forEach { checkTaskNonExistence(it, result) }
+    }
 
     /**
-     * Checks that a task does exist.
-     * @param taskName task name to check
+     * Checks all the expectations of the [Output].
+     * @param expectedOutput expected [Output] to check
+     * @param actualOutput actual output
      */
-    fun checkTaskExistence(taskName: String)
+    fun checkOutput(expectedOutput: Output, actualOutput: String) {
+        expectedOutput.contains.forEach { checkOutputContains(actualOutput, it) }
+        expectedOutput.doesntContain.forEach { checkOutputDoesNotContain(actualOutput, it) }
+    }
+
+    /**
+     * Checks the expectations on [Files].
+     * @param files expectations on [Files]
+     * @param root root folder to check from
+     */
+    fun checkFiles(files: Files, root: File) {
+        files.existing.forEach {
+            val fileToCheck = File("${root.absolutePath}/${it.name}")
+            checkFileExistence(fileToCheck)
+            checkFilePermissions(it.permissions, fileToCheck)
+            if (it.content != "") checkFileContent(it.content, fileToCheck)
+        }
+    }
 }

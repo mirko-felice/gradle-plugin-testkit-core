@@ -6,17 +6,13 @@
 package io.github.mirko.felice.core
 
 /**
- * Represents the single test to execute.
- * @property name description to understand what this test does
- * @property findRegex
- * @property content
- * @property trim
- * @property permissions
+ * Represents the expectation of an existing file.
+ * @property name name of the file to check
+ * @property content content of the file
+ * @property permissions [List] of [Permission]
  */
 internal data class ExistingFile(
     val name: String,
-    val findRegex: List<String> = emptyList(),
-    val content: String? = null,
-    val trim: Boolean = false,
+    val content: String = "",
     val permissions: List<Permission> = emptyList(),
 )
