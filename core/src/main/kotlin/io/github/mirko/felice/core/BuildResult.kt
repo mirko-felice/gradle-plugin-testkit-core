@@ -8,7 +8,7 @@ package io.github.mirko.felice.core
 /**
  * Represents the expected result of the build.
  */
-enum class ExpectedResult {
+enum class BuildResult {
 
     /**
      * Represents the SUCCESS result of the build.

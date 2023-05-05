@@ -4,5 +4,6 @@ tests:
       tasks:
         - generateFile
     expectation:
-      existingFiles:
-        - name: "test.txt"
+      files:
+        existing:
+          - name: "test.txt"

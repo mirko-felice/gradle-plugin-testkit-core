@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.github.mirko.felice.api.CheckerType.KOTLIN
-import io.github.mirko.felice.core.ExpectedResult
 import io.github.mirko.felice.core.KotlinChecker
 import io.github.mirko.felice.core.Test
 import io.github.mirko.felice.core.TestkitChecker
@@ -19,6 +18,7 @@ import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import java.io.File
+import io.github.mirko.felice.core.BuildResult as Result
 
 /**
  * Object able to run the tests contained in the yaml files.
@@ -68,11 +68,11 @@ object TestkitRunner {
                     temporaryFolder.root,
                     test.configuration.tasks,
                     test.configuration.options,
-                    test.expectation.result == ExpectedResult.FAILED,
+                    test.expectation.result == Result.FAILED,
                     forwardOutput,
                 )
                 val checker: TestkitChecker = when (checkerType) {
-                    KOTLIN -> KotlinChecker(result)
+                    KOTLIN -> KotlinChecker()
                 }
                 executeChecks(checker, test, result, temporaryFolder.root)
             }
@@ -102,24 +102,9 @@ object TestkitRunner {
     }
 
     private fun executeChecks(checker: TestkitChecker, test: Test, result: BuildResult, root: File) {
-        val output = result.output
-        test.expectation.outputContains.forEach { checker.checkOutputContains(output, it) }
-        test.expectation.outputDoesntContain.forEach { checker.checkOutputDoesNotContain(output, it) }
-
-        test.expectation.nonExistent.forEach { checker.checkTaskNonExistence(it) }
-        val allExistingTasks = test.expectation.success + test.expectation.upToDate + test.expectation.failure
-        allExistingTasks.forEach { checker.checkTaskExistence(it) }
-
-        test.expectation.success.forEach { checker.checkSuccessOutcomeOf(it) }
-        test.expectation.upToDate.forEach { checker.checkUpToDateOutcomeOf(it) }
-        test.expectation.failure.forEach { checker.checkFailureOutcomeOf(it) }
-
-        test.expectation.existingFiles.forEach {
-            val fileToCheck = File("${root.absolutePath}/${it.name}")
-            checker.checkFileExistence(it, fileToCheck)
-            checker.checkFileContent(it, fileToCheck)
-            checker.checkFilePermissions(it, fileToCheck)
-        }
+        checker.checkOutcomes(test.expectation.outcomes, result)
+        checker.checkOutput(test.expectation.output, result.output)
+        checker.checkFiles(test.expectation.files, root)
     }
 
     private fun generateTempFolder(testFolder: File) = TemporaryFolder().apply {

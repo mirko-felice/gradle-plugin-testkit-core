@@ -4,13 +4,15 @@ tests:
       tasks:
         - generateFile
     expectation:
-      existingFiles:
-        - name: "test.txt"
-          content: "value"
+      files:
+        existing:
+          - name: "test.txt"
+            content: "value"
   - description: "Task 'generateFile' should be up-to-date now."
     configuration:
       tasks:
         - generateFile
     expectation:
-      upToDate:
-        - generateFile
+      outcomes:
+        upToDate:
+          - generateFile

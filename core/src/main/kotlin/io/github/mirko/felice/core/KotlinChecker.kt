@@ -12,10 +12,27 @@ import java.io.File
 
 /**
  * Implementation of [TestkitChecker] that uses basic kotlin assertions.
- * @param buildResult [BuildResult] used to check
- * @constructor Creates the checker based on the result.
  */
-internal class KotlinChecker(override val buildResult: BuildResult) : TestkitChecker {
+internal class KotlinChecker : TestkitChecker {
+
+    override fun checkTaskExistence(taskName: String, result: BuildResult) {
+        assert(result.task(":$taskName") != null) {
+            "Task with name '$taskName' should exist."
+        }
+    }
+
+    override fun checkTaskNonExistence(taskName: String, result: BuildResult) {
+        assert(result.task(":$taskName") == null) {
+            "Task with name '$taskName' should not exist."
+        }
+    }
+
+    override fun checkOutcome(expectedOutcome: TaskOutcome, taskName: String, result: BuildResult) {
+        val actualOutcome = result.outcomeOf(taskName)
+        assert(actualOutcome == expectedOutcome) {
+            "Outcome of task '$taskName' should be $expectedOutcome, instead it is $actualOutcome."
+        }
+    }
 
     override fun checkOutputContains(output: String, partOfOutput: String) {
         assert(output.contains(partOfOutput)) {
@@ -29,80 +46,38 @@ internal class KotlinChecker(override val buildResult: BuildResult) : TestkitChe
         }
     }
 
-    override fun checkSuccessOutcomeOf(taskName: String) {
-        checkOutcome(TaskOutcome.SUCCESS, taskName)
-    }
-
-    override fun checkUpToDateOutcomeOf(taskName: String) {
-        checkOutcome(TaskOutcome.UP_TO_DATE, taskName)
-    }
-
-    override fun checkFailureOutcomeOf(taskName: String) {
-        checkOutcome(TaskOutcome.FAILED, taskName)
-    }
-
-    override fun checkFileExistence(existingFile: ExistingFile, file: File) {
+    override fun checkFileExistence(file: File) {
         assert(file.exists()) {
             "File '${file.name}' does not exist."
         }
         assert(file.isFile) {
             "File '${file.name}' is not a real file."
         }
-        existingFile.findRegex.forEach { regexString ->
-            val regex = Regex(regexString)
-            requireNotNull(file.readLines().find { regex.matches(it) }) {
-                """
-                None of the lines in ${file.name} matches the regular expression ${existingFile.findRegex}. File content:
-                ${file.readText()}
-                """.trimIndent()
-            }
-        }
     }
 
-    override fun checkFilePermissions(existingFile: ExistingFile, file: File) {
-        existingFile.permissions.forEach {
+    override fun checkFilePermissions(permissions: List<Permission>, file: File) {
+        permissions.forEach {
             assert(it.hasPermission(file)) {
                 "File ${file.absolutePath} must have permission $it, but it does not."
             }
         }
     }
 
-    override fun checkFileContent(existingFile: ExistingFile, file: File) {
-        if (existingFile.content != null) {
-            val actualContent = file.readText()
-            assert(existingFile.content == actualContent) {
-                """
-                Content of ${existingFile.name} does not match expectations.
-                
-                Expected:
-                ${existingFile.content}
-                
-                Actual:
-                $actualContent
-                
-                Difference starts at index ${StringUtils.indexOfDifference(existingFile.content, actualContent)}:
-                ${StringUtils.difference(existingFile.content, actualContent)}
-                """.trimIndent()
-            }
-        }
-    }
-
-    override fun checkTaskNonExistence(taskName: String) {
-        assert(buildResult.task(":$taskName") == null) {
-            "Task with name '$taskName' should not exist."
-        }
-    }
-
-    override fun checkTaskExistence(taskName: String) {
-        assert(buildResult.task(":$taskName") != null) {
-            "Task with name '$taskName' should exist."
-        }
-    }
-
-    private fun checkOutcome(expectedOutcome: TaskOutcome, taskName: String) {
-        val actualOutcome = buildResult.outcomeOf(taskName)
-        assert(actualOutcome == expectedOutcome) {
-            "Outcome of task '$taskName' should be $expectedOutcome, instead it is $actualOutcome."
+    override fun checkFileContent(content: String, file: File) {
+        val actualContent = file.readText()
+        assert(content == actualContent) {
+            """
+            Content of ${file.name} does not match expectations.
+            
+            Expected:
+            $content
+            
+            Actual:
+            $actualContent
+            
+            Difference starts at index ${StringUtils.indexOfDifference(content, actualContent)}:
+            ${StringUtils.difference(content, actualContent)}
+            """.trimIndent()
         }
     }
 
