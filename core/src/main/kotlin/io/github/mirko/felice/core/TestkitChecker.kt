@@ -15,18 +15,18 @@ import java.io.File
 internal interface TestkitChecker {
 
     /**
-     * Checks that a task does exist.
+     * Checks that a task has been executed.
      * @param taskName name of the task to check
      * @param result [BuildResult] to check from
      */
-    fun checkTaskExistence(taskName: String, result: BuildResult)
+    fun checkExecutedTask(taskName: String, result: BuildResult)
 
     /**
-     * Checks that a task does not exist.
+     * Checks that a task has not been executed.
      * @param taskName name of the task to check
      * @param result [BuildResult] to check from
      */
-    fun checkTaskNonExistence(taskName: String, result: BuildResult)
+    fun checkNonExecutedTask(taskName: String, result: BuildResult)
 
     /**
      * Checks an expected [TaskOutcome] of a particular task.
@@ -76,7 +76,7 @@ internal interface TestkitChecker {
      * @param result [BuildResult] to check from
      */
     fun checkOutcomes(expectedOutcomes: Outcomes, result: BuildResult) {
-        expectedOutcomes.allExistingTasks().forEach { checkTaskExistence(it, result) }
+        expectedOutcomes.allExecutedTasks().forEach { checkExecutedTask(it, result) }
         expectedOutcomes.success.forEach { checkOutcome(TaskOutcome.SUCCESS, it, result) }
         expectedOutcomes.failed.forEach { checkOutcome(TaskOutcome.FAILED, it, result) }
         expectedOutcomes.upToDate.forEach { checkOutcome(TaskOutcome.UP_TO_DATE, it, result) }
@@ -84,7 +84,7 @@ internal interface TestkitChecker {
         expectedOutcomes.skipped.forEach { checkOutcome(TaskOutcome.SKIPPED, it, result) }
         expectedOutcomes.noSource.forEach { checkOutcome(TaskOutcome.NO_SOURCE, it, result) }
 
-        expectedOutcomes.nonExisting.forEach { checkTaskNonExistence(it, result) }
+        expectedOutcomes.notExecuted.forEach { checkNonExecutedTask(it, result) }
     }
 
     /**

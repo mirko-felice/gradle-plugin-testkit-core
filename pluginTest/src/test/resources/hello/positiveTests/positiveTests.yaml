@@ -32,7 +32,7 @@ tests:
     expectation:
       result: FAILED
       outcomes:
-        nonExisting:
+        notExecuted:
           - wrongTask
   - description: "Task 'fail' should fail"
     configuration:

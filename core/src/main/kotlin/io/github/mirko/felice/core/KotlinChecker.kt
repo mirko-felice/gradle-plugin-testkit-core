@@ -15,15 +15,15 @@ import java.io.File
  */
 internal class KotlinChecker : TestkitChecker {
 
-    override fun checkTaskExistence(taskName: String, result: BuildResult) {
+    override fun checkExecutedTask(taskName: String, result: BuildResult) {
         assert(result.task(":$taskName") != null) {
-            "Task with name '$taskName' should exist."
+            "Task with name '$taskName' should have been executed."
         }
     }
 
-    override fun checkTaskNonExistence(taskName: String, result: BuildResult) {
+    override fun checkNonExecutedTask(taskName: String, result: BuildResult) {
         assert(result.task(":$taskName") == null) {
-            "Task with name '$taskName' should not exist."
+            "Task with name '$taskName' should have not been executed."
         }
     }
 

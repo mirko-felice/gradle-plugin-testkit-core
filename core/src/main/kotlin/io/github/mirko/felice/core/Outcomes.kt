@@ -13,7 +13,7 @@ package io.github.mirko.felice.core
  * @property skipped [List] of tasks that should be skipped
  * @property fromCache [List] of tasks that should be from-cache
  * @property noSource [List] of tasks that should be no-source
- * @property nonExisting [List] of tasks that should not exist
+ * @property notExecuted [List] of tasks that should not exist
  */
 internal data class Outcomes(
     val success: List<String> = emptyList(),
@@ -22,7 +22,7 @@ internal data class Outcomes(
     val skipped: List<String> = emptyList(),
     val fromCache: List<String> = emptyList(),
     val noSource: List<String> = emptyList(),
-    val nonExisting: List<String> = emptyList(),
+    val notExecuted: List<String> = emptyList(),
 ) {
-    internal fun allExistingTasks() = success + failed + upToDate + skipped + fromCache + noSource
+    internal fun allExecutedTasks() = success + failed + upToDate + skipped + fromCache + noSource
 }
