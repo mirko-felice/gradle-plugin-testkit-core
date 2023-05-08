@@ -1,0 +1,11 @@
+tests:
+  - description: "Running 'generateFile' should not produce the file with wrong content, according to the regex."
+    configuration:
+      tasks:
+        - generateFile
+    expectation:
+      files:
+        existing:
+          - name: "test.txt"
+            contentRegex:
+              - 'Line\d:\s[a-z]*'

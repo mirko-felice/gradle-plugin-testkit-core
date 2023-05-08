@@ -4,6 +4,5 @@ plugins {
 
 generateFile {
     fileName.set("test.txt")
-    content.set("value")
-    permissions.set(listOf("R", "W", "X"))
+    content.set("Line 1: value\nLine 2: test")
 }

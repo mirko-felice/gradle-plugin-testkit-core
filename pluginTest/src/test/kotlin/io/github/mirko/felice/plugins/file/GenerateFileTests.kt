@@ -6,6 +6,7 @@
 package io.github.mirko.felice.plugins.file
 
 import io.github.mirko.felice.api.TestkitRunner
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 
 class GenerateFileTests : StringSpec({
@@ -25,4 +26,23 @@ class GenerateFileTests : StringSpec({
     "Regex Test" {
         TestkitRunner.runTests("generateFile/regex")
     }
+
+    "Wrong permissions Test" {
+        shouldThrow<AssertionError> {
+            TestkitRunner.runTests("generateFile/wrongPermissions")
+        }
+    }
+
+    "Wrong content Test" {
+        shouldThrow<AssertionError> {
+            TestkitRunner.runTests("generateFile/wrongContent")
+        }
+    }
+
+    "Wrong content regex Test" {
+        shouldThrow<AssertionError> {
+            TestkitRunner.runTests("generateFile/wrongContentRegex")
+        }
+    }
+
 })

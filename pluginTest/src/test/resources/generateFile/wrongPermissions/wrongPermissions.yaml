@@ -1,0 +1,11 @@
+tests:
+  - description: "Running 'generateFile' should not produce the file with wrong permissions."
+    configuration:
+      tasks:
+        - generateFile
+    expectation:
+      files:
+        existing:
+          - name: "test.txt"
+            content: "value"
+            permissions: ["W"]
