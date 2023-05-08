@@ -81,6 +81,16 @@ internal class KotlinChecker : TestkitChecker {
         }
     }
 
+    override fun checkFileContentRegex(contentRegex: Regex, file: File) {
+        assert(file.readLines().any { contentRegex.matches(it) }) {
+            """
+            None of the lines in ${file.name} matches the regular expression $contentRegex. 
+            File content:
+            ${file.readText()}
+            """.trimIndent()
+        }
+    }
+
     private fun BuildResult.outcomeOf(name: String) = checkNotNull(task(":$name")?.outcome) {
         "Task $name was not present among the executed tasks"
     }
