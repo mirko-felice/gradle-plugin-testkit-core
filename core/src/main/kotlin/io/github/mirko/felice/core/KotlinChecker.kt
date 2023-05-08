@@ -91,7 +91,7 @@ internal class KotlinChecker : TestkitChecker {
         }
     }
 
-    private fun BuildResult.outcomeOf(name: String) = checkNotNull(task(":$name")?.outcome) {
+    private fun BuildResult.outcomeOf(name: String) = checkNotNull(task(":$name")) {
         "Task $name was not present among the executed tasks"
-    }
+    }.outcome
 }
