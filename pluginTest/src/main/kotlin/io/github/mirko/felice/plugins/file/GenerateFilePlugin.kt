@@ -56,23 +56,20 @@ open class GenerateFileTask : DefaultTask() {
     fun generateFile() {
         val file = file.get()
         file.writeText(content.get())
-        realPermissions.get().forEach {
+        realPermissions.get().setPermissions(file, true)
+        val difference = Permission.values().toList().minus(realPermissions.get().toSet())
+        difference.setPermissions(file, false)
+    }
+
+    private fun List<Permission>.setPermissions(file: File, setter: Boolean) {
+        forEach {
             logger.quiet("File set " +
-                when (it) {
-                    Permission.R -> "readable: ${file.setReadable(true, true)}"
-                    Permission.W -> "writeable: ${file.setWritable(true, true)}"
-                    Permission.X -> "executable: ${file.setExecutable(true, true)}"
-                }
+                    when (it) {
+                        Permission.R -> "readable: ${file.setReadable(setter, true)}"
+                        Permission.W -> "writeable: ${file.setWritable(setter, true)}"
+                        Permission.X -> "executable: ${file.setExecutable(setter, true)}"
+                    }
             )
-        }
-        val difference = Permission.values().toList().minus(realPermissions.get())
-        difference.forEach {
-            println(it)
-            when (it) {
-                Permission.R -> "readable: ${file.setReadable(false, true)}"
-                Permission.W -> "writeable: ${file.setWritable(false, true)}"
-                Permission.X -> "executable: ${file.setExecutable(false, true)}"
-            }
         }
     }
 }
@@ -83,7 +80,7 @@ open class GenerateFileExtension(objects: ObjectFactory) : Serializable {
 
     val content: Property<String> = objects.property<String>().convention("example")
 
-    val permissions: ListProperty<String> = objects.listProperty<String>().convention(emptyList())
+    val permissions: ListProperty<String> = objects.listProperty<String>().convention(listOf("R"))
 
     companion object {
         private const val serialVersionUID = 1L
