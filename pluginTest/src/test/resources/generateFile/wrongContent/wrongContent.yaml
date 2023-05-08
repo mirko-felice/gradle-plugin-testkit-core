@@ -1,0 +1,10 @@
+tests:
+  - description: "Running 'generateFile' should not produce the file with wrong content."
+    configuration:
+      tasks:
+        - generateFile
+    expectation:
+      files:
+        existing:
+          - name: "test.txt"
+            content: "value difference"

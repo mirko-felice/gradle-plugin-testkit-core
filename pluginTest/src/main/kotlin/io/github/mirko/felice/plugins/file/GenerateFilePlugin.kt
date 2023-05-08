@@ -23,6 +23,10 @@ import org.gradle.kotlin.dsl.register
 import java.io.File
 import java.io.Serializable
 
+internal enum class Permission {
+    R, W, X
+}
+
 open class GenerateFileTask : DefaultTask() {
 
     @Input
@@ -36,6 +40,15 @@ open class GenerateFileTask : DefaultTask() {
     @Optional
     val permissions: ListProperty<String> = project.objects.listProperty()
 
+    private val realPermissions: Provider<List<Permission>> = permissions.map { it
+        .map { permission ->
+            if (Permission.values().map(Permission::name).contains(permission))
+                Permission.valueOf(permission)
+            else
+                throw IllegalArgumentException("Permission with name $permission does not exist.")
+        }
+    }
+
     @OutputFile
     val file: Provider<File> = fileName.map { File(project.rootDir.path + File.separator + it) }
 
@@ -43,15 +56,23 @@ open class GenerateFileTask : DefaultTask() {
     fun generateFile() {
         val file = file.get()
         file.writeText(content.get())
-        permissions.get().forEach {
-            logger.quiet("File " +
+        realPermissions.get().forEach {
+            logger.quiet("File set " +
                 when (it) {
-                    "R" -> "readable: ${file.setReadable(true)}"
-                    "W" -> "writeable: ${file.setWritable(true)}"
-                    "X" -> "executable: ${file.setExecutable(true)}"
-                    else -> "permission unknown"
+                    Permission.R -> "readable: ${file.setReadable(true, true)}"
+                    Permission.W -> "writeable: ${file.setWritable(true, true)}"
+                    Permission.X -> "executable: ${file.setExecutable(true, true)}"
                 }
             )
+        }
+        val difference = Permission.values().toList().minus(realPermissions.get())
+        difference.forEach {
+            println(it)
+            when (it) {
+                Permission.R -> "readable: ${file.setReadable(false, true)}"
+                Permission.W -> "writeable: ${file.setWritable(false, true)}"
+                Permission.X -> "executable: ${file.setExecutable(false, true)}"
+            }
         }
     }
 }

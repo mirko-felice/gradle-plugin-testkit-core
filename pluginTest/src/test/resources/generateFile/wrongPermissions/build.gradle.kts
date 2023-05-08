@@ -5,5 +5,5 @@ plugins {
 generateFile {
     fileName.set("test.txt")
     content.set("value")
-    permissions.set(listOf("R", "W", "X"))
+    permissions.set(listOf("R"))
 }
