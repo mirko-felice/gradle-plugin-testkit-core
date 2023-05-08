@@ -71,6 +71,13 @@ internal interface TestkitChecker {
     fun checkFileContent(content: String, file: File)
 
     /**
+     * Checks that a file has at least one line according to a regex.
+     * @param contentRegex [Regex] to check
+     * @param file [File] to check
+     */
+    fun checkFileContentRegex(contentRegex: Regex, file: File)
+
+    /**
      * Checks all the expected [Outcomes].
      * @param expectedOutcomes expected [Outcomes] to check
      * @param result [BuildResult] to check from
@@ -108,6 +115,9 @@ internal interface TestkitChecker {
             checkFileExistence(fileToCheck)
             checkFilePermissions(it.permissions, fileToCheck)
             if (it.content != "") checkFileContent(it.content, fileToCheck)
+            if (it.contentRegex.isNotEmpty()) {
+                it.contentRegex.forEach { regex -> checkFileContentRegex(Regex(regex), fileToCheck) }
+            }
         }
     }
 }

@@ -21,4 +21,8 @@ class GenerateFileTests : StringSpec({
     "Permissions Test" {
         TestkitRunner.runTests("generateFile/permissions")
     }
+
+    "Regex Test" {
+        TestkitRunner.runTests("generateFile/regex")
+    }
 })

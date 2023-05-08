@@ -10,9 +10,11 @@ package io.github.mirko.felice.core
  * @property name name of the file to check
  * @property content content of the file
  * @property permissions [List] of [Permission]
+ * @property contentRegex [List] of regex to match in the file content
  */
 internal data class ExistingFile(
     val name: String,
     val content: String = "",
     val permissions: List<Permission> = emptyList(),
+    val contentRegex: List<String> = emptyList(),
 )
