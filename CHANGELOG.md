@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/mirko-felice/gradle-plugin-testkit-core/compare/0.3.0...0.4.0) (2023-05-09)
+
+
+### Features
+
+* add contentRegex check ([3ce3e82](https://github.com/mirko-felice/gradle-plugin-testkit-core/commit/3ce3e82e419a1acb16055c2f6334f741e7240abc))
+
 # [0.3.0](https://github.com/mirko-felice/gradle-plugin-testkit-core/compare/0.2.0...0.3.0) (2023-05-05)
 
 
