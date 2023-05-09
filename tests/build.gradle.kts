@@ -1,3 +1,5 @@
+@file:Suppress("UNSTABLE_API_USAGE")
+
 import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
@@ -21,11 +23,11 @@ gradlePlugin {
     plugins {
         create("hello") {
             id = "io.github.mirko-felice.plugins.hello"
-            implementationClass = "io.github.mirko.felice.plugins.hello.HelloGradle"
+            implementationClass = "io.github.mirkofelice.plugins.hello.HelloGradle"
         }
         create("generateFile") {
             id = "io.github.mirko-felice.plugins.file"
-            implementationClass = "io.github.mirko.felice.plugins.file.GenerateFilePlugin"
+            implementationClass = "io.github.mirkofelice.plugins.file.GenerateFilePlugin"
         }
     }
 }

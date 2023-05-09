@@ -1,21 +1,7 @@
 @file:Suppress("UNSTABLE_API_USAGE")
 
-import org.gradle.jvm.tasks.Jar
-import org.jetbrains.dokka.DokkaConfiguration
-import java.net.URL
-import java.util.regex.Pattern
-
 plugins {
-    id("kotlin-jvm")
-    `java-library`
-    `maven-publish`
-    signing
-    alias(libs.plugins.kotlin.qa)
-    alias(libs.plugins.dokka)
-}
-
-repositories {
-    mavenCentral()
+    id("library-conventions")
 }
 
 dependencies {
@@ -24,70 +10,19 @@ dependencies {
     implementation(libs.bundles.jackson)
 }
 
-val javaVersion: String by project
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion))
-    }
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks {
-
-    withType<Jar> {
-        if (archiveClassifier.get() == "javadoc") {
-            dependsOn(dokkaHtml)
-            from(dokkaHtml.get().outputDirectory)
-        }
-    }
-
-    withType<PublishToMavenRepository>().configureEach {
-        onlyIf { Pattern.matches("(([0-9])+(\\.?([0-9]))*)+(-SNAPSHOT)?", project.version.toString()) }
-    }
-
-    dokkaHtml {
-        dokkaSourceSets {
-            configureEach {
-                moduleName.set("Gradle Plugin Testkit Core")
-                reportUndocumented.set(true)
-                documentedVisibilities.set(
-                    setOf(
-                        DokkaConfiguration.Visibility.PUBLIC,
-                        DokkaConfiguration.Visibility.PROTECTED,
-                        DokkaConfiguration.Visibility.INTERNAL,
-                    ),
-                )
-                jdkVersion.set(javaVersion.toInt())
-                languageVersion.set(libs.kotlin.get().version)
-                externalDocumentationLink {
-                    url.set(URL("https://docs.gradle.org/current/javadoc/"))
-                }
-                sourceLink {
-                    localDirectory.set(projectDir.resolve("src"))
-                    remoteUrl.set(URL("https$githubUrl/tree/master/src"))
-                }
-            }
-        }
-    }
-}
-
-val organization: String by project
-val githubUrl = "://github.com/$organization/${rootProject.name}"
+val githubUrl: String by project
 val projectDescription: String by project
-val publicationName = "testkit-core"
 
 publishing {
     publications {
-        create<MavenPublication>(publicationName) {
+        create<MavenPublication>(project.name) {
             from(components["java"])
             version = project.version.toString()
             pom {
-                groupId = "$group.testkit"
+                groupId = group.toString()
                 name.set("$groupId:$artifactId")
                 description.set(projectDescription)
-                url.set("https$githubUrl")
+                url.set(githubUrl)
                 packaging = "jar"
                 licenses {
                     license {
@@ -103,9 +38,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git$githubUrl.git")
+                    connection.set("scm:git:git$githubUrl.git") // TODO da controllare
                     developerConnection.set("scm:git:ssh$githubUrl.git")
-                    url.set("https$githubUrl")
+                    url.set(githubUrl)
                 }
             }
         }
@@ -123,11 +58,4 @@ publishing {
             }
         }
     }
-}
-
-signing {
-    val signingKey: String? by project
-    val signingPassword: String? by project
-    useInMemoryPgpKeys(signingKey, signingPassword)
-    sign(publishing.publications[publicationName])
 }
