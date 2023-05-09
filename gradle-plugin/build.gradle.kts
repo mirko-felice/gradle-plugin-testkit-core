@@ -8,7 +8,7 @@ dependencies {
     implementation(gradleKotlinDsl())
 }
 
-val projectDescription = "Gradle Plugin to facilitate use of the testkit."
+val projectDescription = "Gradle Plugin to help users to test own plugins using testkit."
 val githubUrl: String by project
 
 gradlePlugin {

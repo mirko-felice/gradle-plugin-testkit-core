@@ -1,4 +1,4 @@
-rootProject.name = "gradle-plugin-testkit-core"
+rootProject.name = "gradle-plugin-testkit"
 include("core")
 include("tests")
 include("gradle-plugin")
