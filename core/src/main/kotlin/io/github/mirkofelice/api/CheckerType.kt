@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirko.felice.api
+package io.github.mirkofelice.api
 
 /**
  * Represents the type of the [io.github.mirko.felice.core.TestkitChecker] used to check the assertions of the tests.

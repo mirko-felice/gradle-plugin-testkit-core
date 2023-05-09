@@ -3,22 +3,22 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirko.felice.api
+package io.github.mirkofelice.api
 
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import io.github.mirko.felice.api.CheckerType.KOTLIN
-import io.github.mirko.felice.core.KotlinChecker
-import io.github.mirko.felice.core.Test
-import io.github.mirko.felice.core.TestkitChecker
-import io.github.mirko.felice.core.Tests
+import io.github.mirkofelice.api.CheckerType.KOTLIN
+import io.github.mirkofelice.core.KotlinChecker
+import io.github.mirkofelice.core.Test
+import io.github.mirkofelice.core.TestkitChecker
+import io.github.mirkofelice.core.Tests
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import java.io.File
-import io.github.mirko.felice.core.BuildResult as Result
+import io.github.mirkofelice.core.BuildResult as Result
 
 /**
  * Object able to run the tests contained in the yaml files.

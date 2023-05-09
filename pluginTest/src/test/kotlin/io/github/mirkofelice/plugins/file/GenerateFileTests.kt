@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirko.felice.plugins.file
+package io.github.mirkofelice.plugins.file
 
-import io.github.mirko.felice.api.TestkitRunner
+import io.github.mirkofelice.api.TestkitRunner
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 

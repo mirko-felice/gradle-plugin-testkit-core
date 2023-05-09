@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirko.felice.plugins.file
+package io.github.mirkofelice.plugins.file
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
