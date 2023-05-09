@@ -1,8 +1,15 @@
 import com.lordcodes.turtle.shellRun
+import org.jetbrains.dokka.DokkaConfiguration
+import java.net.URL
 import java.util.*
 
 plugins {
     id("org.sonarqube")
+    id("org.jetbrains.dokka")
+}
+
+repositories {
+    mavenCentral()
 }
 
 rootProject.version = shellRun {
@@ -11,14 +18,17 @@ rootProject.version = shellRun {
     if (it.contains("-")) it.substringBefore("-") + "-SNAPSHOT" else it
 }
 
-subprojects.forEach { it.version = rootProject.version }
+subprojects {
+    version = rootProject.version
+    if (!name.equals("tests"))
+        apply(plugin = "org.jetbrains.dokka")
+}
 
 val organization: String by project
-val githubUrl = "://github.com/$organization/${rootProject.name}"
+val githubUrl: String by project
 val projectDescription: String by project
 
 sonarqube.properties {
-    val httpUrl = "https$githubUrl"
     val token = System.getenv()["SONAR_TOKEN"] ?: file("sonar.properties").inputStream().use {
         val sonarProperties = Properties()
         sonarProperties.load(it)
@@ -33,8 +43,35 @@ sonarqube.properties {
     property("sonar.projectVersion", project.version.toString())
     property("sonar.scm.provider", "git")
     property("sonar.verbose", "true")
-    property("sonar.links.homepage", httpUrl)
-    property("sonar.links.ci", "$httpUrl/actions")
-    property("sonar.links.scm", httpUrl)
-    property("sonar.links.issue", "$httpUrl/issues")
+    property("sonar.links.homepage", githubUrl)
+    property("sonar.links.ci", "$githubUrl/actions")
+    property("sonar.links.scm", githubUrl)
+    property("sonar.links.issue", "$githubUrl/issues")
+}
+
+val javaVersion: String by project
+
+tasks.dokkaHtml {
+    dokkaSourceSets {
+        configureEach {
+            moduleName.set("Gradle Plugin Testkit")
+            reportUndocumented.set(true)
+            documentedVisibilities.set(
+                setOf(
+                    DokkaConfiguration.Visibility.PUBLIC,
+                    DokkaConfiguration.Visibility.PROTECTED,
+                    DokkaConfiguration.Visibility.INTERNAL,
+                ),
+            )
+            jdkVersion.set(javaVersion.toInt())
+//            println(languageVersion.get())
+            externalDocumentationLink {
+                url.set(URL("https://docs.gradle.org/current/javadoc/"))
+            }
+            sourceLink {
+                localDirectory.set(projectDir.resolve("src"))
+                remoteUrl.set(URL("$githubUrl/tree/master/src"))
+            }
+        }
+    }
 }
