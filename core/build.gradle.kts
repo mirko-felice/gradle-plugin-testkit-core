@@ -59,3 +59,7 @@ publishing {
         }
     }
 }
+
+signing {
+    sign(publishing.publications[project.name])
+}
