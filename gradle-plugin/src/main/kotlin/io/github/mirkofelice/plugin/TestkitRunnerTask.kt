@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice
+package io.github.mirkofelice.plugin
 
 import io.github.mirkofelice.api.CheckerType
 import io.github.mirkofelice.api.TestkitRunner
