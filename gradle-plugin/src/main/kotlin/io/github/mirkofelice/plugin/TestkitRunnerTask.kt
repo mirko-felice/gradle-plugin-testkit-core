@@ -15,27 +15,27 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.property
 
 /**
- * Main [org.gradle.api.Task] of the plugin able to run the testkit according to the provided configuration.
+ * Main [Task][org.gradle.api.Task] of the plugin able to run the testkit according to the provided configuration.
  */
 open class TestkitRunnerTask : DefaultTask() {
 
     /**
-     * [Property] describing ...
-     */
-    @Input
-    val forwardOutput: Property<Boolean> = project.objects.property()
-
-    /**
-     * [Property] describing ...
+     * [Property] describing the name of the folder containing the yaml file.
      */
     @Input
     val testFolderName: Property<String> = project.objects.property()
 
     /**
-     * [Property] describing ...
+     * [Property] describing the [CheckerType] to use.
      */
     @Input
     val checkerType: Property<String> = project.objects.property()
+
+    /**
+     * [Property] describing if the user wants to see the output of the gradle build.
+     */
+    @Input
+    val forwardOutput: Property<Boolean> = project.objects.property()
 
     private val realCheckerType: Provider<CheckerType> = checkerType.map { CheckerType.valueOf(it) }
 

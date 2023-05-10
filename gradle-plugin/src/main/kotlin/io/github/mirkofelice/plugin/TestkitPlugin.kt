@@ -15,6 +15,9 @@ import org.gradle.kotlin.dsl.register
  */
 open class TestkitPlugin : Plugin<Project> {
 
+    /**
+     * @see [Plugin.apply]
+     */
     override fun apply(target: Project) {
         val extension = target.extensions.create<TestkitExtension>("testkit")
         target.tasks.register<TestkitRunnerTask>("runTestkit") {

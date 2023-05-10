@@ -42,10 +42,10 @@ open class GenerateFileTask : DefaultTask() {
 
     private val realPermissions: Provider<List<Permission>> = permissions.map { it
         .map { permission ->
-            if (Permission.values().map(Permission::name).contains(permission))
-                Permission.valueOf(permission)
-            else
-                throw IllegalArgumentException("Permission with name $permission does not exist.")
+            require(Permission.values().map(Permission::name).contains(permission)) {
+                "Permission with name $permission does not exist."
+            }
+            Permission.valueOf(permission)
         }
     }
 
@@ -82,7 +82,7 @@ open class GenerateFileExtension(objects: ObjectFactory) : Serializable {
 
     val permissions: ListProperty<String> = objects.listProperty<String>().convention(listOf("R"))
 
-    companion object {
+    private companion object {
         private const val serialVersionUID = 1L
     }
 }

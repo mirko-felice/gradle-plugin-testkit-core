@@ -9,7 +9,7 @@ import java.io.File
 
 /**
  * Represents the permission of a file.
- * @property hasPermission
+ * @property hasPermission check specific permission of the file
  */
 internal enum class Permission(val hasPermission: File.() -> Boolean) {
 
