@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.4.0...0.5.0) (2023-05-10)
+
+
+### Features
+
+* create gradle plugin ([bbf834e](https://github.com/mirko-felice/gradle-plugin-testkit/commit/bbf834e85055468fac63ad439470bb025bf80878))
+
 # [0.4.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.3.0...0.4.0) (2023-05-09)
 
 
