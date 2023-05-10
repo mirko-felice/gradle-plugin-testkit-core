@@ -24,7 +24,7 @@
 
 ## License
 
-![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmirko-felice%2Fgradle-plugin-testkit.svg?type=shield)
+![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmirko-felice%2Fgradle-plugin-testkit-core.svg?type=shield)
 
 Licensed under the [MIT License](LICENSE).
 
