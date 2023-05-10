@@ -45,7 +45,7 @@ open class HelloExtension(objects: ObjectFactory) : Serializable {
 
     val author: Property<String> = objects.property()
 
-    companion object {
+    private companion object {
         private const val serialVersionUID = 1L
     }
 }

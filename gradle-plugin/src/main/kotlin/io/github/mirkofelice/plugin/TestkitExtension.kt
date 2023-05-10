@@ -16,21 +16,21 @@ import java.io.Serializable
 open class TestkitExtension(objects: ObjectFactory) : Serializable {
 
     /**
-     * [Property] describing the name of the test folder.
+     * [Property] describing the name of the folder containing the yaml file.
      */
     val testFolderName: Property<String> = objects.property()
 
     /**
-     * [Property] describing ...
+     * [Property] describing the [CheckerType][io.github.mirkofelice.api.CheckerType] to use.
      */
     val checkerType: Property<String> = objects.property()
 
     /**
-     * [Property] describing ...
+     * [Property] describing if the user wants to see the output of the gradle build. Default to false.
      */
     val forwardOutput: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-    companion object {
+    private companion object {
         private const val serialVersionUID = 1L
     }
 }
