@@ -1,3 +1,4 @@
+
 import com.lordcodes.turtle.shellRun
 import org.jetbrains.dokka.DokkaConfiguration
 import java.net.URL
@@ -18,10 +19,37 @@ rootProject.version = shellRun {
     if (it.contains("-")) it.substringBefore("-") + "-SNAPSHOT" else it
 }
 
+val javaVersion: String by project
+
 subprojects {
     version = rootProject.version
-    if (!name.equals("tests"))
+    if (!name.equals("tests")) {
         apply(plugin = "org.jetbrains.dokka")
+        tasks.dokkaHtml {
+            dependsOn(project(":core").tasks.getByName("compileKotlin"))
+            dokkaSourceSets {
+                configureEach {
+                    reportUndocumented.set(true)
+                    documentedVisibilities.set(
+                        setOf(
+                            DokkaConfiguration.Visibility.PUBLIC,
+                            DokkaConfiguration.Visibility.PROTECTED,
+                            DokkaConfiguration.Visibility.INTERNAL,
+                        ),
+                    )
+                    includes.setFrom("module.md")
+                    jdkVersion.set(javaVersion.toInt())
+                    externalDocumentationLink {
+                        url.set(URL("https://docs.gradle.org/current/javadoc/"))
+                    }
+                    sourceLink {
+                        localDirectory.set(projectDir.resolve("src"))
+                        remoteUrl.set(URL("$githubUrl/tree/master/src"))
+                    }
+                }
+            }
+        }
+    }
 }
 
 val organization: String by project
@@ -47,31 +75,4 @@ sonarqube.properties {
     property("sonar.links.ci", "$githubUrl/actions")
     property("sonar.links.scm", githubUrl)
     property("sonar.links.issue", "$githubUrl/issues")
-}
-
-val javaVersion: String by project
-
-tasks.dokkaHtml {
-    dokkaSourceSets {
-        configureEach {
-            moduleName.set("Gradle Plugin Testkit")
-            reportUndocumented.set(true)
-            documentedVisibilities.set(
-                setOf(
-                    DokkaConfiguration.Visibility.PUBLIC,
-                    DokkaConfiguration.Visibility.PROTECTED,
-                    DokkaConfiguration.Visibility.INTERNAL,
-                ),
-            )
-            jdkVersion.set(javaVersion.toInt())
-//            println(languageVersion.get())
-            externalDocumentationLink {
-                url.set(URL("https://docs.gradle.org/current/javadoc/"))
-            }
-            sourceLink {
-                localDirectory.set(projectDir.resolve("src"))
-                remoteUrl.set(URL("$githubUrl/tree/master/src"))
-            }
-        }
-    }
 }
