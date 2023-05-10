@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice
+package io.github.mirkofelice.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

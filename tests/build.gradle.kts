@@ -59,20 +59,26 @@ tasks {
 
     jacocoTestReport {
         dependsOn(test)
-        val coreProjectDir = project(":core")
+        val coreProject = project(":core")
+        val pluginProject = project(":gradle-plugin")
+        dependsOn(pluginProject.tasks.getByName("compileKotlin"))
 
-        val coreSrcPath = coreProjectDir.sourceSets.main.get().allSource.srcDirs
-        val pluginSrcPath = project.sourceSets.main.get().allSource.srcDirs
-        sourceDirectories.setFrom(coreSrcPath, pluginSrcPath)
+        val coreSrcPath = getSrc(coreProject)
+        val pluginSrcPath = getSrc(pluginProject)
+        val testsSrcPath = getSrc(project)
+        sourceDirectories.setFrom(coreSrcPath, testsSrcPath, pluginSrcPath)
 
-        val coreClassesPath = getClassesFromSrc(coreProjectDir)
-        val pluginClassesPath = getClassesFromSrc(project)
-        classDirectories.setFrom(coreClassesPath, pluginClassesPath)
+        val coreClassesPath = getClassesFromSrc(coreProject)
+        val pluginClassesPath = getClassesFromSrc(pluginProject)
+        val testsClassesPath = getClassesFromSrc(project)
+        classDirectories.setFrom(coreClassesPath, testsClassesPath, pluginClassesPath)
 
         reports.html.required.set(true)
         reports.xml.required.set(true)
     }
 }
+
+fun getSrc(project: Project) = project.sourceSets.main.get().allSource.srcDirs
 
 fun getClassesFromSrc(project: Project): String {
     val sep = File.separator
