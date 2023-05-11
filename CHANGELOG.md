@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.0...0.5.1) (2023-05-11)
+
+
+### Bug Fixes
+
+* publish plugin on CD ([1ab34ac](https://github.com/mirko-felice/gradle-plugin-testkit/commit/1ab34ac6572287a872335be32a02b4948df5bd85))
+* sign core publication ([12a0764](https://github.com/mirko-felice/gradle-plugin-testkit/commit/12a0764cacd6f92f431d17ac9709b0af12c4eb0e))
+* solve documentation issues ([fa9e71b](https://github.com/mirko-felice/gradle-plugin-testkit/commit/fa9e71b97cd55e92a97351a15b52a1025b65b09c))
+
 # [0.5.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.4.0...0.5.0) (2023-05-10)
 
 
