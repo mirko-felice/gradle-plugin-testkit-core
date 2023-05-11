@@ -5,6 +5,7 @@
 
 package io.github.mirkofelice.plugin
 
+import io.github.mirkofelice.api.CheckerType
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
@@ -17,13 +18,14 @@ open class TestkitExtension(objects: ObjectFactory) : Serializable {
 
     /**
      * [Property] describing the name of the folder containing the yaml file.
+     * Default to "": that means that the _src/test/resources_ path will be used.
      */
-    val testFolderName: Property<String> = objects.property()
+    val testFolderName: Property<String> = objects.property<String>().convention("")
 
     /**
-     * [Property] describing the [CheckerType][io.github.mirkofelice.api.CheckerType] to use.
+     * [Property] describing the [CheckerType] to use. Default to [CheckerType.KOTLIN]
      */
-    val checkerType: Property<String> = objects.property()
+    val checkerType: Property<CheckerType> = objects.property<CheckerType>().convention(CheckerType.KOTLIN)
 
     /**
      * [Property] describing if the user wants to see the output of the gradle build. Default to false.

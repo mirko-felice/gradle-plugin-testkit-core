@@ -9,7 +9,6 @@ import io.github.mirkofelice.api.CheckerType
 import io.github.mirkofelice.api.TestkitRunner
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.property
@@ -29,7 +28,7 @@ open class TestkitRunnerTask : DefaultTask() {
      * [Property] describing the [CheckerType] to use.
      */
     @Input
-    val checkerType: Property<String> = project.objects.property()
+    val checkerType: Property<CheckerType> = project.objects.property()
 
     /**
      * [Property] describing if the user wants to see the output of the gradle build.
@@ -37,13 +36,11 @@ open class TestkitRunnerTask : DefaultTask() {
     @Input
     val forwardOutput: Property<Boolean> = project.objects.property()
 
-    private val realCheckerType: Provider<CheckerType> = checkerType.map { CheckerType.valueOf(it) }
-
     /**
      * Run the testkit.
      */
     @TaskAction
     fun run() {
-        TestkitRunner.runTests(testFolderName.get(), realCheckerType.get(), forwardOutput.get())
+        TestkitRunner.runTests(testFolderName.get(), checkerType.get(), forwardOutput.get())
     }
 }
