@@ -34,11 +34,11 @@ object TestkitRunner {
 
     /**
      * Runs all the tests.
-     * @param testFolderName name of the folder containing yaml file in `resources`
+     * @param testFolderName name of the folder containing yaml file in `resources`. Default to `""`
      * @param checkerType [CheckerType] to use. Default to [CheckerType.KOTLIN]
      * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
      */
-    fun runTests(testFolderName: String, checkerType: CheckerType = KOTLIN, forwardOutput: Boolean = false) {
+    fun runTests(testFolderName: String = "", checkerType: CheckerType = KOTLIN, forwardOutput: Boolean = false) {
         val testFolder = File(baseFolder + testFolderName)
         testFolder.walk()
             .filter { it.name.endsWith(".yaml") }

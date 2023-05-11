@@ -1,5 +1,157 @@
 # Gradle Plugin Testkit
 
+## Core
+
+### Purpose
+
+This library aims to help users to test own Gradle plugins, providing a declarative way
+to do that.
+
+### Usage
+
+This library provides one main _API_: [`TestkitRunner`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/api/TestkitRunner.kt).
+
+It can be used in your own tests like below.
+
+```kotlin
+class ExampleTest : StringSpec({
+    
+    "Example Test" {
+        TestkitRunner.runTests()
+    }   
+})
+```
+
+It uses **_yaml_** files to declare the tests. More info [below](#yaml-structure).
+
+It uses a [`CheckerType`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/src/main/kotlin/io/github/mirkofelice/api/CheckerType.kt) 
+to know which subclass of [`TestkitChecker`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/core/TestkitChecker.kt)
+use to apply the various checks.
+
+At the moment the project provides these types of checker:
+
+- **KOTLIN**: refers to the [`KotlinChecker`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/core/KotlinChecker.kt)
+  which uses the basic Kotlin assertions.
+
+#### Configuration
+
+The core function `runTests()` provides three parameters to give the user the capability to 
+configure the feature.
+
+- **testFolderName**: parameter describing the particular name of the folder containing the _yaml_ file.
+  It has to be a subfolder of _src/test/resources_.\
+  Default to `""`: that means that the _src/test/resources_ path will be used.
+
+- **checkerType**: parameter describing the _CheckerType_ to use.\
+  Default to `CheckerType.KOTLIN`.
+
+- **forwardOutput**: parameter describing if the user wants to see the Gradle build output or not.\
+  Default to `false`.
+
+#### Yaml Structure
+
+Yaml files have to be structured in a specific way.
+
+Below there is a complete example.
+
+```yaml
+tests:
+  - description: "Example description"
+    configuration:
+      tasks:
+        - task1
+        - task2
+        - task3
+      options:
+        - option1
+        - option2
+    expectation:
+      result: success
+      outcomes:
+        success:
+          - successTask
+        failed:
+          - failedTask
+        upToDate:
+          - upToDateTask
+        skipped:
+          - skippedTask
+        fromCache:
+          - fromCacheTask
+        noSource:
+          - noSourceTask
+        notExecuted:
+          - notExecutedTask
+      output:
+        contains:
+          - firstPartialOutput
+          - secondPartialOutput
+        doesntContain:
+          - firstPartialOutput
+          - secondPartialOutput
+      files:
+        - name: "test.txt"
+          content: "Example content"
+          permissions:
+            - R
+            - W
+            - X
+          contentRegex: "$regex"
+```
+
+## Gradle-Plugin
+
+### Usage
+
+To facilitate the user to use this library, a Gradle Plugin has been created.
+
+#### Apply
+
+In order to use the plugin, you should apply it in your `build.gradle.kts`.
+
+```kotlin
+plugins {
+    id("io.github.mirko-felice.testkit") version "<x.y.z>"
+}
+```
+
+#### Configuration
+
+To configure the plugin you can use the extension like below.
+
+```kotlin
+testkit {
+    testFolderName.set("exampleFolder")
+    checkerType.set(CheckerType.KOTLIN)
+    forwardOutput.set(true)
+}
+```
+
+The plugin provides a set of properties.
+
+##### Required
+
+No required property.
+
+##### Optional
+
+- **testFolderName**: property describing the particular name of the folder containing the _yaml_ file.
+  It has to be a subfolder of _src/test/resources_.\
+  Default to `""`: that means that the _src/test/resources_ path will be used.
+
+- **checkerType**: property describing the _CheckerType_ to use.\
+  Default to `CheckerType.KOTLIN`.
+
+- **forwardOutput**: property describing if the user wants to see the Gradle build output or not.\
+  Default to `false`.
+
+#### Tasks
+
+This plugin creates the following tasks:
+
+- **runTestkit**: task able to run the testkit library
+
+
 ### GitHub Release:
 
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/mirko-felice/gradle-plugin-testkit?label=github&logo=github)](https://github.com/mirko-felice/gradle-plugin-testkit/releases/latest)
