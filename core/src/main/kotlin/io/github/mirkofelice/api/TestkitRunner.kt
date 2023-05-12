@@ -14,10 +14,10 @@ import io.github.mirkofelice.core.KotlinChecker
 import io.github.mirkofelice.core.Test
 import io.github.mirkofelice.core.TestkitChecker
 import io.github.mirkofelice.core.Tests
-import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import java.io.File
+import kotlin.io.path.createTempDirectory
 import io.github.mirkofelice.core.BuildResult as Result
 
 /**
@@ -65,7 +65,7 @@ object TestkitRunner {
                         "Running `gradlew ${test.configuration.tasks.replaceWithSpaces()}$options`",
                 )
                 val result = executeTest(
-                    temporaryFolder.root,
+                    temporaryFolder,
                     test.configuration.tasks,
                     test.configuration.options,
                     test.expectation.result == Result.FAILED,
@@ -74,11 +74,11 @@ object TestkitRunner {
                 val checker: TestkitChecker = when (checkerType) {
                     KOTLIN -> KotlinChecker()
                 }
-                executeChecks(checker, test, result, temporaryFolder.root)
+                executeChecks(checker, test, result, temporaryFolder)
             }
         } finally {
             println("\nTerminate executing tests\n")
-            temporaryFolder.delete()
+            if (!temporaryFolder.deleteRecursively()) println("Error deleting the temp folder.")
         }
     }
 
@@ -107,10 +107,9 @@ object TestkitRunner {
         checker.checkFiles(test.expectation.files, root)
     }
 
-    private fun generateTempFolder(testFolder: File) = TemporaryFolder().apply {
-        create()
-        testFolder.copyRecursively(this.root)
-    }
+    private fun generateTempFolder(testFolder: File) = createTempDirectory("testkit").apply {
+        testFolder.copyRecursively(this.toFile())
+    }.toFile()
 
     private fun List<String>.replaceWithSpaces() =
         this.toString()
