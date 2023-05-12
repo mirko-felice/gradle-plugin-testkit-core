@@ -1,3 +1,10 @@
+## [0.5.2](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.1...0.5.2) (2023-05-12)
+
+
+### Bug Fixes
+
+* publish plugin also to Maven ([6237c74](https://github.com/mirko-felice/gradle-plugin-testkit/commit/6237c749fe69f170dc7c75422439526b507c10e1))
+
 ## [0.5.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.0...0.5.1) (2023-05-11)
 
 
