@@ -5,7 +5,6 @@
 
 package io.github.mirkofelice.core
 
-import org.gradle.internal.impldep.org.apache.commons.lang.StringUtils
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
@@ -74,9 +73,6 @@ internal class KotlinChecker : TestkitChecker {
             
             Actual:
             $actualContent
-            
-            Difference starts at index ${StringUtils.indexOfDifference(content, actualContent)}:
-            ${StringUtils.difference(content, actualContent)}
             """.trimIndent()
         }
     }
