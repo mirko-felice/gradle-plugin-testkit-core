@@ -1,4 +1,3 @@
-
 import com.lordcodes.turtle.shellRun
 import org.jetbrains.dokka.DokkaConfiguration
 import java.net.URL
@@ -54,7 +53,7 @@ subprojects {
 
 val organization: String by project
 val githubUrl: String by project
-val projectDescription: String by project
+val description: String by project
 
 sonarqube.properties {
     val token = System.getenv()["SONAR_TOKEN"] ?: file("sonar.properties").inputStream().use {
@@ -67,7 +66,7 @@ sonarqube.properties {
     property("sonar.host.url", "https://sonarcloud.io")
     property("sonar.projectName", rootProject.name)
     property("sonar.projectKey", "${organization}_${rootProject.name}")
-    property("sonar.projectDescription", projectDescription)
+    property("sonar.projectDescription", description)
     property("sonar.projectVersion", project.version.toString())
     property("sonar.scm.provider", "git")
     property("sonar.verbose", "true")
