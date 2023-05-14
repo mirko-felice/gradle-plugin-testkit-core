@@ -73,9 +73,8 @@ object TestkitRunner {
         val temporaryFolder = generateTempFolder(testFolder)
 
         println(
-            "Executing tests of configuration file: " +
-                testFolder.absoluteFile.relativeTo(File(baseFolder).absoluteFile).invariantSeparatorsPath +
-                "/${yamlFile.name}\n",
+            "Executing tests of configuration file: ${yamlFile.name} in temp folder ${temporaryFolder.absolutePath}\n" +
+                "using base folder ${testFolder.absolutePath}\n",
         )
         try {
             tests.tests.forEachIndexed { index, test ->
