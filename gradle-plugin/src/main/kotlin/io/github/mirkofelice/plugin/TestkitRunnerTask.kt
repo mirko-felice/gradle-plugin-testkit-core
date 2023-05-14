@@ -8,7 +8,9 @@ package io.github.mirkofelice.plugin
 import io.github.mirkofelice.api.CheckerType
 import io.github.mirkofelice.api.TestkitRunner
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.property
@@ -17,6 +19,12 @@ import org.gradle.kotlin.dsl.property
  * Main [Task][org.gradle.api.Task] of the plugin able to run the testkit according to the provided configuration.
  */
 open class TestkitRunnerTask : DefaultTask() {
+
+    /**
+     * Property describing the classpath of the testkit.
+     */
+    @Classpath
+    val classpath: ConfigurableFileCollection = project.objects.fileCollection()
 
     /**
      * [Property] describing the name of the folder containing the yaml file.
@@ -41,6 +49,6 @@ open class TestkitRunnerTask : DefaultTask() {
      */
     @TaskAction
     fun run() {
-        TestkitRunner.runTests(testFolderName.get(), checkerType.get(), forwardOutput.get())
+        TestkitRunner.runTests(project.projectDir.path, testFolderName.get(), checkerType.get(), forwardOutput.get())
     }
 }

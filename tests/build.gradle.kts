@@ -84,5 +84,5 @@ fun getClassesFromSrc(project: Project): String {
     val sep = File.separator
     val srcPartialPath = "src${sep}main${sep}kotlin"
     val classesPartialPath = "build${sep}classes${sep}kotlin${sep}main"
-    return project.sourceSets.main.get().allSource.srcDirs.first { it.endsWith("kotlin") }.path.replace(srcPartialPath, classesPartialPath)
+    return getSrc(project).first { it.endsWith("kotlin") }.path.replace(srcPartialPath, classesPartialPath)
 }

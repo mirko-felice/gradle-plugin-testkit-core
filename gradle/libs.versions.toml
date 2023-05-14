@@ -15,14 +15,13 @@ turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle-version
 kotest = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 konf-yaml = { module = "com.uchuhimo:konf-yaml", version.ref = "konf-version" }
 jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-version" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
 sonarqube = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqube-version" }
 dokka = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka-version" }
 kotlin-qa = { module = "org.danilopianini.gradle-kotlin-qa:org.danilopianini.gradle-kotlin-qa.gradle.plugin", version.ref = "kotlin-qa-version" }
 
 [bundles]
-jackson = [ "jackson-module", "jackson-yaml", "jackson-databind" ]
+jackson = [ "jackson-module", "jackson-yaml" ]
 
 [plugins]
 jacoco-testkit = { id = "pl.droidsonroids.jacoco.testkit", version.ref = "jacoco-testkit-version" }
