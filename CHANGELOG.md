@@ -1,3 +1,10 @@
+## [0.5.5](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.4...0.5.5) (2023-05-14)
+
+
+### Bug Fixes
+
+* change execution output ([fef8c04](https://github.com/mirko-felice/gradle-plugin-testkit/commit/fef8c044c269f43ddf7b52ca96bb3dc4cf30b04f))
+
 ## [0.5.4](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.3...0.5.4) (2023-05-14)
 
 
