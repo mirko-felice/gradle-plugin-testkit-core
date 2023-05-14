@@ -1,3 +1,10 @@
+## [0.5.3](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.2...0.5.3) (2023-05-14)
+
+
+### Bug Fixes
+
+* add project dir to TestkitRunner ([d0d548a](https://github.com/mirko-felice/gradle-plugin-testkit/commit/d0d548a90aa827169f3105775bb8b463f17dd387))
+
 ## [0.5.2](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.1...0.5.2) (2023-05-12)
 
 
