@@ -74,7 +74,8 @@ object TestkitRunner {
 
         println(
             "Executing tests of configuration file: " +
-                "${testFolder.relativeTo(File(baseFolder)).invariantSeparatorsPath}/${yamlFile.name}\n",
+                testFolder.absoluteFile.relativeTo(File(baseFolder).absoluteFile).invariantSeparatorsPath +
+                "/${yamlFile.name}\n",
         )
         try {
             tests.tests.forEachIndexed { index, test ->

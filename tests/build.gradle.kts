@@ -5,7 +5,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
 plugins {
     id("kotlin-jvm")
     `java-gradle-plugin`
-    jacoco
     alias(libs.plugins.jacoco.testkit)
 }
 

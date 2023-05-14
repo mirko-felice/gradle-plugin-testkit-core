@@ -2,6 +2,7 @@ import com.lordcodes.turtle.shellRun
 import org.jetbrains.dokka.DokkaConfiguration
 import java.net.URL
 import java.util.*
+import org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION as KOTLIN_VERSION
 
 plugins {
     id("org.sonarqube")
@@ -16,6 +17,15 @@ rootProject.version = shellRun {
     git.gitCommand(listOf("describe", "--tags", "--always"))
 }.let {
     if (it.contains("-")) it.substringBefore("-") + "-SNAPSHOT" else it
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin" && requested.name.startsWith("kotlin")) {
+            useVersion(libs.versions.kotlin.version.get())
+            because("All Kotlin modules should use the same version, and compiler uses $KOTLIN_VERSION")
+        }
+    }
 }
 
 val javaVersion: String by project

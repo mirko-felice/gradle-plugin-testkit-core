@@ -9,6 +9,17 @@ plugins {
     signing
 }
 
+kotlin {
+    target {
+        compilations.all {
+            kotlinOptions {
+                allWarningsAsErrors = true
+                freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
+            }
+        }
+    }
+}
+
 val javaVersion: String by project
 val githubUrl: String by project
 
