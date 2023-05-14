@@ -1,3 +1,10 @@
+## [0.5.4](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.3...0.5.4) (2023-05-14)
+
+
+### Bug Fixes
+
+* solve path folder issue ([f6f3ff8](https://github.com/mirko-felice/gradle-plugin-testkit/commit/f6f3ff89d8b17ac4e7e685fbeb382dc73fba7940))
+
 ## [0.5.3](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.2...0.5.3) (2023-05-14)
 
 
