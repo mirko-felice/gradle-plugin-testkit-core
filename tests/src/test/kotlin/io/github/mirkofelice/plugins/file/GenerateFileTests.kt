@@ -6,42 +6,43 @@
 package io.github.mirkofelice.plugins.file
 
 import io.github.mirkofelice.api.TestkitRunner
+import io.github.mirkofelice.plugins.AbstractTest
+import io.github.mirkofelice.plugins.runTestsInsideProject
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.style.StringSpec
 
-class GenerateFileTests : StringSpec({
+class GenerateFileTests : AbstractTest({
 
     "Basic Test" {
-        TestkitRunner.runTests("generateFile/basic")
+        TestkitRunner.runTestsInsideProject("generateFile/basic")
     }
 
     "Content Test" {
-        TestkitRunner.runTests("generateFile/content")
+        TestkitRunner.runTestsInsideProject("generateFile/content")
     }
 
     "Permissions Test" {
-        TestkitRunner.runTests("generateFile/permissions")
+        TestkitRunner.runTestsInsideProject("generateFile/permissions")
     }
 
     "Regex Test" {
-        TestkitRunner.runTests("generateFile/regex")
+        TestkitRunner.runTestsInsideProject("generateFile/regex")
     }
 
     "Wrong permissions Test" {
         shouldThrow<AssertionError> {
-            TestkitRunner.runTests("generateFile/wrongPermissions")
+            TestkitRunner.runTestsInsideProject("generateFile/wrongPermissions")
         }
     }
 
     "Wrong content Test" {
         shouldThrow<AssertionError> {
-            TestkitRunner.runTests("generateFile/wrongContent")
+            TestkitRunner.runTestsInsideProject("generateFile/wrongContent")
         }
     }
 
     "Wrong content regex Test" {
         shouldThrow<AssertionError> {
-            TestkitRunner.runTests("generateFile/wrongContentRegex")
+            TestkitRunner.runTestsInsideProject("generateFile/wrongContentRegex")
         }
     }
 

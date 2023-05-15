@@ -36,7 +36,7 @@ It can be used in your own tests like below.
 class ExampleTest : StringSpec({
     
     "Example Test" {
-        TestkitRunner.runTests()
+        TestkitRunner.runTests(projectName)
     }   
 })
 ```
@@ -57,9 +57,10 @@ At the moment the project provides these types of checker:
 The core function `runTests()` provides three parameters to give the user the capability to 
 configure the feature.
 
-- **testFolderName**: parameter describing the particular name of the folder containing the _yaml_ file.
-  It has to be a subfolder of _src/test/resources_.\
-  Default to `""`: that means that the _src/test/resources_ path will be used.
+- **projectName**: parameter describing the name of the project used to search for plugin classpath.
+
+- **testFolderName**: parameter describing the name of the folder containing the _yaml_ file.
+  Default to `currentDirectory/src/main/resources/`.
 
 - **checkerType**: parameter describing the _CheckerType_ to use.\
   Default to `CheckerType.KOTLIN`.
@@ -134,13 +135,15 @@ plugins {
 }
 ```
 
+If not already applied, this plugin automatically applies `java-gradle-plugin`.
+
 #### Configuration
 
 To configure the plugin you can use the extension like below.
 
 ```kotlin
 testkit {
-    testFolderName.set("exampleFolder")
+    testFolderName.set("src/main/resources/")
     checkerType.set(CheckerType.KOTLIN)
     forwardOutput.set(true)
 }
@@ -154,15 +157,17 @@ No required property.
 
 ##### Optional
 
-- **testFolderName**: property describing the particular name of the folder containing the _yaml_ file.
-  It has to be a subfolder of _src/test/resources_.\
-  Default to `""`: that means that the _src/test/resources_ path will be used.
+- **testFolderName**: property describing the particular name of the folder containing the _yaml_ file.\
+  Default to `"src/main/resources"`.
 
 - **checkerType**: property describing the _CheckerType_ to use.\
   Default to `CheckerType.KOTLIN`.
 
 - **forwardOutput**: property describing if the user wants to see the Gradle build output or not.\
-  Default to `false`.
+  Default to `false`.\
+  **BE CAREFUL**: even if this is set to `true`, you have to run the task with the
+  appropriate option _-q_.\
+  Example: `./gradlew runTestkit -q`
 
 #### Tasks
 

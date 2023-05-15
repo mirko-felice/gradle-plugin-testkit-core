@@ -6,24 +6,25 @@
 package io.github.mirkofelice.plugins.hello
 
 import io.github.mirkofelice.api.TestkitRunner
+import io.github.mirkofelice.plugins.AbstractTest
+import io.github.mirkofelice.plugins.runTestsInsideProject
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.style.StringSpec
 
-class HelloTests : StringSpec({
+class HelloTests : AbstractTest({
 
     "Set of positive tests" {
-        TestkitRunner.runTests("hello/positiveTests")
+        TestkitRunner.runTestsInsideProject("hello/positiveTests")
     }
 
     "Wrong output test with forward output" {
         shouldThrow<AssertionError> {
-            TestkitRunner.runTests("hello/wrongOutput", forwardOutput = true)
+            TestkitRunner.runTestsInsideProject("hello/wrongOutput", forwardOutput = true)
         }
     }
 
     "Non existing task" {
         shouldThrow<AssertionError> {
-            TestkitRunner.runTests("hello/wrongExistingTask")
+            TestkitRunner.runTestsInsideProject("hello/wrongExistingTask")
         }
     }
 })
