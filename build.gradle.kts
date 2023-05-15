@@ -53,7 +53,7 @@ subprojects {
                     }
                     sourceLink {
                         localDirectory.set(projectDir.resolve("src"))
-                        remoteUrl.set(URL("$githubUrl/tree/master/src"))
+                        remoteUrl.set(URL("$githubUrl/tree/master/${project.name}/src"))
                     }
                 }
             }
