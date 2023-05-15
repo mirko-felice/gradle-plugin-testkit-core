@@ -1,3 +1,10 @@
+## [0.5.6](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.5...0.5.6) (2023-05-15)
+
+
+### Bug Fixes
+
+* inject plugin classpath ([73cc365](https://github.com/mirko-felice/gradle-plugin-testkit/commit/73cc365317a12cec63cd3ca381e1f3c74004e4ae))
+
 ## [0.5.5](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.4...0.5.5) (2023-05-14)
 
 
