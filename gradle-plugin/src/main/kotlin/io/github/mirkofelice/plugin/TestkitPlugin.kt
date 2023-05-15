@@ -31,9 +31,7 @@ open class TestkitPlugin : Plugin<Project> {
         }
         val extension = target.extensions.create<TestkitExtension>("testkit")
         target.tasks.register<TestkitRunnerTask>("runTestkit") {
-            testFolderName.set(extension.testFolderName)
-            checkerType.set(extension.checkerType)
-            forwardOutput.set(extension.forwardOutput)
+            tests.set(extension.tests)
         }
         target.tasks.withType<TestkitRunnerTask>().configureEach {
             val processResources = target.tasks.getByName("processResources")
@@ -52,6 +50,7 @@ open class TestkitPlugin : Plugin<Project> {
     }
 
     private companion object {
-        private const val core = "io.github.mirko-felice.testkit:core:0.5.2"
+        private const val latestVersion = "0.5.5"
+        private const val core = "io.github.mirko-felice.testkit:core:$latestVersion"
     }
 }

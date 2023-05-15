@@ -57,7 +57,7 @@ object TestkitRunner {
         val buildFolder = testFolderName.replaceAfter(projectName, "") + File.separator + "build"
         testFolder.walk()
             .filter { it.name.endsWith(".yaml") }
-            .forEach { runTest(it, buildFolder, testFolder, checkerType, forwardOutput) }
+            .forEach { runTest(it, buildFolder, it.parentFile, checkerType, forwardOutput) }
     }
 
     private fun runTest(
