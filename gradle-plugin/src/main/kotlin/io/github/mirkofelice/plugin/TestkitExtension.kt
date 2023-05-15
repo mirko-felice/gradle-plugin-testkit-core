@@ -5,36 +5,48 @@
 
 package io.github.mirkofelice.plugin
 
-import io.github.mirkofelice.api.CheckerType
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Property
-import org.gradle.kotlin.dsl.property
-import java.io.File
+import org.gradle.api.provider.ListProperty
+import org.gradle.kotlin.dsl.listProperty
+import org.gradle.kotlin.dsl.newInstance
 import java.io.Serializable
 
 /**
- * Extension for the plugin.
+ * Main extension for the plugin.
  */
-open class TestkitExtension(objects: ObjectFactory) : Serializable {
+open class TestkitExtension(private val objects: ObjectFactory) : Serializable {
+
+    private val defaultTest = objects.newInstance(TestkitTest::class)
 
     /**
-     * [Property] describing the name of the folder containing the yaml file. Default to 'src/main/resources'
+     * [ListProperty] of [TestkitTest] describing the tests to run. Default to 'emptyList()'.
      */
-    val testFolderName: Property<String> = objects.property<String>().convention(defaultFolder)
+    val tests: ListProperty<TestkitTest> = objects.listProperty<TestkitTest>().convention(emptyList())
 
     /**
-     * [Property] describing the [CheckerType] to use. Default to [CheckerType.KOTLIN]
+     * Adds a new [TestkitTest].
+     * @param configuration configuration of the [TestkitTest] to apply
      */
-    val checkerType: Property<CheckerType> = objects.property<CheckerType>().convention(CheckerType.KOTLIN)
+    open infix fun test(configuration: TestkitTest.() -> Unit) {
+        tests.add(objects.newInstance(TestkitTest::class).apply(configuration))
+    }
 
     /**
-     * [Property] describing if the user wants to see the output of the gradle build. Default to false.
+     * Automatically adds the default test.
      */
-    val forwardOutput: Property<Boolean> = objects.property<Boolean>().convention(false)
+    open fun withDefault() {
+        withDefault { }
+    }
+
+    /**
+     * Automatically adds the default test.
+     * @param configuration configuration of the [TestkitTest] to apply
+     */
+    open fun withDefault(configuration: TestkitTest.() -> Unit) {
+        tests.add(defaultTest.apply(configuration))
+    }
 
     private companion object {
         private const val serialVersionUID = 1L
-        private val sep = File.separator
-        private val defaultFolder = "src${sep}main${sep}resources$sep"
     }
 }

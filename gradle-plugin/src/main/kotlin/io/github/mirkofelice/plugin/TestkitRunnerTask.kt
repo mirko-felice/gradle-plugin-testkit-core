@@ -5,15 +5,14 @@
 
 package io.github.mirkofelice.plugin
 
-import io.github.mirkofelice.api.CheckerType
 import io.github.mirkofelice.api.TestkitRunner
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.provider.Property
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.property
+import org.gradle.kotlin.dsl.listProperty
 import java.io.File
 
 /**
@@ -28,33 +27,23 @@ open class TestkitRunnerTask : DefaultTask() {
     val classpath: ConfigurableFileCollection = project.objects.fileCollection()
 
     /**
-     * [Property] describing the name of the folder containing the yaml file.
+     * [ListProperty] of [TestkitTest] describing the tests to run.
      */
     @Input
-    val testFolderName: Property<String> = project.objects.property()
+    val tests: ListProperty<TestkitTest> = project.objects.listProperty()
 
     /**
-     * [Property] describing the [CheckerType] to use.
-     */
-    @Input
-    val checkerType: Property<CheckerType> = project.objects.property()
-
-    /**
-     * [Property] describing if the user wants to see the output of the gradle build.
-     */
-    @Input
-    val forwardOutput: Property<Boolean> = project.objects.property()
-
-    /**
-     * Run the testkit.
+     * Run the tests.
      */
     @TaskAction
     fun run() {
-        TestkitRunner.runTests(
-            project.name,
-            project.projectDir.path + File.separator + testFolderName.get(),
-            checkerType.get(),
-            forwardOutput.get(),
-        )
+        tests.get().forEach {
+            TestkitRunner.runTests(
+                project.name,
+                project.projectDir.path + File.separator + it.testFolderName.get(),
+                it.checkerType.get(),
+                it.forwardOutput.get(),
+            )
+        }
     }
 }
