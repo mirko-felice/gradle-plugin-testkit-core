@@ -50,7 +50,6 @@ open class TestkitPlugin : Plugin<Project> {
     }
 
     private companion object {
-        private const val latestVersion = "0.5.5"
-        private const val core = "io.github.mirko-felice.testkit:core:$latestVersion"
+        private const val core = "io.github.mirko-felice.testkit:core:+"
     }
 }
