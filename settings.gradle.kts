@@ -1,3 +1,10 @@
+pluginManagement.resolutionStrategy.eachPlugin {
+    if (requested.id.id.startsWith("io.github.mirko-felice.testkit")) {
+        val previousProjectVersion: String by settings
+        useVersion(previousProjectVersion)
+    }
+}
+
 plugins {
     id("com.gradle.enterprise") version "3.13.1"
     id("org.danilopianini.gradle-pre-commit-git-hooks") version "1.1.7"

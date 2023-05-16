@@ -6,6 +6,7 @@ plugins {
     id("kotlin-jvm")
     `java-gradle-plugin`
     alias(libs.plugins.jacoco.testkit)
+    id("io.github.mirko-felice.testkit")
 }
 
 repositories {
