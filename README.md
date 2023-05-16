@@ -143,19 +143,28 @@ To configure the plugin you can use the extension like below.
 
 ```kotlin
 testkit {
-    testFolderName.set("src/main/resources/")
-    checkerType.set(CheckerType.KOTLIN)
-    forwardOutput.set(true)
+    withDefault()
+    test {
+      testFolderName.set("src/main/resources/")
+      checkerType.set(CheckerType.KOTLIN)
+      forwardOutput.set(true)
+    }
 }
 ```
 
-The plugin provides a set of properties.
+The plugin provides a set of properties/methods.
 
 ##### Required
 
-No required property.
+No required property/method.
 
 ##### Optional
+
+- **withDefault()**: method to add a test with default values.
+
+- **withDefault { }**: alternative method to modify default properties.
+
+- **test { }**: DSL method to configure a new test with the following properties.
 
 - **testFolderName**: property describing the particular name of the folder containing the _yaml_ file.\
   Default to `"src/main/resources"`.
@@ -165,15 +174,15 @@ No required property.
 
 - **forwardOutput**: property describing if the user wants to see the Gradle build output or not.\
   Default to `false`.\
-  **BE CAREFUL**: even if this is set to `true`, you have to run the task with the
-  appropriate option _-q_.\
+  **BE CAREFUL**: even if this is set to `true`, you should run the task with the
+  appropriate option _-q_, in order to get the output sorted correctly.\
   Example: `./gradlew runTestkit -q`
 
 #### Tasks
 
 This plugin creates the following tasks:
 
-- **runTestkit**: task able to run the testkit library
+- **runTestkit**: task able to run the testkit library using the configuration above.
 
 ## License
 
