@@ -5,11 +5,15 @@
 
 package io.github.mirkofelice.plugin
 
+import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 
@@ -34,19 +38,35 @@ open class TestkitPlugin : Plugin<Project> {
             }
         }
         val extension = target.extensions.create<TestkitExtension>("testkit")
-        target.tasks.register<TestkitRunnerTask>("runTestkit") {
-            tests.set(extension.tests)
-        }
-        target.tasks.withType<TestkitRunnerTask>().configureEach {
+        target.tasks.withType<TestkitTask>().configureEach {
+            it.group = "verification"
             val processResources = target.tasks.getByName("processResources")
             val processTestResources = target.tasks.getByName("processTestResources")
             val pluginUnderTestMetadata = target.tasks.getByName("pluginUnderTestMetadata")
             it.dependencies(processResources, processTestResources, pluginUnderTestMetadata)
+            it.checkerType.set(extension.checkerType)
+            it.forwardOutput.set(extension.forwardOutput)
             it.classpath.from(configuration.resolve())
+        }
+        val testFromFolders by target.tasks.registering(TestkitFoldersTask::class) {
+            description = "Runs the tests for the plugin, using the DSL `folders` configuration."
+            onlyIf { extension.folders.isPresent }
+            folders.set(extension.folders)
+        }
+        val testFromDSL by target.tasks.registering(TestkitTestsTask::class) {
+            description = "Runs the tests for the plugin, using the DSL `tests` configuration."
+            onlyIf { extension.tests.isPresent }
+            tests.set(extension.tests)
+        }
+        target.tasks.register<DefaultTask>("tests") {
+            group = "verification"
+            description = "Runs all the testkit task."
+            dependsOn(testFromFolders, testFromDSL)
+            mustRunAfter(testFromFolders, testFromDSL)
         }
     }
 
-    private fun TestkitRunnerTask.dependencies(vararg tasks: Task) {
+    private fun TestkitTask.dependencies(vararg tasks: Task) {
         tasks.forEach {
             it.outputs.upToDateWhen { false }
             this.dependsOn(it)
