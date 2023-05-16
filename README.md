@@ -135,7 +135,7 @@ plugins {
 }
 ```
 
-If not already applied, this plugin automatically applies `java-gradle-plugin`.
+If not already applied, this plugin automatically applies [`java-gradle-plugin`](https://docs.gradle.org/current/userguide/java_gradle_plugin.html).
 
 #### Configuration
 
