@@ -5,45 +5,54 @@
 
 package io.github.mirkofelice.plugin
 
+import io.github.mirkofelice.api.CheckerType
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.ListProperty
-import org.gradle.kotlin.dsl.listProperty
+import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.newInstance
+import org.gradle.kotlin.dsl.property
 import java.io.Serializable
 
 /**
- * Main extension for the plugin.
+ * Extension for the plugin.
  */
+@TestkitFolderDSL
+@TestkitTestDSL
 open class TestkitExtension(private val objects: ObjectFactory) : Serializable {
 
-    private val defaultTest = objects.newInstance(TestkitTest::class)
+    /**
+     * [Property] describing the [CheckerType] to use. Default to [CheckerType.KOTLIN]
+     */
+    val checkerType: Property<CheckerType> = objects.property<CheckerType>().convention(CheckerType.KOTLIN)
 
     /**
-     * [ListProperty] of [TestkitTest] describing the tests to run. Default to 'emptyList()'.
+     * [Property] describing if the user wants to see the output of the gradle build. Default to false.
      */
-    val tests: ListProperty<TestkitTest> = objects.listProperty<TestkitTest>().convention(emptyList())
+    val forwardOutput: Property<Boolean> = objects.property<Boolean>().convention(false)
 
     /**
-     * Adds a new [TestkitTest].
-     * @param configuration configuration of the [TestkitTest] to apply
+     * [Property] describing the [TestkitFolders] to retrieve tests from.
      */
-    open infix fun test(configuration: TestkitTest.() -> Unit) {
-        tests.add(objects.newInstance(TestkitTest::class).apply(configuration))
+    internal val folders: Property<TestkitFolders> = objects.property()
+
+    /**
+     * [Property] describing the [TestkitTests] to use.
+     */
+    internal val tests: Property<TestkitTests> = objects.property()
+
+    /**
+     * Sets the [TestkitFolders].
+     * @param configuration configuration of the [TestkitFolders] to apply
+     */
+    fun folders(configuration: TestkitFolders.() -> Unit) {
+        folders.set(objects.newInstance(TestkitFolders::class).apply(configuration))
     }
 
     /**
-     * Automatically adds the default test.
+     * Sets the [TestkitTests].
+     * @param configuration configuration of the [TestkitTests] to apply
      */
-    open fun withDefault() {
-        withDefault { }
-    }
-
-    /**
-     * Automatically adds the default test.
-     * @param configuration configuration of the [TestkitTest] to apply
-     */
-    open fun withDefault(configuration: TestkitTest.() -> Unit) {
-        tests.add(defaultTest.apply(configuration))
+    fun tests(configuration: TestkitTests.() -> Unit) {
+        tests.set(objects.newInstance(TestkitTests::class).apply(configuration))
     }
 
     private companion object {
