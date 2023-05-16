@@ -1,7 +1,7 @@
 pluginManagement.resolutionStrategy.eachPlugin {
     if (requested.id.id.startsWith("io.github.mirko-felice.testkit")) {
-        val previousProjectVersion: String by settings
-        useVersion(previousProjectVersion)
+        val currentVersion: String by settings
+        useVersion(currentVersion)
     }
 }
 

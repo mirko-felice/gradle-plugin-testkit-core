@@ -10,6 +10,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -23,6 +24,9 @@ open class TestkitPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         if (!target.pluginManager.hasPlugin("java-gradle-plugin")) {
             target.pluginManager.apply("java-gradle-plugin")
+        }
+        target.repositories {
+            mavenCentral()
         }
         val configuration = target.configurations.create("testkit") { conf ->
             conf.defaultDependencies {
@@ -38,7 +42,7 @@ open class TestkitPlugin : Plugin<Project> {
             val processTestResources = target.tasks.getByName("processTestResources")
             val pluginUnderTestMetadata = target.tasks.getByName("pluginUnderTestMetadata")
             it.dependencies(processResources, processTestResources, pluginUnderTestMetadata)
-            it.classpath.from(configuration)
+            it.classpath.from(configuration.resolve())
         }
     }
 
