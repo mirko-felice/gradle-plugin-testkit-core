@@ -143,33 +143,27 @@ To configure the plugin you can use the extension like below.
 
 ```kotlin
 testkit {
-    withDefault()
-    test {
-      testFolderName.set("src/main/resources/")
-      checkerType.set(CheckerType.KOTLIN)
-      forwardOutput.set(true)
+    checkerType.set(CheckerType.KOTLIN)
+    forwardOutput.set(true)
+    folders {
+        withMainDefault()
+        withTestDefault()
+        folder("path/to/yaml")
     }
 }
 ```
 
-The plugin provides a set of properties/methods.
+The plugin provides a set of properties/methods, using a DSL.
 
 ##### Required
 
-No required property/method.
+No required property/method. That means no tests.
 
 ##### Optional
 
-- **withDefault()**: method to add a test with default values.
+Two main properties:
 
-- **withDefault { }**: alternative method to modify default properties.
-
-- **test { }**: DSL method to configure a new test with the following properties.
-
-- **testFolderName**: property describing the particular name of the folder containing the _yaml_ file.\
-  Default to `"src/main/resources"`.
-
-- **checkerType**: property describing the _CheckerType_ to use.\
+- **checkerType**: property describing the _CheckerType_ to use for **ALL** tests.\
   Default to `CheckerType.KOTLIN`.
 
 - **forwardOutput**: property describing if the user wants to see the Gradle build output or not.\
@@ -178,11 +172,23 @@ No required property/method.
   appropriate option _-q_, in order to get the output sorted correctly.\
   Example: `./gradlew runTestkit -q`
 
+Using a DSL, folders can be added inside `folders { }` block:
+
+- **withMainDefault()**: method to add the folder with default main path (_src/main/resources_).
+
+- **withTestDefault()**: method to add the folder with default test path (_src/test/resources_).
+
+- **folder(path: String)**: method to add a folder with the given path, always starting from the project directory.
+
 #### Tasks
 
 This plugin creates the following tasks:
 
-- **runTestkit**: task able to run the testkit library using the configuration above.
+- **testkitFolders**: task able to run the testkit library using the _folders_ DSL configuration.
+
+- **testkitDSL**: task able to run the testkit library using the _tests_ DSL configuration.
+
+- **testkit**: global task to execute all the testkit tasks.
 
 ## License
 
