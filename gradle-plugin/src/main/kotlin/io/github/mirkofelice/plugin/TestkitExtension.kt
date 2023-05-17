@@ -47,13 +47,13 @@ open class TestkitExtension(private val objects: ObjectFactory) : Serializable {
         folders.set(objects.newInstance(TestkitFolders::class).apply(configuration))
     }
 
-    /**
-     * Sets the [TestkitTests].
-     * @param configuration configuration of the [TestkitTests] to apply
-     */
-    fun tests(configuration: TestkitTests.() -> Unit) {
-        tests.set(objects.newInstance(TestkitTests::class).apply(configuration))
-    }
+//    /**
+//     * Sets the [TestkitTests].
+//     * @param configuration configuration of the [TestkitTests] to apply
+//     */
+//    fun tests(configuration: TestkitTests.() -> Unit) {
+//        tests.set(objects.newInstance(TestkitTests::class).apply(configuration))
+//    }
 
     private companion object {
         private const val serialVersionUID = 1L
