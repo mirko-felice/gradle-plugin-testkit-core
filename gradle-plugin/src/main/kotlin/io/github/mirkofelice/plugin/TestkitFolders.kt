@@ -31,15 +31,24 @@ open class TestkitFolders @Inject constructor(private val objects: ObjectFactory
     }
 
     /**
-     * Automatically adds the folder with the default path ('src/main/resources').
+     * Automatically adds the folder with the default main path ('src/main/resources').
      */
-    fun withDefault() {
-        folder(DEFAULT_PATH)
+    fun withMainDefault() {
+        folder(DEFAULT_MAIN_PATH)
+    }
+
+    /**
+     * Automatically adds the folder with the default test path ('src/test/resources').
+     */
+    fun withTestDefault() {
+        folder(DEFAULT_TEST_PATH)
     }
 
     private companion object {
         private const val serialVersionUID = 1L
         private val sep = File.separator
-        private val DEFAULT_PATH = "src${sep}main${sep}resources$sep"
+        private val DEFAULT_MAIN_PATH = path("main")
+        private val DEFAULT_TEST_PATH = path("test")
+        private fun path(folder: String) = "src$sep$folder${sep}resources$sep"
     }
 }
