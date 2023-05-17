@@ -48,21 +48,21 @@ open class TestkitPlugin : Plugin<Project> {
             it.forwardOutput.set(extension.forwardOutput)
             it.classpath.from(configuration.resolve())
         }
-        val testFromFolders by target.tasks.registering(TestkitFoldersTask::class) {
+        val testkitFolders by target.tasks.registering(TestkitFoldersTask::class) {
             description = "Runs the tests for the plugin, using the DSL `folders` configuration."
             onlyIf { extension.folders.isPresent }
             folders.set(extension.folders)
         }
-        val testFromDSL by target.tasks.registering(TestkitTestsTask::class) {
+        val testkitDSL by target.tasks.registering(TestkitTestsTask::class) {
             description = "Runs the tests for the plugin, using the DSL `tests` configuration."
             onlyIf { extension.tests.isPresent }
             tests.set(extension.tests)
         }
-        target.tasks.register<DefaultTask>("tests") {
+        target.tasks.register<DefaultTask>("testkit") {
             group = "verification"
-            description = "Runs all the testkit task."
-            dependsOn(testFromFolders, testFromDSL)
-            mustRunAfter(testFromFolders, testFromDSL)
+            description = "Runs all the testkit tasks."
+            dependsOn(testkitFolders, testkitDSL)
+            mustRunAfter(testkitFolders, testkitDSL)
         }
     }
 
