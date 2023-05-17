@@ -1,3 +1,17 @@
+# [0.6.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.6...0.6.0) (2023-05-17)
+
+
+### Bug Fixes
+
+* temporary remove test DSL ([f390a4d](https://github.com/mirko-felice/gradle-plugin-testkit/commit/f390a4d07cb3606d5c1a3511d97cde4a099abad2))
+
+
+### Features
+
+* add base dsl to plugin configuration ([3bd5542](https://github.com/mirko-felice/gradle-plugin-testkit/commit/3bd5542f955197d9eaf0f9633d5f07124fc38a6a))
+* add DSL for configuring tests ([bff7de0](https://github.com/mirko-felice/gradle-plugin-testkit/commit/bff7de0f03394a64f461051e425a0114c4e44162))
+* **gradle-plugin:** add test default folder path ([4a833e5](https://github.com/mirko-felice/gradle-plugin-testkit/commit/4a833e53c4aaeda5254c75198472785b9200358a))
+
 ## [0.5.6](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.5...0.5.6) (2023-05-15)
 
 
