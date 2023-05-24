@@ -42,6 +42,7 @@ jobs:
         uses: codecov/codecov-action@v3.1.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./tests/build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml
       - name: Analyze Sonar
         if: matrix.os == 'ubuntu-latest'
         env:
