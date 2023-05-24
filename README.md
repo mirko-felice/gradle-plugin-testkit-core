@@ -119,6 +119,10 @@ tests:
           contentRegex: "$regex"
 ```
 
+#### Class diagram
+
+[![PlantUML class diagram](https://shorturl.at/fpqsE)](https://shorturl.at/hiFW1)
+
 ## Gradle-Plugin
 
 ### Usage
