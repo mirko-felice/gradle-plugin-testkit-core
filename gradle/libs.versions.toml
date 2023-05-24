@@ -8,6 +8,7 @@ konf-version = "1.1.2"
 jackson-version = "2.15.0"
 dokka-version = "1.8.10"
 jacoco-testkit-version = "1.0.12"
+junit-version = "5.9.3"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
@@ -19,9 +20,10 @@ jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-y
 sonarqube = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqube-version" }
 dokka = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka-version" }
 kotlin-qa = { module = "org.danilopianini.gradle-kotlin-qa:org.danilopianini.gradle-kotlin-qa.gradle.plugin", version.ref = "kotlin-qa-version" }
+jacoco-testkit = { module = "pl.droidsonroids.gradle.jacoco:pl.droidsonroids.gradle.jacoco", version.ref = "jacoco-testkit-version" }
+junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-version" }
 
 [bundles]
 jackson = [ "jackson-module", "jackson-yaml" ]
 
 [plugins]
-jacoco-testkit = { id = "pl.droidsonroids.jacoco.testkit", version.ref = "jacoco-testkit-version" }
