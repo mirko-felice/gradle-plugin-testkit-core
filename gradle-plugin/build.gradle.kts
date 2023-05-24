@@ -6,6 +6,8 @@ plugins {
 dependencies {
     implementation(project(":core"))
     implementation(gradleKotlinDsl())
+    testImplementation(gradleTestKit())
+    testImplementation(libs.junit)
 }
 
 val projectDescription by extra("Gradle Plugin to help users to test own plugins using testkit.")
@@ -23,4 +25,8 @@ gradlePlugin {
             tags.set(listOf("test", "testing", "testkit", "plugin-testing", "gradle-plugin-testing"))
         }
     }
+}
+
+tasks.jacocoTestReport {
+    enabled = false
 }
