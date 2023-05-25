@@ -1,8 +1,6 @@
 # Gradle Plugin Testkit
 
-[![Latest Github Release](https://img.shields.io/github/v/release/mirko-felice/gradle-plugin-testkit?label=github&logo=github)](https://github.com/mirko-felice/gradle-plugin-testkit/releases/latest)
-
-### Code Quality:
+### Code Quality
 
 [![CI + CD](https://github.com/mirko-felice/gradle-plugin-testkit/actions/workflows/ci-and-cd.yml/badge.svg)](https://github.com/mirko-felice/gradle-plugin-testkit/actions/workflows/ci-and-cd.yml)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit&metric=security_rating)](https://sonarcloud.io/summary/overall?id=mirko-felice_gradle-plugin-testkit)
@@ -12,8 +10,7 @@
 ### Modules
 
 [![Latest Maven Core Release](https://img.shields.io/maven-central/v/io.github.mirko-felice.testkit/core?label=core&logo=apachemaven)](https://central.sonatype.com/artifact/io.github.mirko-felice.testkit/core)
-[![Latest Maven Gradle Plugin Release](https://img.shields.io/maven-central/v/io.github.mirko-felice.testkit/gradle-plugin?label=gradle-plugin&logo=apachemaven)](https://central.sonatype.com/artifact/io.github.mirko-felice.testkit/gradle-plugin)
-
+[![Latest Gradle Plugin Release](https://img.shields.io/gradle-plugin-portal/v/io.github.mirko-felice.testkit?color=blue&label=gradle-plugin&logo=gradle)](https://plugins.gradle.org/plugin/io.github.mirko-felice.testkit)
 #### Relative docs
 
 [![Latest Core Doc](https://javadoc.io/badge2/io.github.mirko-felice.testkit/core/javadoc.svg?label=core-doc)](https://javadoc.io/doc/io.github.mirko-felice.testkit/core)
