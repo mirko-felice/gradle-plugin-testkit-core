@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.0...0.6.1) (2023-05-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.danilopianini.gradle-kotlin-qa:org.danilopianini.gradle-kotlin-qa.gradle.plugin to v0.42.0 ([925cde5](https://github.com/mirko-felice/gradle-plugin-testkit/commit/925cde5e60ad3e803ecec6fcec6df2d2c12d3b74))
+
 # [0.6.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.5.6...0.6.0) (2023-05-17)
 
 
