@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 plugins {
     id("library-conventions")
     id("com.gradle.plugin-publish") version "1.2.0"
@@ -27,6 +29,13 @@ gradlePlugin {
     }
 }
 
-tasks.jacocoTestReport {
-    enabled = false
+tasks {
+
+    jacocoTestReport {
+        enabled = false
+    }
+
+    publishPlugins {
+        onlyIf { Pattern.matches("(([0-9])+(\\.?([0-9]))*)", project.version.toString()) }
+    }
 }
