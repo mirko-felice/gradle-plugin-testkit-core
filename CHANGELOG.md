@@ -1,3 +1,10 @@
+## [0.6.2](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.1...0.6.2) (2023-05-29)
+
+
+### Bug Fixes
+
+* **deps:** update jackson-version to v2.15.1 ([ab167f9](https://github.com/mirko-felice/gradle-plugin-testkit/commit/ab167f91a7b015d0c95a0c947d01d5b625bc1b71))
+
 ## [0.6.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.0...0.6.1) (2023-05-29)
 
 
