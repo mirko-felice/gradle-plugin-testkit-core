@@ -1,3 +1,10 @@
+## [0.6.3](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.2...0.6.3) (2023-05-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency io.kotest:kotest-runner-junit5 to v5.6.2 ([8cf1d9f](https://github.com/mirko-felice/gradle-plugin-testkit/commit/8cf1d9f04393545a383c9022f98161f61dc9df30))
+
 ## [0.6.2](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.1...0.6.2) (2023-05-29)
 
 
