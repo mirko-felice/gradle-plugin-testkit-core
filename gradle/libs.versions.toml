@@ -1,6 +1,6 @@
 [versions]
 sonarqube-version = "4.0.0.2929"
-kotlin-qa-version = "0.41.0"
+kotlin-qa-version = "0.42.0"
 turtle-version = "0.8.0"
 kotlin-version = "1.8.21"
 kotest-version = "5.6.1"
