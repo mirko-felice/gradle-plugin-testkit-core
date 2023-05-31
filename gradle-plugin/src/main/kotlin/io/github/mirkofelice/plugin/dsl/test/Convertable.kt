@@ -3,10 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.core
+package io.github.mirkofelice.plugin.dsl.test
 
-/**
- * Represents the yaml root.
- * @property tests [List] of [Test]
- */
-data class Tests(val tests: List<Test>)
+internal interface Convertable<T> {
+
+    fun toDataClass(): T
+}

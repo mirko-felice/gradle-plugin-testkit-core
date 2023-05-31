@@ -15,7 +15,7 @@ package io.github.mirkofelice.core
  * @property noSource [List] of tasks that should be no-source
  * @property notExecuted [List] of tasks that should not exist
  */
-internal data class Outcomes(
+data class Outcomes(
     val success: List<String> = emptyList(),
     val failed: List<String> = emptyList(),
     val upToDate: List<String> = emptyList(),

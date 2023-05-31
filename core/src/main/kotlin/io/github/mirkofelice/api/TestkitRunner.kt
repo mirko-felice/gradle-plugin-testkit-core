@@ -28,12 +28,15 @@ import io.github.mirkofelice.core.BuildResult as Result
  */
 object TestkitRunner {
 
+    private const val PROPERTIES_FILE_NAME = PluginUnderTestMetadataReading.PLUGIN_METADATA_FILE_NAME
     private val sep = File.separator
     private val mapper = JsonMapper
         .builder(YAMLFactory())
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         .build()
         .registerKotlinModule()
+    private val propertiesFolder =
+        PluginUnderTestMetadata::class.simpleName.toString().replaceFirstChar { it.lowercase(Locale.getDefault()) }
 
     /**
      * Default folder containing the tests.
@@ -42,37 +45,59 @@ object TestkitRunner {
 
     /**
      * Run all the tests.
-     * @param projectName name of the project used to search for plugin classpath
-     * @param testFolderName name of the folder containing yaml file. Default to [DEFAULT_TEST_FOLDER]
+     * @param tests [Tests] to run
+     * @param rootFolder folder containing the `build.gradle.kts`
+     * @param checkerType [CheckerType] to use. Default to [CheckerType.KOTLIN]
+     * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
+     */
+    fun runTests(
+        tests: Tests,
+        rootFolder: File,
+        buildFolder: String,
+        checkerType: CheckerType = KOTLIN,
+        forwardOutput: Boolean = false,
+    ) {
+        require(rootFolder.isDirectory && rootFolder.walk().any { it.name.endsWith("build.gradle.kts") })
+        println(
+            "Executing tests configured in plugin DSL of folder dir '${rootFolder.path}'\n",
+        )
+        runTests(tests, buildFolder, rootFolder, checkerType, forwardOutput)
+    }
+
+    /**
+     * Run all the tests.
+     * @param projectName name of the project, used to search for plugin classpath
+     * @param rootFolderName name of the folder containing yaml file. Default to [DEFAULT_TEST_FOLDER]
      * @param checkerType [CheckerType] to use. Default to [CheckerType.KOTLIN]
      * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
      */
     fun runTests(
         projectName: String,
-        testFolderName: String = DEFAULT_TEST_FOLDER,
+        rootFolderName: String = DEFAULT_TEST_FOLDER,
         checkerType: CheckerType = KOTLIN,
         forwardOutput: Boolean = false,
     ) {
-        val testFolder = File(testFolderName)
-        val buildFolder = testFolderName.replaceAfter(projectName, "") + File.separator + "build"
-        testFolder.walk()
-            .filter { it.name.endsWith(".yaml") }
-            .forEach { runTest(it, buildFolder, it.parentFile, checkerType, forwardOutput) }
+        val rootFolder = File(rootFolderName)
+        val buildFolder = rootFolderName.replaceAfter(projectName, "") + File.separator + "build"
+        val yamlFile = rootFolder.walk().firstOrNull { it.name.endsWith(".yaml") }
+        if (yamlFile != null) {
+            val tests = mapper.readValue(yamlFile, Tests::class.java)
+            println(
+                "Executing tests of configuration file: '${yamlFile.name}' in dir '${rootFolder.path}'\n",
+            )
+            runTests(tests, buildFolder, yamlFile.parentFile, checkerType, forwardOutput)
+        }
     }
 
-    private fun runTest(
-        yamlFile: File,
+    private fun runTests(
+        tests: Tests,
         buildFolder: String,
-        testFolder: File,
+        rootFolder: File,
         checkerType: CheckerType,
         forwardOutput: Boolean,
     ) {
-        val tests = mapper.readValue(yamlFile, Tests::class.java)
-        val temporaryFolder = generateTempFolder(testFolder)
+        val temporaryFolder = generateTempFolder(rootFolder)
 
-        println(
-            "Executing tests of configuration file: '${yamlFile.name}' in dir '${testFolder.path}'\n",
-        )
         try {
             tests.tests.forEachIndexed { index, test ->
                 val options = if (test.configuration.options.isEmpty()) {
@@ -123,10 +148,10 @@ object TestkitRunner {
         return gradleRunner.run { if (hasToFail) buildAndFail() else build() }
     }
 
-    private fun executeChecks(checker: TestkitChecker, test: Test, result: BuildResult, root: File) {
+    private fun executeChecks(checker: TestkitChecker, test: Test, result: BuildResult, rootFolder: File) {
         checker.checkOutcomes(test.expectation.outcomes, result)
         checker.checkOutput(test.expectation.output, result.output)
-        checker.checkFiles(test.expectation.files, root)
+        checker.checkFiles(test.expectation.files, rootFolder)
     }
 
     private fun generateTempFolder(testFolder: File) = createTempDirectory("testkit").apply {
@@ -140,10 +165,7 @@ object TestkitRunner {
             .replace(",", " ")
 
     private fun getPluginClasspath(buildFolder: String): List<File> {
-        val propertiesFolder = PluginUnderTestMetadata::class.simpleName.toString()
-            .replaceFirstChar { it.lowercase(Locale.getDefault()) }
-        val propertiesName = PluginUnderTestMetadataReading.PLUGIN_METADATA_FILE_NAME
-        val pluginClasspathFile = File("$buildFolder$sep$propertiesFolder$sep$propertiesName")
+        val pluginClasspathFile = File(buildFolder + sep + propertiesFolder + sep + PROPERTIES_FILE_NAME)
         return Properties().also { it.load(pluginClasspathFile.inputStream()) }
             .getProperty(PluginUnderTestMetadataReading.IMPLEMENTATION_CLASSPATH_PROP_KEY)
             .split(File.pathSeparator)

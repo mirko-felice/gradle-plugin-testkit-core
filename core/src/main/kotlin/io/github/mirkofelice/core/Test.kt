@@ -11,7 +11,7 @@ package io.github.mirkofelice.core
  * @property configuration [Configuration] of the test
  * @property expectation [Expectation] of the test
  */
-internal data class Test(
+data class Test(
     val description: String,
     val configuration: Configuration,
     val expectation: Expectation,

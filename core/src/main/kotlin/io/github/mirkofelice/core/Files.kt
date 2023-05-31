@@ -9,6 +9,6 @@ package io.github.mirkofelice.core
  * Represents all the expectations on files.
  * @property existing [List] of [ExistingFile] to check
  */
-internal data class Files(
+data class Files(
     val existing: List<ExistingFile> = emptyList(),
 )

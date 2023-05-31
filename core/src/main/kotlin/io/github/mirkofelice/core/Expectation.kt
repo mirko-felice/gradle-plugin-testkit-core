@@ -12,7 +12,7 @@ package io.github.mirkofelice.core
  * @property output expected [Output] of the build
  * @property files expectations on [Files]
  */
-internal data class Expectation(
+data class Expectation(
     val result: BuildResult = BuildResult.SUCCESS,
     val outcomes: Outcomes = Outcomes(),
     val output: Output = Output(),
