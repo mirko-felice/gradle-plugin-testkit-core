@@ -6,6 +6,10 @@
 package io.github.mirkofelice.plugin
 
 import io.github.mirkofelice.api.CheckerType
+import io.github.mirkofelice.plugin.dsl.folder.TestkitFolderDSL
+import io.github.mirkofelice.plugin.dsl.folder.TestkitFolders
+import io.github.mirkofelice.plugin.dsl.test.TestkitTestDSL
+import io.github.mirkofelice.plugin.dsl.test.TestkitTests
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.newInstance
@@ -47,13 +51,13 @@ open class TestkitExtension(private val objects: ObjectFactory) : Serializable {
         folders.set(objects.newInstance(TestkitFolders::class).apply(configuration))
     }
 
-//    /**
-//     * Sets the [TestkitTests].
-//     * @param configuration configuration of the [TestkitTests] to apply
-//     */
-//    fun tests(configuration: TestkitTests.() -> Unit) {
-//        tests.set(objects.newInstance(TestkitTests::class).apply(configuration))
-//    }
+    /**
+     * Sets the [TestkitTests].
+     * @param configuration configuration of the [TestkitTests] to apply
+     */
+    fun tests(configuration: TestkitTests.() -> Unit) {
+        tests.set(objects.newInstance(TestkitTests::class).apply(configuration))
+    }
 
     private companion object {
         private const val serialVersionUID = 1L

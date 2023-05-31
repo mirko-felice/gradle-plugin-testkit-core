@@ -12,7 +12,7 @@ package io.github.mirkofelice.core
  * @property permissions [List] of [Permission]
  * @property contentRegex [List] of regex to match in the file content
  */
-internal data class ExistingFile(
+data class ExistingFile(
     val name: String,
     val content: String = "",
     val permissions: List<Permission> = emptyList(),

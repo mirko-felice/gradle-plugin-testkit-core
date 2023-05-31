@@ -5,6 +5,9 @@
 
 package io.github.mirkofelice.plugin
 
+import io.github.mirkofelice.plugin.tasks.TestkitFoldersTask
+import io.github.mirkofelice.plugin.tasks.TestkitTask
+import io.github.mirkofelice.plugin.tasks.TestkitTestsTask
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project

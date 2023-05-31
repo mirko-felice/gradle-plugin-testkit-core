@@ -17,7 +17,7 @@ class PluginTest {
 
     @BeforeEach
     fun setup() {
-        buildFile = File(tempDir, "build.gradle.kts")
+        buildFile = tempDir.resolve("build.gradle.kts")
     }
 
     @Test
@@ -32,14 +32,37 @@ class PluginTest {
                     withMainDefault()
                     withTestDefault()
                 }
+                tests {
+                    folder = file(System.getProperty("user.dir") + "/src/test/resources")
+                    test("example") {
+                        configuration {
+                            tasks = listOf()
+                        }
+                    }
+                }
             }
             
         """.trimIndent()
+        runGradleBuild(buildContent)
+    }
+
+    @Test
+    fun testWithJavaGradlePlugin() {
+        val buildContent = """
+            plugins {
+                `java-gradle-plugin`
+                id("io.github.mirko-felice.testkit")
+            }
+        """.trimIndent()
+        runGradleBuild(buildContent)
+    }
+
+    private fun runGradleBuild(buildContent: String) {
         buildFile.writeText(buildContent)
 
         val testkitProperties = javaClass.classLoader.getResource("testkit-gradle.properties")?.readText()
         if (testkitProperties != null) {
-            File(tempDir, "gradle.properties").writeText(testkitProperties)
+            tempDir.resolve("gradle.properties").writeText(testkitProperties)
         }
         GradleRunner.create()
             .withProjectDir(tempDir)

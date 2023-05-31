@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin
+package io.github.mirkofelice.plugin.tasks
 
 import io.github.mirkofelice.api.TestkitRunner
+import io.github.mirkofelice.plugin.dsl.folder.TestkitFolders
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction

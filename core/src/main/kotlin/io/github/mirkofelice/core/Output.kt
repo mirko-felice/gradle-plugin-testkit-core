@@ -10,7 +10,7 @@ package io.github.mirkofelice.core
  * @property contains [List] of contents that should be contained in the output
  * @property doesntContain [List] of contents that should not be contained in the output
  */
-internal data class Output(
+data class Output(
     val contains: List<String> = emptyList(),
     val doesntContain: List<String> = emptyList(),
 )

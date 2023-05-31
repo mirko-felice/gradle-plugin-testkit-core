@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin
+package io.github.mirkofelice.plugin.dsl.test
 
 /**
- * Annotation to prevent using methods outside the TestkitFolder DSL.
+ * Annotation to prevent using methods outside the TestkitTest DSL.
  */
 @DslMarker
-annotation class TestkitFolderDSL
+annotation class TestkitTestDSL
