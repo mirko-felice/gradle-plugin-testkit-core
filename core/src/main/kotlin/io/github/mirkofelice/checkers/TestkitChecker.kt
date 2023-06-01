@@ -3,8 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.core
+package io.github.mirkofelice.checkers
 
+import io.github.mirkofelice.structure.Files
+import io.github.mirkofelice.structure.Outcomes
+import io.github.mirkofelice.structure.Output
+import io.github.mirkofelice.structure.Permission
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
@@ -57,11 +61,11 @@ internal interface TestkitChecker {
     fun checkFileExistence(file: File)
 
     /**
-     * Checks that a file has correct permissions.
-     * @param permissions [List] of [Permission] to check
+     * Checks that a file has correct permission.
+     * @param permission [Permission] to check
      * @param file [File] to check
      */
-    fun checkFilePermissions(permissions: List<Permission>, file: File)
+    fun checkFilePermission(permission: Permission, file: File)
 
     /**
      * Checks that a file has correct content.
@@ -113,7 +117,7 @@ internal interface TestkitChecker {
         files.existing.forEach {
             val fileToCheck = File("${root.absolutePath}/${it.name}")
             checkFileExistence(fileToCheck)
-            checkFilePermissions(it.permissions, fileToCheck)
+            it.permissions.forEach { permission -> checkFilePermission(permission, fileToCheck) }
             if (it.content != "") checkFileContent(it.content, fileToCheck)
             if (it.contentRegex.isNotEmpty()) {
                 it.contentRegex.forEach { regex -> checkFileContentRegex(Regex(regex), fileToCheck) }

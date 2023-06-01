@@ -5,8 +5,8 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.ExistingFile
-import io.github.mirkofelice.core.Permission
+import io.github.mirkofelice.structure.ExistingFile
+import io.github.mirkofelice.structure.Permission
 
 @TestkitTestDSL
 class TestkitExistingFile(val name: String) : Convertable<ExistingFile> {

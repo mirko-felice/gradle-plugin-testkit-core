@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.core
+package io.github.mirkofelice.structure
 
 /**
  * Represents the expectations of the output.

@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.Tests
+import io.github.mirkofelice.structure.Tests
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.kotlin.dsl.listProperty

@@ -6,13 +6,13 @@
 package io.github.mirkofelice.api
 
 /**
- * Represents the type of the [TestkitChecker][io.github.mirkofelice.core.TestkitChecker]
+ * Represents the type of the [TestkitChecker][io.github.mirkofelice.checkers.TestkitChecker]
  * used to check the assertions of the tests.
  */
 enum class CheckerType {
 
     /**
-     * Represents the [KotlinChecker][io.github.mirkofelice.core.KotlinChecker] which uses kotlin assertions.
+     * Represents the [KotlinChecker][io.github.mirkofelice.checkers.KotlinChecker] which uses kotlin assertions.
      */
     KOTLIN,
 }

@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.Test
+import io.github.mirkofelice.structure.Test
 import org.gradle.api.provider.Property
 import java.io.Serializable
 import javax.inject.Inject

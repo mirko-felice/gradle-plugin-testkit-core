@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.Files
+import io.github.mirkofelice.structure.Files
 
 @TestkitTestDSL
 class TestkitFiles : Convertable<Files> {

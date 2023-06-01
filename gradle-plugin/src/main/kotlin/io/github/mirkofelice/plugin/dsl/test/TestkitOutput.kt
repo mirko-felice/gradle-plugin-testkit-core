@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.Output
+import io.github.mirkofelice.structure.Output
 
 @TestkitTestDSL
 class TestkitOutput : Convertable<Output> {
