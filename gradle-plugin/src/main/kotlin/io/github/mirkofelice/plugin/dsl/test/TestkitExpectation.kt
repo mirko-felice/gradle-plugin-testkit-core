@@ -5,8 +5,8 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.BuildResult
-import io.github.mirkofelice.core.Expectation
+import io.github.mirkofelice.structure.BuildResult
+import io.github.mirkofelice.structure.Expectation
 
 @TestkitTestDSL
 class TestkitExpectation : Convertable<Expectation> {

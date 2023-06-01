@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.plugin.dsl.test
 
-import io.github.mirkofelice.core.Configuration
+import io.github.mirkofelice.structure.Configuration
 
 /**
  * Represents a test configuration, mirroring the [Configuration] of the core module.

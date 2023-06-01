@@ -3,8 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.core
+package io.github.mirkofelice.checkers
 
+import io.github.mirkofelice.structure.Permission
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
@@ -54,11 +55,9 @@ internal class KotlinChecker : TestkitChecker {
         }
     }
 
-    override fun checkFilePermissions(permissions: List<Permission>, file: File) {
-        permissions.forEach {
-            check(it.hasPermission(file)) {
-                "File ${file.absolutePath} must have permission $it, but it does not."
-            }
+    override fun checkFilePermission(permission: Permission, file: File) {
+        check(permission.hasPermission(file)) {
+            "File ${file.absolutePath} must have permission $permission, but it does not."
         }
     }
 

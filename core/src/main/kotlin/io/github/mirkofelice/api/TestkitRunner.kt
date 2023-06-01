@@ -10,10 +10,10 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.github.mirkofelice.api.CheckerType.KOTLIN
-import io.github.mirkofelice.core.KotlinChecker
-import io.github.mirkofelice.core.Test
-import io.github.mirkofelice.core.TestkitChecker
-import io.github.mirkofelice.core.Tests
+import io.github.mirkofelice.checkers.KotlinChecker
+import io.github.mirkofelice.checkers.TestkitChecker
+import io.github.mirkofelice.structure.Test
+import io.github.mirkofelice.structure.Tests
 import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -21,7 +21,7 @@ import org.gradle.testkit.runner.internal.PluginUnderTestMetadataReading
 import java.io.File
 import java.util.*
 import kotlin.io.path.createTempDirectory
-import io.github.mirkofelice.core.BuildResult as Result
+import io.github.mirkofelice.structure.BuildResult as Result
 
 /**
  * Object able to run the tests contained in the yaml files.
