@@ -6,10 +6,10 @@
 package io.github.mirkofelice.plugin
 
 import io.github.mirkofelice.api.CheckerType
-import io.github.mirkofelice.plugin.dsl.folder.TestkitFolderDSL
-import io.github.mirkofelice.plugin.dsl.folder.TestkitFolders
-import io.github.mirkofelice.plugin.dsl.test.TestkitTestDSL
-import io.github.mirkofelice.plugin.dsl.test.TestkitTests
+import io.github.mirkofelice.dsl.folder.TestkitFolderDSL
+import io.github.mirkofelice.dsl.folder.TestkitFolders
+import io.github.mirkofelice.dsl.test.TestkitTestDSL
+import io.github.mirkofelice.dsl.test.TestkitTests
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.newInstance

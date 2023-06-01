@@ -4,8 +4,12 @@ Module of the [`Gradle Plugin Testkit`](https://github.com/mirko-felice/gradle-p
 
 # Package io.github.mirkofelice.api
 
-Package containing the _API_ of the library, which can be used by the user.
+Package containing the _API_ of the library, which should be used by the user.
 
-# Package io.github.mirkofelice.core
+# Package io.github.mirkofelice.checkers
 
-Package containing all the internal stuff to provide functionalities.
+Package containing the checkers internally used by the library.
+
+# Package io.github.mirkofelice.structure
+
+Package containing all the classes to provide yaml conversion.

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.dsl.test
+package io.github.mirkofelice.dsl.test
 
 import io.github.mirkofelice.structure.Test
 import org.gradle.api.provider.Property
@@ -21,16 +21,24 @@ open class TestkitTest @Inject constructor(private val description: Property<Str
     private val configuration: TestkitConfiguration = TestkitConfiguration()
     private val expectation: TestkitExpectation = TestkitExpectation()
 
+    /**
+     * Sets the configuration of the test.
+     * @param configuration configuration of the [TestkitConfiguration] to apply
+     */
     fun configuration(configuration: TestkitConfiguration.() -> Unit) {
         this.configuration.apply(configuration)
     }
 
+    /**
+     * Sets the expectation of the test.
+     * @param configuration configuration of the [TestkitExpectation] to apply
+     */
     fun expectation(configuration: TestkitExpectation.() -> Unit) {
         this.expectation.apply(configuration)
     }
 
-    override fun toDataClass(): Test =
-        Test(this.description.get(), this.configuration.toDataClass(), this.expectation.toDataClass())
+    override fun convert(): Test =
+        Test(this.description.get(), this.configuration.convert(), this.expectation.convert())
 
     private companion object {
         private const val serialVersionUID = 1L

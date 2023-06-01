@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.dsl.folder
+package io.github.mirkofelice.dsl.folder
 
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
