@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.dsl.test
+package io.github.mirkofelice.dsl.test
 
 import io.github.mirkofelice.structure.Configuration
 
@@ -13,9 +13,15 @@ import io.github.mirkofelice.structure.Configuration
 @TestkitTestDSL
 class TestkitConfiguration : Convertable<Configuration> {
 
+    /**
+     * Represents the tasks to execute.
+     */
     lateinit var tasks: List<String>
 
+    /**
+     * Represents the options of the build to execute.
+     */
     var options: List<String> = emptyList()
 
-    override fun toDataClass(): Configuration = Configuration(tasks, options)
+    override fun convert(): Configuration = Configuration(tasks, options)
 }

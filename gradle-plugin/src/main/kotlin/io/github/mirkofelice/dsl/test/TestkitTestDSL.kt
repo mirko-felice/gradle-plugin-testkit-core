@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.dsl.test
+package io.github.mirkofelice.dsl.test
 
 /**
  * Annotation to prevent using methods outside the TestkitTest DSL.

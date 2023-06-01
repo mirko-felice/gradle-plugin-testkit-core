@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.tasks
+package io.github.mirkofelice.tasks
 
 import io.github.mirkofelice.api.CheckerType
 import org.gradle.api.DefaultTask

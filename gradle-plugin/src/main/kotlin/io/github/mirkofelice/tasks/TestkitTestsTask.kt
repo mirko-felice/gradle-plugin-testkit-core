@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.tasks
+package io.github.mirkofelice.tasks
 
 import io.github.mirkofelice.api.TestkitRunner
-import io.github.mirkofelice.plugin.dsl.test.TestkitTests
+import io.github.mirkofelice.dsl.test.TestkitTests
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -29,7 +29,7 @@ open class TestkitTestsTask : TestkitTask() {
     @TaskAction
     fun run() {
         val testFolder = tests.get().folder
-        val tests = tests.get().toDataClass()
+        val tests = tests.get().convert()
         TestkitRunner.runTests(tests, testFolder, project.buildDir.absolutePath, checkerType.get(), forwardOutput.get())
     }
 }

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
-package io.github.mirkofelice.plugin.dsl.test
+package io.github.mirkofelice.dsl.test
 
 import io.github.mirkofelice.structure.Tests
 import org.gradle.api.model.ObjectFactory
@@ -35,6 +35,9 @@ open class TestkitTests @Inject constructor(private val objects: ObjectFactory) 
         tests.add(test)
     }
 
+    /**
+     * Represents the root folder of the tests.
+     */
     var folder: File
         get() = this._folder
         set(value) {
@@ -44,7 +47,7 @@ open class TestkitTests @Inject constructor(private val objects: ObjectFactory) 
             this._folder = value
         }
 
-    override fun toDataClass(): Tests = Tests(tests.get().map { it.toDataClass() })
+    override fun convert(): Tests = Tests(tests.get().map { it.convert() })
 
     private companion object {
         private const val serialVersionUID = 1L
