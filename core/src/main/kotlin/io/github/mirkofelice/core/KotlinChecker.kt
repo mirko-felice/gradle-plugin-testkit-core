@@ -15,48 +15,48 @@ import java.io.File
 internal class KotlinChecker : TestkitChecker {
 
     override fun checkExecutedTask(taskName: String, result: BuildResult) {
-        assert(result.task(":$taskName") != null) {
+        checkNotNull(result.task(":$taskName")) {
             "Task with name '$taskName' should have been executed."
         }
     }
 
     override fun checkNonExecutedTask(taskName: String, result: BuildResult) {
-        assert(result.task(":$taskName") == null) {
+        check(result.task(":$taskName") == null) {
             "Task with name '$taskName' should have not been executed."
         }
     }
 
     override fun checkOutcome(expectedOutcome: TaskOutcome, taskName: String, result: BuildResult) {
         val actualOutcome = result.outcomeOf(taskName)
-        assert(actualOutcome == expectedOutcome) {
+        check(actualOutcome == expectedOutcome) {
             "Outcome of task '$taskName' should be $expectedOutcome, instead it is $actualOutcome."
         }
     }
 
     override fun checkOutputContains(output: String, partOfOutput: String) {
-        assert(output.contains(partOfOutput)) {
+        check(output.contains(partOfOutput)) {
             "Output '$output' should contain '$partOfOutput'."
         }
     }
 
     override fun checkOutputDoesNotContain(output: String, notPartOfOutput: String) {
-        assert(!output.contains(notPartOfOutput)) {
+        check(!output.contains(notPartOfOutput)) {
             "Output '$output' should not contain '$notPartOfOutput'."
         }
     }
 
     override fun checkFileExistence(file: File) {
-        assert(file.exists()) {
+        check(file.exists()) {
             "File '${file.name}' does not exist."
         }
-        assert(file.isFile) {
+        check(file.isFile) {
             "File '${file.name}' is not a real file."
         }
     }
 
     override fun checkFilePermissions(permissions: List<Permission>, file: File) {
         permissions.forEach {
-            assert(it.hasPermission(file)) {
+            check(it.hasPermission(file)) {
                 "File ${file.absolutePath} must have permission $it, but it does not."
             }
         }
@@ -64,7 +64,7 @@ internal class KotlinChecker : TestkitChecker {
 
     override fun checkFileContent(content: String, file: File) {
         val actualContent = file.readText()
-        assert(content == actualContent) {
+        check(content == actualContent) {
             """
             Content of ${file.name} does not match expectations.
             
@@ -78,7 +78,7 @@ internal class KotlinChecker : TestkitChecker {
     }
 
     override fun checkFileContentRegex(contentRegex: Regex, file: File) {
-        assert(file.readLines().any { contentRegex.matches(it) }) {
+        check(file.readLines().any { contentRegex.matches(it) }) {
             """
             None of the lines in ${file.name} matches the regular expression $contentRegex. 
             File content:

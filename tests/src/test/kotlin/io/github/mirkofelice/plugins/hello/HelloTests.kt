@@ -17,13 +17,13 @@ class HelloTests : AbstractTest({
     }
 
     "Wrong output test with forward output" {
-        shouldThrow<AssertionError> {
+        shouldThrow<IllegalStateException> {
             TestkitRunner.runTestsInsideProject("hello/wrongOutput", forwardOutput = true)
         }
     }
 
     "Non existing task" {
-        shouldThrow<AssertionError> {
+        shouldThrow<IllegalStateException> {
             TestkitRunner.runTestsInsideProject("hello/wrongExistingTask")
         }
     }

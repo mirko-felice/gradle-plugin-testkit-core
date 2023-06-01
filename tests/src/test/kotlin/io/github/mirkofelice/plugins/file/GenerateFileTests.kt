@@ -29,19 +29,19 @@ class GenerateFileTests : AbstractTest({
     }
 
     "Wrong permissions Test" {
-        shouldThrow<AssertionError> {
+        shouldThrow<IllegalStateException> {
             TestkitRunner.runTestsInsideProject("generateFile/wrongPermissions")
         }
     }
 
     "Wrong content Test" {
-        shouldThrow<AssertionError> {
+        shouldThrow<IllegalStateException> {
             TestkitRunner.runTestsInsideProject("generateFile/wrongContent")
         }
     }
 
     "Wrong content regex Test" {
-        shouldThrow<AssertionError> {
+        shouldThrow<IllegalStateException> {
             TestkitRunner.runTestsInsideProject("generateFile/wrongContentRegex")
         }
     }
