@@ -1,3 +1,10 @@
+## [0.6.4](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.3...0.6.4) (2023-06-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.sonarsource.scanner.gradle:sonarqube-gradle-plugin to v4.2.0.3129 ([21cdf6b](https://github.com/mirko-felice/gradle-plugin-testkit/commit/21cdf6b8e7beb9eaef801a4d97c798445958b692))
+
 ## [0.6.3](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.2...0.6.3) (2023-05-29)
 
 
