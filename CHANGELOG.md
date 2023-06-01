@@ -1,3 +1,15 @@
+# [0.7.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.4...0.7.0) (2023-06-01)
+
+
+### Bug Fixes
+
+* change assert in check in KotlinChecker ([3a714fb](https://github.com/mirko-felice/gradle-plugin-testkit/commit/3a714fbd6f4bbc629a00afa543b68973eaaf37e2))
+
+
+### Features
+
+* **gradle-plugin:** add test DSL ([f8633b3](https://github.com/mirko-felice/gradle-plugin-testkit/commit/f8633b33c2d3dbcb17be9466f7c8c4a0fc0661fc))
+
 ## [0.6.4](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.6.3...0.6.4) (2023-06-01)
 
 
