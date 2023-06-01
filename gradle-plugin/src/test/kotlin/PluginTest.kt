@@ -36,7 +36,9 @@ class PluginTest {
                     folder = file(System.getProperty("user.dir") + "/src/test/resources")
                     test("example") {
                         configuration {
-                            tasks = listOf()
+                            tasks = emptyList()
+                            options = emptyList()
+                            println(options)
                         }
                     }
                 }
