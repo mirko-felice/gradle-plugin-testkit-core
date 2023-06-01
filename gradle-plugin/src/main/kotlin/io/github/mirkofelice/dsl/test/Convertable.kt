@@ -8,7 +8,7 @@ package io.github.mirkofelice.dsl.test
 /**
  * Represents an entity able to be converted in another entity.
  */
-internal interface Convertable<T> {
+internal fun interface Convertable<T> {
 
     /**
      * Converts the object into the other object.
