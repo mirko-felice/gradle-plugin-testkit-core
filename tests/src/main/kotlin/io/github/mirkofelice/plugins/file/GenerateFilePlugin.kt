@@ -23,7 +23,7 @@ import org.gradle.kotlin.dsl.register
 import java.io.File
 import java.io.Serializable
 
-internal enum class Permission {
+enum class Permission {
     R, W, X
 }
 
@@ -38,16 +38,7 @@ open class GenerateFileTask : DefaultTask() {
 
     @Input
     @Optional
-    val permissions: ListProperty<String> = project.objects.listProperty()
-
-    private val realPermissions: Provider<List<Permission>> = permissions.map { it
-        .map { permission ->
-            require(Permission.values().map(Permission::name).contains(permission)) {
-                "Permission with name $permission does not exist."
-            }
-            Permission.valueOf(permission)
-        }
-    }
+    val permissions: ListProperty<Permission> = project.objects.listProperty()
 
     @OutputFile
     val file: Provider<File> = fileName.map { File(project.rootDir.path + File.separator + it) }
@@ -56,8 +47,8 @@ open class GenerateFileTask : DefaultTask() {
     fun generateFile() {
         val file = file.get()
         file.writeText(content.get())
-        realPermissions.get().setPermissions(file, true)
-        val difference = Permission.values().toList().minus(realPermissions.get().toSet())
+        permissions.get().setPermissions(file, true)
+        val difference = Permission.values().toList().minus(permissions.get().toSet())
         difference.setPermissions(file, false)
     }
 
@@ -80,7 +71,7 @@ open class GenerateFileExtension(objects: ObjectFactory) : Serializable {
 
     val content: Property<String> = objects.property<String>().convention("example")
 
-    val permissions: ListProperty<String> = objects.listProperty<String>().convention(listOf("R"))
+    val permissions: ListProperty<Permission> = objects.listProperty<Permission>().convention(listOf(Permission.R))
 
     private companion object {
         private const val serialVersionUID = 1L

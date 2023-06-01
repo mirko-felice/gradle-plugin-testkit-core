@@ -39,6 +39,7 @@ open class TestkitTests @Inject constructor(private val objects: ObjectFactory) 
      * Represents the root folder of the tests.
      */
     var folder: File
+        @Generated
         get() = this._folder
         set(value) {
             require(value.isDirectory && value.walk().any { it.name.endsWith("build.gradle.kts") }) {
