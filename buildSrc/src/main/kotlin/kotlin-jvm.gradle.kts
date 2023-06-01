@@ -1,5 +1,5 @@
+
 import com.lordcodes.turtle.shellRun
-import org.apache.tools.ant.taskdefs.condition.Os
 import java.util.*
 
 plugins {
@@ -32,10 +32,8 @@ inline fun <reified T : Task> Project.disableTrackStateOnWindows() {
     }
 }
 
-if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-    disableTrackStateOnWindows<Test>()
-    disableTrackStateOnWindows<JacocoReport>()
-}
+disableTrackStateOnWindows<Test>()
+disableTrackStateOnWindows<JacocoReport>()
 
 tasks {
 
