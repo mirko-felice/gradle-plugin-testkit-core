@@ -41,12 +41,12 @@ class ExampleTest : StringSpec({
 It uses **_yaml_** files to declare the tests. More info [below](#yaml-structure).
 
 It uses a [`CheckerType`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/src/main/kotlin/io/github/mirkofelice/api/CheckerType.kt) 
-to know which subclass of [`TestkitChecker`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/core/TestkitChecker.kt)
+to know which subclass of [`TestkitChecker`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/checkers/TestkitChecker.kt)
 use to apply the various checks.
 
 At the moment the project provides these types of checker:
 
-- **KOTLIN**: refers to the [`KotlinChecker`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/core/KotlinChecker.kt)
+- **KOTLIN**: refers to the [`KotlinChecker`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/checkers/KotlinChecker.kt)
   which uses the basic Kotlin assertions.
 
 #### Configuration
@@ -107,13 +107,14 @@ tests:
           - firstPartialOutput
           - secondPartialOutput
       files:
-        - name: "test.txt"
-          content: "Example content"
-          permissions:
-            - R
-            - W
-            - X
-          contentRegex: "$regex"
+        existing:
+          - name: "test.txt"
+            content: "Example content"
+            permissions:
+              - R
+              - W
+              - X
+            contentRegex: "$regex"
 ```
 
 #### Class diagram
@@ -154,11 +155,11 @@ testkit {
 }
 ```
 
-The plugin provides a set of properties/methods, using a DSL.
+The plugin provides a set of properties/methods, using two main DSL.
 
 ##### Required
 
-No required property/method. That means no tests.
+No required property/method. That means no tests will be run.
 
 ##### Optional
 
@@ -171,9 +172,9 @@ Two main properties:
   Default to `false`.\
   **BE CAREFUL**: even if this is set to `true`, you should run the task with the
   appropriate option _-q_, in order to get the output sorted correctly.\
-  Example: `./gradlew runTestkit -q`
+  Example: `./gradlew testkit -q`
 
-Using a DSL, folders can be added inside `folders { }` block:
+Using the folder DSL, folders can be added inside `folders { }` block:
 
 - **withMainDefault()**: method to add the folder with default main path (_src/main/resources_).
 
@@ -181,13 +182,22 @@ Using a DSL, folders can be added inside `folders { }` block:
 
 - **folder(path: String)**: method to add a folder with the given path, always starting from the project directory.
 
+These folders must contain the _yaml_ file and the _build.gradle.kts_.
+
+Using the test DSL, tests can be created inside `tests { }` block:
+
+- **folder**: property to set the root folder containing the _build.gradle.kts_.
+
+- **test(description: String) { }**: method to add a new test with the given description, followed by its configuration.
+  This provides a full DSL to mirror the yaml structure.
+
 #### Tasks
 
 This plugin creates the following tasks:
 
-- **testkitFolders**: task able to run the testkit library using the _folders_ DSL configuration.
+- **testkitFolders**: task able to run the testkit library using the _folder_ DSL configuration.
 
-- **testkitDSL**: task able to run the testkit library using the _tests_ DSL configuration.
+- **testkitDSL**: task able to run the testkit library using the _test_ DSL configuration.
 
 - **testkit**: global task to execute all the testkit tasks.
 
