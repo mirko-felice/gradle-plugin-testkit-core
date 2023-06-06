@@ -8,7 +8,7 @@ kotlinqa-version = "0.42.1"
 sonarqube-version = "4.2.0.3129"
 
 # doc
-dokka-version = "1.8.10"
+dokka-version = "1.8.20"
 
 # test
 jacoco-testkit-version = "1.0.12"
