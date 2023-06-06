@@ -2,7 +2,7 @@ import java.util.regex.Pattern
 
 plugins {
     id("library-conventions")
-    id("com.gradle.plugin-publish") version "1.2.0"
+    alias(libs.plugins.gradlepublish)
 }
 
 dependencies {

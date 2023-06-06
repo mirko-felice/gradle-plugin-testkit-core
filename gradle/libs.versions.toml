@@ -1,29 +1,41 @@
 [versions]
-sonarqube-version = "4.2.0.3129"
-kotlin-qa-version = "0.42.0"
-turtle-version = "0.8.0"
+# core
 kotlin-version = "1.8.21"
-kotest-version = "5.6.2"
-konf-version = "1.1.2"
 jackson-version = "2.15.2"
+
+# QA
+kotlinqa-version = "0.42.0"
+sonarqube-version = "4.2.0.3129"
+
+# doc
 dokka-version = "1.8.10"
+
+# test
 jacoco-testkit-version = "1.0.12"
+kotest-version = "5.6.2"
 junit-version = "5.9.3"
+
+# other
+turtle-version = "0.8.0"
+publish-plugin-version = "1.2.0"
 
 [libraries]
 kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
-turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle-version" }
-kotest = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
-konf-yaml = { module = "com.uchuhimo:konf-yaml", version.ref = "konf-version" }
 jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
 jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
+
+kotlinqa = { module = "org.danilopianini.gradle-kotlin-qa:org.danilopianini.gradle-kotlin-qa.gradle.plugin", version.ref = "kotlinqa-version" }
+turtle = { module = "com.lordcodes.turtle:turtle", version.ref = "turtle-version" }
 sonarqube = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqube-version" }
+
 dokka = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka-version" }
-kotlin-qa = { module = "org.danilopianini.gradle-kotlin-qa:org.danilopianini.gradle-kotlin-qa.gradle.plugin", version.ref = "kotlin-qa-version" }
-jacoco-testkit = { module = "pl.droidsonroids.gradle.jacoco:pl.droidsonroids.gradle.jacoco", version.ref = "jacoco-testkit-version" }
+
+jacocotestkit = { module = "pl.droidsonroids.gradle.jacoco:pl.droidsonroids.gradle.jacoco", version.ref = "jacoco-testkit-version" }
+kotest = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-version" }
 
 [bundles]
 jackson = [ "jackson-module", "jackson-yaml" ]
 
 [plugins]
+gradlepublish = { id = "com.gradle.plugin-publish", version.ref = "publish-plugin-version" }

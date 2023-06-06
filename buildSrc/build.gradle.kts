@@ -8,9 +8,12 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin)
-    implementation(libs.sonarqube)
+
+    implementation(libs.kotlinqa)
     implementation(libs.turtle)
+    implementation(libs.sonarqube)
+
     implementation(libs.dokka)
-    implementation(libs.kotlin.qa)
-    implementation(libs.jacoco.testkit)
+
+    implementation(libs.jacocotestkit)
 }
