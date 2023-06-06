@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.tasks
 
-import io.github.mirkofelice.api.TestkitRunner
+import io.github.mirkofelice.api.Testkit
 import io.github.mirkofelice.dsl.folder.TestkitFolders
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -30,7 +30,7 @@ open class TestkitFoldersTask : TestkitTask() {
     @TaskAction
     fun run() {
         folders.get().folders.get().forEach {
-            TestkitRunner.runTests(
+            Testkit.test(
                 project.name,
                 project.projectDir.path + File.separator + it.path.get(),
                 this.checkerType.get(),

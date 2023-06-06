@@ -5,7 +5,7 @@
 
 package io.github.mirkofelice.plugins.file
 
-import io.github.mirkofelice.api.TestkitRunner
+import io.github.mirkofelice.api.Testkit
 import io.github.mirkofelice.plugins.AbstractTest
 import io.github.mirkofelice.plugins.runTestsInsideProject
 import io.kotest.assertions.throwables.shouldThrow
@@ -13,36 +13,36 @@ import io.kotest.assertions.throwables.shouldThrow
 class GenerateFileTests : AbstractTest({
 
     "Basic Test" {
-        TestkitRunner.runTestsInsideProject("generateFile/basic")
+        Testkit.runTestsInsideProject("generateFile/basic")
     }
 
     "Content Test" {
-        TestkitRunner.runTestsInsideProject("generateFile/content")
+        Testkit.runTestsInsideProject("generateFile/content")
     }
 
     "Permissions Test" {
-        TestkitRunner.runTestsInsideProject("generateFile/permissions")
+        Testkit.runTestsInsideProject("generateFile/permissions")
     }
 
     "Regex Test" {
-        TestkitRunner.runTestsInsideProject("generateFile/regex")
+        Testkit.runTestsInsideProject("generateFile/regex")
     }
 
     "Wrong permissions Test" {
         shouldThrow<IllegalStateException> {
-            TestkitRunner.runTestsInsideProject("generateFile/wrongPermissions")
+            Testkit.runTestsInsideProject("generateFile/wrongPermissions")
         }
     }
 
     "Wrong content Test" {
         shouldThrow<IllegalStateException> {
-            TestkitRunner.runTestsInsideProject("generateFile/wrongContent")
+            Testkit.runTestsInsideProject("generateFile/wrongContent")
         }
     }
 
     "Wrong content regex Test" {
         shouldThrow<IllegalStateException> {
-            TestkitRunner.runTestsInsideProject("generateFile/wrongContentRegex")
+            Testkit.runTestsInsideProject("generateFile/wrongContentRegex")
         }
     }
 

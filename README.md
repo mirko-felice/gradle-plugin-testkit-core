@@ -25,7 +25,7 @@ to do that.
 
 ### Usage
 
-This library provides one main _API_: [`TestkitRunner`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/api/TestkitRunner.kt).
+This library provides one main _API_: [`Testkit`](https://github.com/mirko-felice/gradle-plugin-testkit/blob/master/core/src/main/kotlin/io/github/mirkofelice/api/Testkit.kt).
 
 It can be used in your own tests like below.
 
@@ -33,7 +33,7 @@ It can be used in your own tests like below.
 class ExampleTest : StringSpec({
     
     "Example Test" {
-        TestkitRunner.runTests(projectName)
+        Testkit.tests(projectName)
     }   
 })
 ```
@@ -151,6 +151,12 @@ testkit {
         withMainDefault()
         withTestDefault()
         folder("path/to/yaml")
+    }
+    tests {
+        folder = file("path/to/folder")
+        test("description") {
+            ...
+        }
     }
 }
 ```

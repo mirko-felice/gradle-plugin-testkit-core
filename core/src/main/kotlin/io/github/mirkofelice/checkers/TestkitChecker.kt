@@ -5,6 +5,7 @@
 
 package io.github.mirkofelice.checkers
 
+import io.github.mirkofelice.structure.Expectation
 import io.github.mirkofelice.structure.Files
 import io.github.mirkofelice.structure.Outcomes
 import io.github.mirkofelice.structure.Output
@@ -82,11 +83,23 @@ internal interface TestkitChecker {
     fun checkFileContentRegex(contentRegex: Regex, file: File)
 
     /**
+     * Executes all the checks, starting from the parameters.
+     * @param expectation [Expectation] of the results
+     * @param result [BuildResult] of build
+     * @param rootFolder folder in which the build has run
+     */
+    fun check(expectation: Expectation, result: BuildResult, rootFolder: File) {
+        this.checkOutcomes(expectation.outcomes, result)
+        this.checkOutput(expectation.output, result.output)
+        this.checkFiles(expectation.files, rootFolder)
+    }
+
+    /**
      * Checks all the expected [Outcomes].
      * @param expectedOutcomes expected [Outcomes] to check
      * @param result [BuildResult] to check from
      */
-    fun checkOutcomes(expectedOutcomes: Outcomes, result: BuildResult) {
+    private fun checkOutcomes(expectedOutcomes: Outcomes, result: BuildResult) {
         expectedOutcomes.allExecutedTasks().forEach { checkExecutedTask(it, result) }
         expectedOutcomes.success.forEach { checkOutcome(TaskOutcome.SUCCESS, it, result) }
         expectedOutcomes.failed.forEach { checkOutcome(TaskOutcome.FAILED, it, result) }
@@ -103,7 +116,7 @@ internal interface TestkitChecker {
      * @param expectedOutput expected [Output] to check
      * @param actualOutput actual output
      */
-    fun checkOutput(expectedOutput: Output, actualOutput: String) {
+    private fun checkOutput(expectedOutput: Output, actualOutput: String) {
         expectedOutput.contains.forEach { checkOutputContains(actualOutput, it) }
         expectedOutput.doesntContain.forEach { checkOutputDoesNotContain(actualOutput, it) }
     }
@@ -113,7 +126,7 @@ internal interface TestkitChecker {
      * @param files expectations on [Files]
      * @param root root folder to check from
      */
-    fun checkFiles(files: Files, root: File) {
+    private fun checkFiles(files: Files, root: File) {
         files.existing.forEach {
             val fileToCheck = File("${root.absolutePath}/${it.name}")
             checkFileExistence(fileToCheck)
