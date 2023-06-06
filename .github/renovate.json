@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>mirko-felice/renovate-config"
+    "local>mirko-felice/renovate-config", ":semanticCommitTypeAll(chore)"
   ]
 }
