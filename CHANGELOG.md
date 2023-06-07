@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.7.1...0.8.0) (2023-06-07)
+
+
+### Features
+
+* **gradle-plugin:** add separate project and generic folder and sub-folders ([372b3cd](https://github.com/mirko-felice/gradle-plugin-testkit/commit/372b3cdcaba9c60fb9f3d0cb5aff54149e3b16fa))
+
 ## [0.7.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.7.0...0.7.1) (2023-06-01)
 
 
