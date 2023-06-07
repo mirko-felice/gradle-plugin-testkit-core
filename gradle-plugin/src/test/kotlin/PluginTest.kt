@@ -30,13 +30,18 @@ class PluginTest {
                 id("io.github.mirko-felice.testkit")
             }
             
+            file("emptyDir/build.gradle.kts").createNewFile()
+            
             testkit {
                 folders {
                     withMainDefault()
                     withTestDefault()
+                    genericFolder(System.getProperty("user.dir") + "../tests/src/test/resources")
+                    subFoldersOfProject("src/test/resources")
+                    subFoldersOf(file(System.getProperty("user.dir")).parentFile.path + "/tests/src/test/resources/generateFile/basic")
                 }
                 tests {
-                    folder = file(System.getProperty("user.dir") + "/src/test/resources")
+                    folder = "emptyDir"
                     println(folder)
                     test("example") {
                         configuration {
@@ -88,6 +93,14 @@ class PluginTest {
             }
             
         """.trimIndent()
+
+        val settings = """
+            rootProject.name = "tests"
+        """.trimIndent()
+        tempDir.resolve("settings.gradle.kts").writeText(settings)
+
+        tempDir.resolve("emptyDir").mkdir()
+
         runGradleBuild(buildContent, false)
     }
 
@@ -111,11 +124,11 @@ class PluginTest {
             
             testkit {
                 tests {
-                    folder = file(System.getProperty("user.dir") + "/src/main")
+                    folder = System.getProperty("user.dir") + "/src/main"
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, true)
+        runGradleBuild(buildContent, false)
     }
 
     @Test
@@ -127,7 +140,71 @@ class PluginTest {
             
             testkit {
                 tests {
-                    folder = file(System.getProperty("user.dir") + "/src/main/kotlin/io/github/mirkofelice/plugin/TestkitPlugin.kt")
+                    folder = System.getProperty("user.dir") + "/src/main/kotlin/io/github/mirkofelice/plugin/TestkitPlugin.kt"
+                }
+            }
+        """.trimIndent()
+        runGradleBuild(buildContent, false)
+    }
+
+    @Test
+    fun wrongSubFolder() {
+        val buildContent = """
+            plugins {
+                id("io.github.mirko-felice.testkit")
+            }
+            
+             testkit {
+                folders {
+                    subFoldersOf(file(System.getProperty("user.dir")).parentFile.path + "/tests/src/test/resources/generateFile/basic")
+                }
+            }
+        """.trimIndent()
+        runGradleBuild(buildContent, true)
+    }
+
+    @Test
+    fun wrongSubFolderAsFile() {
+        val buildContent = """
+            plugins {
+                id("io.github.mirko-felice.testkit")
+            }
+            
+             testkit {
+                folders {
+                    subFoldersOfProject("src/test/resources/build.gradle.kts")
+                }
+            }
+        """.trimIndent()
+        runGradleBuild(buildContent, true)
+    }
+
+    @Test
+    fun wrongSubFolderMissingGradle() {
+        val buildContent = """
+            plugins {
+                id("io.github.mirko-felice.testkit")
+            }
+            
+             testkit {
+                folders {
+                    subFoldersOfProject("src/test/resources/missGradle")
+                }
+            }
+        """.trimIndent()
+        runGradleBuild(buildContent, true)
+    }
+
+    @Test
+    fun wrongSubFolderMissingYaml() {
+        val buildContent = """
+            plugins {
+                id("io.github.mirko-felice.testkit")
+            }
+            
+             testkit {
+                folders {
+                    subFoldersOfProject("src/test/resources/missYaml")
                 }
             }
         """.trimIndent()

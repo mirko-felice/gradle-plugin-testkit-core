@@ -4,7 +4,6 @@ plugins {
     id("kotlin-jvm")
     id("org.danilopianini.gradle-kotlin-qa")
     id("org.jetbrains.dokka")
-    `java-library`
     `maven-publish`
     signing
 }
@@ -20,16 +19,7 @@ kotlin {
     }
 }
 
-val javaVersion: String by project
 val githubUrl: String by project
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion))
-    }
-    withSourcesJar()
-    withJavadocJar()
-}
 
 tasks {
 

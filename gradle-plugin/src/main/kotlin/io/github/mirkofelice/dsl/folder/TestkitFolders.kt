@@ -23,26 +23,71 @@ open class TestkitFolders @Inject constructor(private val objects: ObjectFactory
     internal val folders: ListProperty<TestkitFolder> = objects.listProperty()
 
     /**
-     * Adds a new folder.
+     * Adds a new folder, that has to be a subfolder of the target project.
      * @param path path of the folder containing the tests files
      */
-    fun folder(path: String) {
-        folders.add(objects.newInstance(TestkitFolder::class, objects.property(String::class).value(path)))
+    fun projectFolder(path: String) {
+        addFolder(path, true)
     }
 
     /**
-     * Automatically adds the folder with the default main path ('src/main/resources').
+     * Adds a new generic folder.
+     * @param path path of the folder containing the tests files
+     */
+    fun genericFolder(path: String) {
+        addFolder(path, false)
+    }
+
+    /**
+     * Adds all the sub-folders, that have to exist in the target project.
+     * @param path path of the main folder containing the sub-folders containing the tests files
+     */
+    fun subFoldersOfProject(path: String) {
+        addSubFolders(path, true)
+    }
+
+    /**
+     * Adds all the sub-folders starting from a generic folder.
+     * @param path path of the main folder containing the sub-folders containing the tests files
+     */
+    fun subFoldersOf(path: String) {
+        addSubFolders(path, false)
+    }
+
+    /**
+     * Automatically adds the project folder with the default main path ('src/main/resources').
      */
     fun withMainDefault() {
-        folder(DEFAULT_MAIN_PATH)
+        projectFolder(DEFAULT_MAIN_PATH)
     }
 
     /**
-     * Automatically adds the folder with the default test path ('src/test/resources').
+     * Automatically adds the project folder with the default test path ('src/test/resources').
      */
     fun withTestDefault() {
-        folder(DEFAULT_TEST_PATH)
+        projectFolder(DEFAULT_TEST_PATH)
     }
+
+    private fun addSubFolders(path: String, inProject: Boolean) {
+        val folder = File(path)
+        require(folder.isDirectory) { "File '$folder' does not exist or is not a folder!" }
+        val subFolders = folder.walk()
+            .filter {
+                it.isDirectory &&
+                    it.walk().maxDepth(1).any { f -> f.name == "build.gradle.kts" } &&
+                    it.walk().maxDepth(1).any { f -> f.name.endsWith(".yaml") }
+            }
+            .toList()
+        require(subFolders.isNotEmpty()) {
+            "Folder '$folder' does not contain any subfolder containing 'build.gradle.kts' and a yaml file!"
+        }
+        subFolders.forEach { addFolder(it.path, inProject) }
+    }
+
+    private fun addFolder(path: String, inProject: Boolean) =
+        folders.add(
+            objects.newInstance(TestkitFolder::class, objects.property(String::class).value(path), inProject),
+        )
 
     private companion object {
         private const val serialVersionUID = 1L

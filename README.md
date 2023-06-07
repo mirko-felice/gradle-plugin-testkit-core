@@ -186,13 +186,19 @@ Using the folder DSL, folders can be added inside `folders { }` block:
 
 - **withTestDefault()**: method to add the folder with default test path (_src/test/resources_).
 
-- **folder(path: String)**: method to add a folder with the given path, always starting from the project directory.
+- **projectFolder(path: String)**: method to add a folder with the given path, always starting from the project directory.
+
+- **genericFolder(path: String)**: method to add a folder with the given path, can be located anywhere.
+
+- **subFoldersOfProject(path: String)**: method to add all the sub-folders in the given path, always starting from the project directory.
+
+- **subFoldersOf(path: String)**: method to add all the sub-folders int the given path, can be located anywhere.
 
 These folders must contain the _yaml_ file and the _build.gradle.kts_.
 
 Using the test DSL, tests can be created inside `tests { }` block:
 
-- **folder**: property to set the root folder containing the _build.gradle.kts_.
+- **folder**: property to set the root folder containing the _build.gradle.kts_, always starting from the project directory.
 
 - **test(description: String) { }**: method to add a new test with the given description, followed by its configuration.
   This provides a full DSL to mirror the yaml structure.
@@ -209,7 +215,7 @@ This plugin creates the following tasks:
 
 ## License
 
-![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmirko-felice%2Fgradle-plugin-testkit-core.svg?type=shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmirko-felice%2Fgradle-plugin-testkit-core.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmirko-felice%2Fgradle-plugin-testkit-core)
 
 Licensed under the [MIT License](LICENSE).
 

@@ -1,0 +1,6 @@
+tests:
+  - description: "Empty"
+    configuration:
+      tasks:
+        -
+    expectation:

@@ -11,6 +11,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.property
+import java.io.File
 
 /**
  * Main [Task][org.gradle.api.Task] of the plugin able to run the testkit according to the provided configuration.
@@ -28,8 +29,13 @@ open class TestkitTestsTask : TestkitTask() {
      */
     @TaskAction
     fun run() {
-        val testFolder = tests.get().folder
         val tests = tests.get().convert()
-        Testkit.test(tests, testFolder, project.buildDir.absolutePath, checkerType.get(), forwardOutput.get())
+        Testkit.test(
+            tests,
+            project.projectDir.path + File.separator + this.tests.get().folder,
+            project.buildDir.absolutePath,
+            checkerType.get(),
+            forwardOutput.get(),
+        )
     }
 }

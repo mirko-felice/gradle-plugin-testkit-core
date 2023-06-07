@@ -27,4 +27,14 @@ class HelloTests : AbstractTest({
             Testkit.runTestsInsideProject("hello/wrongExistingTask")
         }
     }
+
+    "Missing Yaml" {
+        shouldThrow<IllegalArgumentException> {
+            Testkit.runTestsInsideProject("hello")
+        }
+    }
+
+    "Default test" {
+        Testkit.test("tests")
+    }
 })

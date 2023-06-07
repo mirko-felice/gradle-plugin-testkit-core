@@ -11,7 +11,6 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.property
-import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -21,8 +20,12 @@ import javax.inject.Inject
 @TestkitTestDSL
 open class TestkitTests @Inject constructor(private val objects: ObjectFactory) : Serializable, Convertable<Tests> {
 
-    private lateinit var _folder: File
     private val tests: ListProperty<TestkitTest> = objects.listProperty()
+
+    /**
+     * Represents the root folder of the tests.
+     */
+    lateinit var folder: String
 
     /**
      * Adds a new test.
@@ -34,19 +37,6 @@ open class TestkitTests @Inject constructor(private val objects: ObjectFactory) 
             .apply(configuration)
         tests.add(test)
     }
-
-    /**
-     * Represents the root folder of the tests.
-     */
-    var folder: File
-        @Generated
-        get() = this._folder
-        set(value) {
-            require(value.isDirectory && value.walk().any { it.name.endsWith("build.gradle.kts") }) {
-                "File with path ${value.path} has to be a folder and must contain build.gradle.kts!"
-            }
-            this._folder = value
-        }
 
     override fun convert(): Tests = Tests(tests.get().map { it.convert() })
 

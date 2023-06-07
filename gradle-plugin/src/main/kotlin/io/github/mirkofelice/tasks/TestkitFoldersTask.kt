@@ -32,7 +32,7 @@ open class TestkitFoldersTask : TestkitTask() {
         folders.get().folders.get().forEach {
             Testkit.test(
                 project.name,
-                project.projectDir.path + File.separator + it.path.get(),
+                if (it.inProject) project.projectDir.path + File.separator + it.path.get() else it.path.get(),
                 this.checkerType.get(),
                 this.forwardOutput.get(),
             )

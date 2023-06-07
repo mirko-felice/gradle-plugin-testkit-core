@@ -12,9 +12,11 @@ import javax.inject.Inject
 /**
  * Represents a folder containing a path to the tests files.
  * @property path [Property] describing the path of the folder containing the tests files
+ * @property inProject true if the path has to be in the target project, false otherwise
  */
 @TestkitFolderDSL
-open class TestkitFolder @Inject constructor(internal val path: Property<String>) : Serializable {
+open class TestkitFolder @Inject constructor(internal val path: Property<String>, internal val inProject: Boolean) :
+    Serializable {
 
     private companion object {
         private const val serialVersionUID = 1L

@@ -46,14 +46,8 @@ object Testkit {
     ) {
         val projectFolder = File(projectFolderPath)
         val buildFolder = projectFolderPath.replaceAfter(projectName, "") + sep + "build"
-        if (!projectFolder.isDirectory) println("File $projectFolder is not a folder!")
-        if (!projectFolder.walk().any { it.name.endsWith("build.gradle.kts") }) {
-            println("Folder $projectFolder does not contain any 'build.gradle.kts'!")
-        }
-        val yamlFile = projectFolder.walk().firstOrNull { it.name.endsWith(".yaml") }
-        if (yamlFile == null) {
-            println("Folder $projectFolderPath does not contain any yaml file.")
-        } else {
+        if (requireFolder(projectFolder) && requireBuildGradleKts(projectFolder)) {
+            val yamlFile = requireYaml(projectFolder)
             val tests = mapper.readValue(yamlFile, Tests::class.java)
             println("Executing tests of configuration file: '${yamlFile.name}' in dir '${projectFolder.path}'\n")
             TestRunner.runTests(tests, yamlFile.parentFile, buildFolder, checkerType, forwardOutput)
@@ -63,29 +57,46 @@ object Testkit {
     /**
      * Runs all the tests, designed to be run by the gradle-plugin.
      * @param tests [Tests] to run
-     * @param projectFolder folder containing the `build.gradle.kts` applying the plugin
+     * @param projectFolderPath path of the folder containing the `build.gradle.kts` applying the plugin
      * @param pluginBuildFolder path of the build folder containing the plugin under test
-     * @param checkerType [CheckerType] to use. Default to [CheckerType.KOTLIN]
-     * @param forwardOutput true if user wants to see the tasks output, false otherwise. Default to false
+     * @param checkerType [CheckerType] to use
+     * @param forwardOutput true if user wants to see the tasks output, false otherwise
      */
     fun test(
         tests: Tests,
-        projectFolder: File,
+        projectFolderPath: String,
         pluginBuildFolder: String,
-        checkerType: CheckerType = KOTLIN,
-        forwardOutput: Boolean = false,
+        checkerType: CheckerType,
+        forwardOutput: Boolean,
     ) {
-        requireFolder(projectFolder)
-        requireBuildGradleKts(projectFolder)
-        println("Executing tests configured in plugin DSL of folder dir '${projectFolder.path}'\n")
-        TestRunner.runTests(tests, projectFolder, pluginBuildFolder, checkerType, forwardOutput)
+        val projectFolder = File(projectFolderPath)
+        if (requireFolder(projectFolder) && requireBuildGradleKts(projectFolder)) {
+            println("Executing tests configured in plugin DSL of folder dir '${projectFolder.path}'\n")
+            TestRunner.runTests(tests, projectFolder, pluginBuildFolder, checkerType, forwardOutput)
+        }
     }
 
-    private fun requireFolder(projectFolder: File) =
-        require(projectFolder.isDirectory) { "File $projectFolder is not a folder!" }
+    private fun requireFolder(projectFolder: File): Boolean {
+        return checkCondition(projectFolder.isDirectory, "File '$projectFolder' does not exist or is not a folder!")
+    }
 
-    private fun requireBuildGradleKts(projectFolder: File) =
-        require(projectFolder.walk().any { it.name.endsWith("build.gradle.kts") }) {
-            "Folder $projectFolder does not contain any 'build.gradle.kts'!"
+    private fun requireBuildGradleKts(projectFolder: File): Boolean {
+        return checkCondition(
+            projectFolder.walk().any { it.name.endsWith("build.gradle.kts") },
+            "Folder '$projectFolder' does not contain any 'build.gradle.kts'!",
+        )
+    }
+
+    private fun requireYaml(projectFolder: File): File {
+        try {
+            return projectFolder.walk().maxDepth(1).first { it.name.endsWith(".yaml") }
+        } catch (e: NoSuchElementException) {
+            throw IllegalArgumentException("Folder '$projectFolder' does not contain any yaml file.", e)
         }
+    }
+
+    private fun checkCondition(condition: Boolean, message: String): Boolean {
+        if (!condition) println(message)
+        return condition
+    }
 }

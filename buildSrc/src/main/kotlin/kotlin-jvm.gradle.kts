@@ -1,15 +1,24 @@
-
 import com.lordcodes.turtle.shellRun
 import java.util.*
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("pl.droidsonroids.jacoco.testkit")
+    `java-library`
 }
 
 repositories {
     mavenCentral()
     gradlePluginPortal()
+}
+
+val javaVersion: String by project
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 val currentVersion = shellRun {
