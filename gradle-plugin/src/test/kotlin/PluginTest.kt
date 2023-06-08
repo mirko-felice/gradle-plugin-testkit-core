@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
+import io.github.mirkofelice.api.Testkit
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,38 +15,64 @@ class PluginTest {
     @TempDir
     lateinit var tempDir: File
     private lateinit var buildFile: File
+    private lateinit var buildContent: String
 
     @BeforeEach
     fun setup() {
         buildFile = tempDir.resolve("build.gradle.kts")
-    }
-
-    @Test
-    fun completeConfiguration() {
-        val buildContent = """
-            import io.github.mirkofelice.structure.BuildResult
-            import io.github.mirkofelice.structure.Permission
-            
+        buildContent = """
             plugins {
                 id("io.github.mirko-felice.testkit")
             }
             
-            file("emptyDir/build.gradle.kts").createNewFile()
-            
+        """.trimIndent()
+    }
+
+    @Test
+    fun completeFolders() {
+        buildContent += """
             testkit {
                 folders {
-                    withMainDefault()
-                    withTestDefault()
-                    genericFolder(System.getProperty("user.dir") + "../tests/src/test/resources")
-                    subFoldersOfProject("src/test/resources")
-                    subFoldersOf(file(System.getProperty("user.dir")).parentFile.path + "/tests/src/test/resources/generateFile/basic")
+                    projectFolder("emptyDir")
+                    genericFolder(System.getProperty("user.dir") + "/src/test/resources")
+                    subFoldersOfProject("emptyDir")
+                    subFoldersOf(System.getProperty("user.dir") + "/src/test/resources")
                 }
+            }
+        """.trimIndent()
+
+        tempDir.resolve("emptyDir").also {
+            it.mkdir()
+            it.resolve("build.gradle.kts").createNewFile()
+            val content = """
+                tests:
+                  - description: "Empty"
+                    configuration:
+                      tasks:
+                        - tasks
+                    expectation:
+                      result: SUCCESS
+            """.trimIndent()
+            it.resolve("empty.yaml").writeText(content)
+        }
+
+        runGradleBuild(testMode = true)
+    }
+
+    @Test
+    fun completeTests() {
+        buildContent = """
+            import io.github.mirkofelice.structure.BuildResult
+            import io.github.mirkofelice.structure.Permission
+            
+        """.trimIndent() + buildContent + """
+            testkit {
                 tests {
                     folder = "emptyDir"
                     println(folder)
                     test("example") {
                         configuration {
-                            tasks = emptyList()
+                            tasks = listOf("tasks")
                             println(tasks)
                             options = emptyList()
                             println(options)
@@ -91,127 +118,148 @@ class PluginTest {
                     }
                 }
             }
-            
         """.trimIndent()
 
-        val settings = """
-            rootProject.name = "tests"
-        """.trimIndent()
-        tempDir.resolve("settings.gradle.kts").writeText(settings)
+        tempDir.resolve("emptyDir").also {
+            it.mkdir()
+            it.resolve("build.gradle.kts").createNewFile()
+            val content = """
+                tests:
+                  - description: "Empty"
+                    configuration:
+                      tasks: 
+                        - tasks
+                    expectation:
+                      result: SUCCESS
+            """.trimIndent()
+            it.resolve("empty.yaml").writeText(content)
+        }
 
-        tempDir.resolve("emptyDir").mkdir()
-
-        runGradleBuild(buildContent, false)
+        runGradleBuild()
     }
 
     @Test
     fun withJavaGradlePlugin() {
-        val buildContent = """
+        buildContent = """
             plugins {
                 `java-gradle-plugin`
                 id("io.github.mirko-felice.testkit")
             }
         """.trimIndent()
-        runGradleBuild(buildContent, false)
+        runGradleBuild()
     }
 
     @Test
-    fun wrongFolder() {
-        val buildContent = """
-            plugins {
-                id("io.github.mirko-felice.testkit")
-            }
-            
+    fun wrongTestsFolder() {
+        buildContent += """
             testkit {
                 tests {
                     folder = System.getProperty("user.dir") + "/src/main"
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, false)
+        runGradleBuild(failing = true)
     }
 
     @Test
-    fun wrongFolderAsFile() {
-        val buildContent = """
-            plugins {
-                id("io.github.mirko-felice.testkit")
-            }
-            
+    fun wrongTestsFolderAsFile() {
+        buildContent += """
             testkit {
                 tests {
                     folder = System.getProperty("user.dir") + "/src/main/kotlin/io/github/mirkofelice/plugin/TestkitPlugin.kt"
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, false)
+        runGradleBuild(failing = true)
+    }
+
+    @Test
+    fun wrongFolder() {
+        buildContent += """
+            testkit {
+                tests {
+                    folder = System.getProperty("user.dir") + "/src/main"
+                }
+            }
+        """.trimIndent()
+        runGradleBuild(failing = true)
+    }
+
+    @Test
+    fun wrongFolderAsFile() {
+        buildContent += """
+            testkit {
+                tests {
+                    folder = System.getProperty("user.dir") + "/src/main/kotlin/io/github/mirkofelice/plugin/TestkitPlugin.kt"
+                }
+            }
+        """.trimIndent()
+        runGradleBuild(failing = true)
     }
 
     @Test
     fun wrongSubFolder() {
-        val buildContent = """
-            plugins {
-                id("io.github.mirko-felice.testkit")
-            }
-            
-             testkit {
+        buildContent += """
+            testkit {
                 folders {
                     subFoldersOf(file(System.getProperty("user.dir")).parentFile.path + "/tests/src/test/resources/generateFile/basic")
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, true)
+        runGradleBuild(failing = true)
     }
 
     @Test
     fun wrongSubFolderAsFile() {
-        val buildContent = """
-            plugins {
-                id("io.github.mirko-felice.testkit")
-            }
-            
-             testkit {
+        buildContent += """
+            testkit {
                 folders {
                     subFoldersOfProject("src/test/resources/build.gradle.kts")
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, true)
+        runGradleBuild(failing = true)
     }
 
     @Test
     fun wrongSubFolderMissingGradle() {
-        val buildContent = """
-            plugins {
-                id("io.github.mirko-felice.testkit")
-            }
-            
-             testkit {
+        buildContent += """
+            testkit {
                 folders {
                     subFoldersOfProject("src/test/resources/missGradle")
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, true)
+        runGradleBuild(failing = true)
     }
 
     @Test
     fun wrongSubFolderMissingYaml() {
-        val buildContent = """
-            plugins {
-                id("io.github.mirko-felice.testkit")
-            }
-            
-             testkit {
+        buildContent += """
+            testkit {
                 folders {
                     subFoldersOfProject("src/test/resources/missYaml")
                 }
             }
         """.trimIndent()
-        runGradleBuild(buildContent, true)
+        runGradleBuild(failing = true)
     }
 
-    private fun runGradleBuild(buildContent: String, failing: Boolean) {
+    @Test
+    fun withMainAndTestFolders() {
+        buildContent += """
+            testkit {
+                folders {
+                    withMainDefault()
+                    withTestDefault()
+                }
+            }
+        """.trimIndent()
+
+        runGradleBuild(testMode = true)
+    }
+
+    private fun runGradleBuild(failing: Boolean = false, testMode: Boolean = false) {
         buildFile.writeText(buildContent)
 
         val testkitProperties = javaClass.classLoader.getResource("testkit-gradle.properties")?.readText()
@@ -222,7 +270,7 @@ class PluginTest {
             .withProjectDir(tempDir)
             .withPluginClasspath()
             .withArguments("testkit")
-
+        if (testMode) runner.withArguments(runner.arguments + "-D${Testkit.TEST_MODE}=true")
         if (failing) runner.buildAndFail() else runner.build()
     }
 }

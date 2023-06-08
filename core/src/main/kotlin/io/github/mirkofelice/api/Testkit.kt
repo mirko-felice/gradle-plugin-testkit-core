@@ -19,6 +19,10 @@ import java.io.File
  */
 object Testkit {
 
+    /**
+     * Constant representing the system property to set the test mode.
+     */
+    const val TEST_MODE = "TESTKIT_TEST_MODE"
     private val sep = File.separator
     private val mapper = JsonMapper
         .builder(YAMLFactory())
@@ -46,7 +50,7 @@ object Testkit {
     ) {
         val projectFolder = File(projectFolderPath)
         val buildFolder = projectFolderPath.replaceAfter(projectName, "") + sep + "build"
-        if (requireFolder(projectFolder) && requireBuildGradleKts(projectFolder)) {
+        if (requireFolder(projectFolder) && requireBuildGradleKts(projectFolder) && !isTestMode()) {
             val yamlFile = requireYaml(projectFolder)
             val tests = mapper.readValue(yamlFile, Tests::class.java)
             println("Executing tests of configuration file: '${yamlFile.name}' in dir '${projectFolder.path}'\n")
@@ -96,7 +100,14 @@ object Testkit {
     }
 
     private fun checkCondition(condition: Boolean, message: String): Boolean {
-        if (!condition) println(message)
-        return condition
+        return if (isTestMode()) {
+            if (!condition) println(message)
+            true
+        } else {
+            require(condition) { message }
+            condition
+        }
     }
+
+    private fun isTestMode() = System.getProperty(TEST_MODE).toBoolean()
 }

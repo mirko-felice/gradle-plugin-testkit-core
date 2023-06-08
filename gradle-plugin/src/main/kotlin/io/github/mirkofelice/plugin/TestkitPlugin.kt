@@ -15,7 +15,6 @@ import org.gradle.api.Task
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
@@ -61,11 +60,14 @@ open class TestkitPlugin : Plugin<Project> {
             onlyIf { extension.tests.isPresent }
             tests.set(extension.tests)
         }
-        target.tasks.register<DefaultTask>("testkit") {
+        val testkit by target.tasks.registering(DefaultTask::class) {
             group = "verification"
             description = "Runs all the testkit tasks."
             dependsOn(testkitFolders, testkitDSL)
             mustRunAfter(testkitFolders, testkitDSL)
+        }
+        target.tasks.getByName("build") {
+            it.dependsOn(testkit)
         }
     }
 

@@ -1,6 +1,6 @@
 tests:
   - description: "Empty"
     configuration:
-      tasks:
-        -
+      tasks: []
     expectation:
+      result: SUCCESS

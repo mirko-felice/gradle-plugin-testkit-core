@@ -6,13 +6,12 @@
 package io.github.mirkofelice.plugins.hello
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.property
@@ -24,12 +23,9 @@ open class HelloTask : DefaultTask() {
     @Input
     val author: Property<String> = project.objects.property()
 
-    @Internal
-    val message: Provider<String> = author.map { "hello from $it" }
-
     @TaskAction
     fun print() {
-        logger.quiet(message.get())
+        logger.quiet("hello from ${author.get()}")
     }
 }
 
@@ -37,7 +33,7 @@ open class FailTask : DefaultTask() {
 
     @TaskAction
     fun fail() {
-        enabled = false
+        throw GradleException("Just to fail the task")
     }
 }
 

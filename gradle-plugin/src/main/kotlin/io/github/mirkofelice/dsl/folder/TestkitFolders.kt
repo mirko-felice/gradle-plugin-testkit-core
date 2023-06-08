@@ -5,6 +5,7 @@
 
 package io.github.mirkofelice.dsl.folder
 
+import io.github.mirkofelice.api.Testkit
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.kotlin.dsl.listProperty
@@ -58,19 +59,19 @@ open class TestkitFolders @Inject constructor(private val objects: ObjectFactory
      * Automatically adds the project folder with the default main path ('src/main/resources').
      */
     fun withMainDefault() {
-        projectFolder(DEFAULT_MAIN_PATH)
+        addSubFolders(DEFAULT_MAIN_PATH, true)
     }
 
     /**
      * Automatically adds the project folder with the default test path ('src/test/resources').
      */
     fun withTestDefault() {
-        projectFolder(DEFAULT_TEST_PATH)
+        addSubFolders(DEFAULT_TEST_PATH, true)
     }
 
     private fun addSubFolders(path: String, inProject: Boolean) {
         val folder = File(path)
-        require(folder.isDirectory) { "File '$folder' does not exist or is not a folder!" }
+        if (!isTestMode()) require(folder.isDirectory) { "File '$folder' does not exist or is not a folder!" }
         val subFolders = folder.walk()
             .filter {
                 it.isDirectory &&
@@ -78,8 +79,10 @@ open class TestkitFolders @Inject constructor(private val objects: ObjectFactory
                     it.walk().maxDepth(1).any { f -> f.name.endsWith(".yaml") }
             }
             .toList()
-        require(subFolders.isNotEmpty()) {
-            "Folder '$folder' does not contain any subfolder containing 'build.gradle.kts' and a yaml file!"
+        if (!isTestMode()) {
+            require(subFolders.isNotEmpty()) {
+                "Folder '$folder' does not contain any subfolder containing 'build.gradle.kts' and a yaml file!"
+            }
         }
         subFolders.forEach { addFolder(it.path, inProject) }
     }
@@ -88,6 +91,8 @@ open class TestkitFolders @Inject constructor(private val objects: ObjectFactory
         folders.add(
             objects.newInstance(TestkitFolder::class, objects.property(String::class).value(path), inProject),
         )
+
+    private fun isTestMode() = System.getProperty(Testkit.TEST_MODE).toBoolean()
 
     private companion object {
         private const val serialVersionUID = 1L

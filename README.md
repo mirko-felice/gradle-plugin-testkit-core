@@ -5,6 +5,7 @@
 [![CI + CD](https://github.com/mirko-felice/gradle-plugin-testkit/actions/workflows/ci-and-cd.yml/badge.svg)](https://github.com/mirko-felice/gradle-plugin-testkit/actions/workflows/ci-and-cd.yml)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit&metric=security_rating)](https://sonarcloud.io/summary/overall?id=mirko-felice_gradle-plugin-testkit)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit&metric=bugs)](https://sonarcloud.io/summary/overall?id=mirko-felice_gradle-plugin-testkit)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=mirko-felice_gradle-plugin-testkit&metric=code_smells)](https://sonarcloud.io/summary/overall?id=mirko-felice_gradle-plugin-testkit)
 [![codecov](https://codecov.io/gh/mirko-felice/gradle-plugin-testkit/branch/master/graph/badge.svg?token=TCU6QY2RD5)](https://codecov.io/gh/mirko-felice/gradle-plugin-testkit)
 
 ### Modules
@@ -33,7 +34,7 @@ It can be used in your own tests like below.
 class ExampleTest : StringSpec({
     
     "Example Test" {
-        Testkit.tests(projectName)
+        Testkit.test(projectName)
     }   
 })
 ```
@@ -51,12 +52,12 @@ At the moment the project provides these types of checker:
 
 #### Configuration
 
-The core function `runTests()` provides three parameters to give the user the capability to 
+The core function `test()` provides four parameters to give the user the capability to 
 configure the feature.
 
 - **projectName**: parameter describing the name of the project used to search for plugin classpath.
 
-- **testFolderName**: parameter describing the name of the folder containing the _yaml_ file.
+- **projectFolderPath**: parameter describing the path of the folder containing the _yaml_ file.
   Default to `currentDirectory/src/main/resources/`.
 
 - **checkerType**: parameter describing the _CheckerType_ to use.\
@@ -150,7 +151,7 @@ testkit {
     folders {
         withMainDefault()
         withTestDefault()
-        folder("path/to/yaml")
+        projectFolder("path/to/yaml")
     }
     tests {
         folder = file("path/to/folder")
@@ -176,15 +177,15 @@ Two main properties:
 
 - **forwardOutput**: property describing if the user wants to see the Gradle build output or not.\
   Default to `false`.\
-  **BE CAREFUL**: even if this is set to `true`, you should run the task with the
+  **_BE CAREFUL_**: even if this is set to `true`, you should run the task with the
   appropriate option _-q_, in order to get the output sorted correctly.\
   Example: `./gradlew testkit -q`
 
 Using the folder DSL, folders can be added inside `folders { }` block:
 
-- **withMainDefault()**: method to add the folder with default main path (_src/main/resources_).
+- **withMainDefault()**: method to add the sub-folders into the default main path (_src/main/resources_).
 
-- **withTestDefault()**: method to add the folder with default test path (_src/test/resources_).
+- **withTestDefault()**: method to add the sub-folders into the default test path (_src/test/resources_).
 
 - **projectFolder(path: String)**: method to add a folder with the given path, always starting from the project directory.
 
@@ -192,7 +193,7 @@ Using the folder DSL, folders can be added inside `folders { }` block:
 
 - **subFoldersOfProject(path: String)**: method to add all the sub-folders in the given path, always starting from the project directory.
 
-- **subFoldersOf(path: String)**: method to add all the sub-folders int the given path, can be located anywhere.
+- **subFoldersOf(path: String)**: method to add all the sub-folders in the given path, can be located anywhere.
 
 These folders must contain the _yaml_ file and the _build.gradle.kts_.
 

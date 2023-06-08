@@ -53,9 +53,15 @@ internal object BuildRunner {
 
     private fun getPluginClasspath(buildFolder: String): List<File> {
         val pluginClasspathFile = File(buildFolder + sep + propertiesFolder + sep + PROPERTIES_FILE_NAME)
-        return Properties().also { it.load(pluginClasspathFile.inputStream()) }
-            .getProperty(PluginUnderTestMetadataReading.IMPLEMENTATION_CLASSPATH_PROP_KEY)
-            .split(File.pathSeparator)
-            .map { File(it) }
+        return if (pluginClasspathFile.exists()) {
+            pluginClasspathFile.inputStream().use { s ->
+                Properties().also { it.load(s) }
+                    .getProperty(PluginUnderTestMetadataReading.IMPLEMENTATION_CLASSPATH_PROP_KEY)
+                    .split(File.pathSeparator)
+                    .map { File(it) }
+            }
+        } else {
+            emptyList()
+        }
     }
 }
