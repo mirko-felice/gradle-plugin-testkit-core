@@ -1,6 +1,6 @@
 [versions]
 # core
-kotlin-version = "1.8.21"
+kotlin-version = "1.8.22"
 jackson-version = "2.15.2"
 
 # QA
