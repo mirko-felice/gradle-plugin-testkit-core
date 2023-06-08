@@ -1,3 +1,10 @@
+## [0.8.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.0...0.8.1) (2023-06-08)
+
+
+### Bug Fixes
+
+* **gradle-plugin:** make default methods work with all the sub-folders + add testkit as build dependency ([f927326](https://github.com/mirko-felice/gradle-plugin-testkit/commit/f92732669576aff5233e10e03644093eedda81e5))
+
 # [0.8.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.7.1...0.8.0) (2023-06-07)
 
 
