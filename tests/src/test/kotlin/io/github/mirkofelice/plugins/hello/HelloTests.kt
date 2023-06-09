@@ -35,6 +35,10 @@ class HelloTests : AbstractTest({
     }
 
     "Default test" {
+        Testkit.test("tests")
+    }
+
+    "Test with different folder" {
         Testkit.test("tests", Testkit.DEFAULT_MAIN_FOLDER)
     }
 })
