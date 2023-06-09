@@ -4,6 +4,7 @@ import java.util.*
 plugins {
     id("org.jetbrains.kotlin.jvm")
     id("pl.droidsonroids.jacoco.testkit")
+    id("org.danilopianini.multi-jvm-test-plugin")
     `java-library`
 }
 
@@ -12,11 +13,11 @@ repositories {
     gradlePluginPortal()
 }
 
-val javaVersion: String by project
+multiJvm {
+    maximumSupportedJvmVersion.set(18)
+}
+
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion))
-    }
     withSourcesJar()
     withJavadocJar()
 }

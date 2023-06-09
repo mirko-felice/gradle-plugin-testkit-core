@@ -28,8 +28,6 @@ configurations.all {
     }
 }
 
-val javaVersion: String by project
-
 subprojects {
     version = rootProject.version
     if (!name.equals("tests")) {
@@ -47,7 +45,6 @@ subprojects {
                         ),
                     )
                     includes.setFrom("module.md")
-                    jdkVersion.set(javaVersion.toInt())
                     externalDocumentationLink {
                         url.set(URL("https://docs.gradle.org/current/javadoc/"))
                     }

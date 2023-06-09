@@ -14,6 +14,7 @@ dokka-version = "1.8.20"
 jacoco-testkit-version = "1.0.12"
 kotest-version = "5.6.2"
 junit-version = "5.9.3"
+multi-jvm-version = "0.5.2"
 
 # other
 turtle-version = "0.8.0"
@@ -33,6 +34,7 @@ dokka = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", vers
 jacocotestkit = { module = "pl.droidsonroids.gradle.jacoco:pl.droidsonroids.gradle.jacoco", version.ref = "jacoco-testkit-version" }
 kotest = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-version" }
+multiJvm = { module = "org.danilopianini.multi-jvm-test-plugin:org.danilopianini.multi-jvm-test-plugin.gradle.plugin", version.ref = "multi-jvm-version" }
 
 [bundles]
 jackson = [ "jackson-module", "jackson-yaml" ]

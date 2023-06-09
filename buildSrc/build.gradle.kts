@@ -16,4 +16,5 @@ dependencies {
     implementation(libs.dokka)
 
     implementation(libs.jacocotestkit)
+    implementation(libs.multiJvm)
 }
