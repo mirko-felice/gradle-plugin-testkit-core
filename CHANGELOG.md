@@ -1,3 +1,10 @@
+## [0.8.3](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.2...0.8.3) (2023-06-09)
+
+
+### Bug Fixes
+
+* set java target to minimum by gradle ([06d77eb](https://github.com/mirko-felice/gradle-plugin-testkit/commit/06d77ebb52a595d97c0552c866218ce321afb3c1))
+
 ## [0.8.2](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.1...0.8.2) (2023-06-09)
 
 
