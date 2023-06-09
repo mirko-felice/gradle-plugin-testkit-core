@@ -1,3 +1,10 @@
+## [0.8.2](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.1...0.8.2) (2023-06-09)
+
+
+### Bug Fixes
+
+* solve project folder path to find plugin classpath ([1e40597](https://github.com/mirko-felice/gradle-plugin-testkit/commit/1e405976b06abaa01ba17d0b0f009196bf9ede76))
+
 ## [0.8.1](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.0...0.8.1) (2023-06-08)
 
 
