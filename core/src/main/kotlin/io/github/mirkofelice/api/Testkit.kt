@@ -31,9 +31,14 @@ object Testkit {
         .registerKotlinModule()
 
     /**
-     * Default folder containing the tests.
+     * Default folder containing the tests, as 'currentDir/src/test/resources/'.
      */
-    val DEFAULT_TEST_FOLDER = "${System.getProperty("user.dir")}${sep}src${sep}main${sep}resources$sep"
+    val DEFAULT_TEST_FOLDER = "${System.getProperty("user.dir")}${sep}src${sep}test${sep}resources$sep"
+
+    /**
+     * Default folder containing the tests, as 'currentDir/src/main/resources/'.
+     */
+    val DEFAULT_MAIN_FOLDER = "${System.getProperty("user.dir")}${sep}src${sep}main${sep}resources$sep"
 
     /**
      * Run all the tests, designed to be run by the user.
@@ -49,7 +54,7 @@ object Testkit {
         forwardOutput: Boolean = false,
     ) {
         val projectFolder = File(projectFolderPath)
-        val buildFolder = projectFolderPath.replaceAfter(projectName, "") + sep + "build"
+        val buildFolder = projectFolderPath.replaceAfterLast(projectName, "") + sep + "build"
         if (requireFolder(projectFolder) && requireBuildGradleKts(projectFolder) && !isTestMode()) {
             val yamlFile = requireYaml(projectFolder)
             val tests = mapper.readValue(yamlFile, Tests::class.java)

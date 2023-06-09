@@ -35,6 +35,6 @@ class HelloTests : AbstractTest({
     }
 
     "Default test" {
-        Testkit.test("tests")
+        Testkit.test("tests", Testkit.DEFAULT_MAIN_FOLDER)
     }
 })
