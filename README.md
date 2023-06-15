@@ -118,9 +118,11 @@ tests:
             contentRegex: "$regex"
 ```
 
-#### Class diagram
+#### Class diagrams
 
-[![PlantUML class diagram](https://shorturl.at/fpqsE)](https://shorturl.at/hiFW1)
+[![PlantUML core class diagram](https://shorturl.at/bdeiA)](https://shorturl.at/k1368)
+
+[![PlantUML plugin class diagram](https://shorturl.at/otzP6)](https://shorturl.at/qEHLY)
 
 ## Gradle-Plugin
 
