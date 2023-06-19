@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.github.mirkofelice.api.CheckerType.KOTLIN
 import io.github.mirkofelice.runners.TestRunner
 import io.github.mirkofelice.structure.Tests
+import org.yaml.snakeyaml.Yaml
 import java.io.File
 
 /**
@@ -57,7 +58,8 @@ object Testkit {
         val buildFolder = projectFolderPath.replaceAfterLast(projectName, "") + sep + "build"
         if (requireFolder(projectFolder) && requireBuildGradleKts(projectFolder) && !isTestMode()) {
             val yamlFile = requireYaml(projectFolder)
-            val tests = mapper.readValue(yamlFile, Tests::class.java)
+            val rawTests = yamlFile.inputStream().use { Yaml().load<Map<String, Any>>(it) }
+            val tests = mapper.convertValue(rawTests, Tests::class.java)
             println("Executing tests of configuration file: '${yamlFile.name}' in dir '${projectFolder.path}'\n")
             TestRunner.runTests(tests, yamlFile.parentFile, buildFolder, checkerType, forwardOutput)
         }

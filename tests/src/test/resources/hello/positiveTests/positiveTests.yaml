@@ -1,16 +1,14 @@
 tests:
   - description: "Task 'hello' should succeed."
     configuration:
-      tasks:
+      tasks: &tasks
         - hello
     expectation:
       outcomes:
-        success:
-          - hello
+        success: *tasks
   - description: "Task 'hello' should produce a correct output."
     configuration:
-      tasks:
-        - hello
+      tasks: *tasks
       options:
         - --stacktrace
     expectation:
@@ -19,8 +17,7 @@ tests:
           - "hello from mirko"
   - description: "Task 'hello' should not produce a wrong output."
     configuration:
-      tasks:
-        - hello
+      tasks: *tasks
     expectation:
       output:
         doesntContain:
