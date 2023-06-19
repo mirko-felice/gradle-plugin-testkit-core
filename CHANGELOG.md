@@ -1,3 +1,10 @@
+## [0.8.4](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.3...0.8.4) (2023-06-19)
+
+
+### Bug Fixes
+
+* **core:** mediate yaml conversion through Snake to allow use of anchors ([ae2d4a0](https://github.com/mirko-felice/gradle-plugin-testkit/commit/ae2d4a04eaf109440f8d3be9820c7b63c1b2e5da))
+
 ## [0.8.3](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.2...0.8.3) (2023-06-09)
 
 
