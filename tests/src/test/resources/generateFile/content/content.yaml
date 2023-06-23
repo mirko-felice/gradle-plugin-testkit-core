@@ -1,5 +1,6 @@
 tests:
-  - description: "Running 'generateFile' should produce the file with correct content."
+  - id: test
+    description: "Running 'generateFile' should produce the file with correct content."
     configuration:
       tasks:
         - generateFile
@@ -9,6 +10,7 @@ tests:
           - name: "test.txt"
             content: "value"
   - description: "Task 'generateFile' should be up-to-date now."
+    requires: test
     configuration:
       tasks:
         - generateFile

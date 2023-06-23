@@ -116,6 +116,18 @@ class PluginTest {
                             }
                         }
                     }
+                    test("required") {
+                        id = "test"
+                        configuration {
+                            tasks = listOf("tasks")
+                        }
+                    }
+                    test("requiring") {
+                        requires = "test"
+                        configuration {
+                            tasks = listOf("tasks")
+                        }
+                    }
                 }
             }
         """.trimIndent()

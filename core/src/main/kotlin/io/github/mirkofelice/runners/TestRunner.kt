@@ -32,33 +32,33 @@ internal object TestRunner {
         checkerType: CheckerType,
         forwardOutput: Boolean,
     ) {
-        val temporaryProjectFolder = generateTempFolder(projectFolder)
+        val (t1, t2) = tests.tests.partition { it.requires == null }
+        val testsRequired = t1.map { Pair(it, generateTempFolder(projectFolder)) }
+        val testRequiring = t2.map { test -> Pair(test, testsRequired.single { it.first.id == test.requires }.second) }
+        (testsRequired + testRequiring).forEachIndexed { index, testWithFolder ->
+            val test = testWithFolder.first
+            val folder = testWithFolder.second
+            val tasks = test.configuration.tasks.joinToString(" ")
+            val options = test.configuration.options.joinToString(" ")
 
-        try {
-            tests.tests.forEachIndexed { index, test ->
-                val tasks = test.configuration.tasks.joinToString(" ")
-                val options = test.configuration.options.joinToString(" ")
-
-                println(
-                    "\tExecuting test n. ${index + 1}:\n\t\t'${test.description}' -> " +
-                        "Running `gradlew $tasks $options`",
-                )
-                val result = BuildRunner.build(
-                    pluginBuildFolder,
-                    temporaryProjectFolder,
-                    test.configuration.tasks,
-                    test.configuration.options,
-                    test.expectation.result == BuildResult.FAILED,
-                    forwardOutput,
-                )
-                when (checkerType) {
-                    CheckerType.KOTLIN -> KotlinChecker()
-                }.check(test.expectation, result, temporaryProjectFolder)
-            }
-        } finally {
-            println("\nTerminate executing tests\n")
-            if (!temporaryProjectFolder.deleteRecursively()) println("Error deleting the temp folder.")
+            println(
+                "\tExecuting test n. ${index + 1}:\n\t\t'${test.description}' -> " +
+                    "Running `gradlew $tasks $options`",
+            )
+            val result = BuildRunner.build(
+                pluginBuildFolder,
+                folder,
+                test.configuration.tasks,
+                test.configuration.options,
+                test.expectation.result == BuildResult.FAILED,
+                forwardOutput,
+            )
+            when (checkerType) {
+                CheckerType.KOTLIN -> KotlinChecker()
+            }.check(test.expectation, result, folder)
         }
+        println("\nTerminate executing tests\n")
+        testsRequired.forEach { if (!it.second.deleteRecursively()) println("Error deleting the temp folder.") }
     }
 
     private fun generateTempFolder(testFolder: File) = createTempDirectory("testkit").apply {
