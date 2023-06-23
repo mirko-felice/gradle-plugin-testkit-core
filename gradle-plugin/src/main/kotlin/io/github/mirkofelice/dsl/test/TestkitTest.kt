@@ -18,6 +18,16 @@ import javax.inject.Inject
 open class TestkitTest @Inject constructor(private val description: Property<String>) :
     Serializable, Convertable<Test> {
 
+    /**
+     * Represents the identifier of the test.
+     */
+    var id: String? = null
+
+    /**
+     * Represents the requiring test of this test.
+     */
+    var requires: String? = null
+
     private val configuration: TestkitConfiguration = TestkitConfiguration()
     private val expectation: TestkitExpectation = TestkitExpectation()
 
@@ -37,8 +47,16 @@ open class TestkitTest @Inject constructor(private val description: Property<Str
         this.expectation.apply(configuration)
     }
 
-    override fun convert(): Test =
-        Test(this.description.get(), this.configuration.convert(), this.expectation.convert())
+    override fun convert(): Test {
+        val desc = this.description.get()
+        val configuration = this.configuration.convert()
+        val expectation = this.expectation.convert()
+        return if (id == null) {
+            Test(description = desc, requires = requires, configuration = configuration, expectation = expectation)
+        } else {
+            Test(id!!, desc, requires, configuration, expectation)
+        }
+    }
 
     private companion object {
         private const val serialVersionUID = 1L
