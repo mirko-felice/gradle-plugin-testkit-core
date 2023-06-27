@@ -75,6 +75,8 @@ Below there is a complete example.
 ```yaml
 tests:
   - description: "Example description"
+    id: uniqueIdentifier
+    requires: idOfAnotherTest
     configuration:
       tasks:
         - task1
@@ -120,7 +122,7 @@ tests:
 
 #### Class diagrams
 
-[![PlantUML core class diagram](https://shorturl.at/bdeiA)](https://shorturl.at/k1368)
+[![PlantUML core class diagram](https://shorturl.at/dlqEV)](https://shorturl.at/fsTU4)
 
 [![PlantUML plugin class diagram](https://shorturl.at/otzP6)](https://shorturl.at/qEHLY)
 
