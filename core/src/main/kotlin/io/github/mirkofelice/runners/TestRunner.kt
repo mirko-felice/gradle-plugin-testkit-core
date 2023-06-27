@@ -58,10 +58,14 @@ internal object TestRunner {
             }.check(test.expectation, result, folder)
         }
         println("\nTerminate executing tests\n")
-        testsRequired.forEach { if (!it.second.deleteRecursively()) println("Error deleting the temp folder.") }
+        testsRequired.forEach { if (!it.second.deleteRec()) println("Error deleting the temp folder.") }
     }
 
     private fun generateTempFolder(testFolder: File) = createTempDirectory("testkit").apply {
         testFolder.copyRecursively(this.toFile())
     }.toFile()
+
+    private fun File.deleteRec() = this.walk()
+        .sortedWith(Comparator.reverseOrder())
+        .fold(true) { deleted, file -> deleted && file.delete() }
 }
