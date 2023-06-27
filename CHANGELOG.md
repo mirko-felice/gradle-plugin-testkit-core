@@ -1,3 +1,10 @@
+# [0.9.0](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.4...0.9.0) (2023-06-27)
+
+
+### Features
+
+* add dependencies between tests ([1df0a98](https://github.com/mirko-felice/gradle-plugin-testkit/commit/1df0a98e59eb16046374d0da7e7b641663eed10e))
+
 ## [0.8.4](https://github.com/mirko-felice/gradle-plugin-testkit/compare/0.8.3...0.8.4) (2023-06-19)
 
 
