@@ -4,7 +4,7 @@ kotlin-version = "1.8.22"
 jackson-version = "2.15.2"
 
 # QA
-kotlinqa-version = "0.46.1"
+kotlinqa-version = "0.47.0"
 sonarqube-version = "4.2.1.3168"
 
 # doc
