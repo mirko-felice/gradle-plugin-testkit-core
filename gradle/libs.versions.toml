@@ -13,7 +13,7 @@ dokka-version = "1.8.20"
 # test
 jacoco-testkit-version = "1.0.12"
 kotest-version = "5.6.2"
-junit-version = "5.9.3"
+junit-version = "5.12.0"
 multi-jvm-version = "0.5.4"
 
 # other
